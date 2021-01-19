@@ -77,58 +77,47 @@
   <body>
     <header>
       <nav class="navbar sticky-top navbar-expand-lg navbar-light row">
-        <!-- <a class="navbar-brand col-sm-4" href="/">
-            <img src="/img/compass_w.png" width="50" height="50" class="d-inline-block align-top nav-logo" alt="Luther Navigator Logo">
-            Luther Navigator
-          </a>
-          <button class="navbar-toggler col-sm" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <img src="/img/toggle_menu.png" width="50" height="50" class="toggle-menu-img" alt="Three dots">
-          </button>
-          <div class="col-sm-8"></div>
-          <a class="nav-link col-sm-4" href="#">Post</a>
-          <a class="nav-link col-sm-4" href="#">Sign In</a> -->
-        <a class="navbar-brand" href="/">
-          <img
+        <a class="navbar-brand col-8 col-sm-3" href="/">
+          <img 
             src="/img/compass_w.png"
-            class="d-inline-block align-top nav-logo"
+            class="d-inline-block align-top nav-logo" 
             alt="Luther Navigator Logo"
           />
-          Luther Navigator
+            Luther Navigator
         </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarText"
-          aria-controls="navbarText"
-          aria-expanded="false"
+        <div class="col-1 col-sm-7"></div>
+        <button 
+          class="navbar-toggler col-1 col-sm-1" 
+          type="button" 
+          data-toggle="collapse" 
+          data-target="#navbarText" 
+          aria-controls="navbarText" 
+          aria-expanded="false" 
           aria-label="Toggle navigation"
         >
-          <img
-            src="/img/toggle_menu.png"
-            width="50"
-            height="50"
-            class="toggle-menu-img"
-            alt="Three dots"
+          <img 
+          src="/img/toggle_menu.png" 
+          class="toggle-menu-img" 
+          alt="Three dots"
           />
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav mr-auto">
+          <!-- <ul class="navbar-nav mr-auto">
             <li class="nav-item"></li>
-          </ul>
+          </ul> -->
           <!-- <form class="form-inline my-2 my-lg-0">
               <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form> -->
           {{#if loggedIn}}
-          <a class="nav-link" href="/post">Post</a>
-          <a class="nav-link" href="/logout?after={{url}}">Logout</a>
+          <a class="nav-link col-sm-6" href="/post">Post</a>
+          <a class="nav-link col-sm-6" href="/logout?after={{url}}">Logout</a>
           {{else}}
-          <a class="nav-link" href="/post">Post</a>
+          <a class="nav-link col-sm-6" href="/post">Post</a>
           {{#if after}}
-          <a class="nav-link" href="/login?after={{after}}">Login</a>
+          <a class="nav-link col-sm-6" href="/login?after={{after}}">Login</a>
           {{else}}
-          <a class="nav-link" href="/login">Login</a>
+          <a class="nav-link col-sm-6" href="/login">Login</a>
           {{/if}} {{/if}}
         </div>
       </nav>

@@ -109,13 +109,13 @@ header {
 /* NAVBAR is header*/
 .navbar-light .navbar-brand {
   color: white;
-  /* font-size: 1.5rem; */
+  font-size: 20pt;
   padding: 0.5rem;
 }
 
 .nav-link {
   color: white;
-  font-size: 1.25em;
+  font-size: 16pt;
 }
 
 .navbar-light .navbar-toggler {
@@ -212,7 +212,7 @@ table {
   }
 
   .navbar-light .navbar-brand {
-    font-size: 1.5em;
+    font-size: 22pt;
   }
 
   .toggle-menu-img {
@@ -232,3 +232,7 @@ table {
     display: inline-table;
   }
 }
+
+/* .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-7 {
+  border: 1px black solid;
+} */
