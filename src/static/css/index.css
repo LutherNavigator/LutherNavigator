@@ -9,7 +9,7 @@
 }
 
 .menu-button:hover {
-  border: solid 1px #003882;
+  border: solid 1px #0061A3;
 }
 
 .clear-card {
@@ -25,6 +25,12 @@ h3 {
 
 .sample-3 {
   display: block;
+  color: #212529;
+}
+
+.sample-3:hover {
+  color: #0061A3;
+  text-decoration: none;
 }
 
 img {
