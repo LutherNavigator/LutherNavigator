@@ -158,10 +158,10 @@ button {
 
 #cover {
 	/* position: fixed;  */
-	/* left: 0;
-  right: 0; */
+	left: 0;
+  /* right: 0; */
   /* float: left; */
-	width: auto;
+  width: fit-content;
 	padding: 10px;
 	margin: 0 auto;
 	background-color: #d8e5ff;
@@ -217,6 +217,7 @@ button {
 	border-radius: 50%;
 	transition: 0.2s ease all;
 }
+
 /* magnifying glass stem */
 button span {
 	position: absolute;
@@ -397,6 +398,7 @@ table {
 
   .nav-link {
     font-size: 17pt;
+    text-align: right;
   }
   
   #cover {
@@ -404,7 +406,7 @@ table {
   }
 }
 
-.col-sm-8, 
+/* .col-sm-8, 
 .col-sm-7, 
 .col-sm-6, 
 .col-sm-5, 
@@ -420,4 +422,4 @@ table {
 .col-9,
 .col-1 {
   border: 1px black solid;
-}
+} */

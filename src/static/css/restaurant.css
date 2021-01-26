@@ -1,14 +1,52 @@
-.side-menu {
-  display: inline-block;
-  width: 20%;
-  min-width: 150px;
-}
-
 h5 {
   margin-top: 10px;
 }
 
-.restaurant-page {
+fieldset {
+  display: inline;
+  float: left;
+}
+
+legend {
+  font-size: 14pt;
+}
+
+label {
+  display: block;
+  font-size: 10pt;
+}
+
+.filter-menu {
+  border: 1px solid #495057;
+  padding: 10px 0px;
+}
+
+.sample-3 {
+  display: block;
+  color: #212529;
+  text-align: center;
+}
+
+.sample-3:hover {
+  color: #0061A3;
+  text-decoration: none;
+}
+
+.fav-place {
   display: inline-block;
-  width: 70%;
+  margin: 2px;
+}
+
+img {
+  width: inherit;
+}
+
+.restaurant-page {
+  display: block;
+  padding: 15px 0px;
+}
+
+.col-md-3 {
+  flex: 0 0 24%;
+  max-width: 24%;
 }

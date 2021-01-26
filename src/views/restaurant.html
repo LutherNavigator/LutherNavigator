@@ -1,31 +1,83 @@
 <link rel="stylesheet" type="text/css" href="/css/restaurant.css" />
-<h1>Restaurants</h1>
+<h1>Filter By</h1>
 <hr />
-<div class="side-menu clear-card">
-  <h4>Filter by</h4>
-  <h5>Categories</h5>
-  <label class="">
-    <input type="checkbox" />
-    <span class="checkmark">Cafe & Bakery</span>
-  </label>
-  <label class="">
-    <input type="checkbox" />
-    <span class="checkmark">Bar & Pub</span>
-  </label>
-  <h5>Programs</h5>
-  <label class="">
-    <input type="checkbox" />
-    <span class="checkmark">Nottingham</span>
-  </label>
-  <h5>Status</h5>
-  <label class="">
-    <input type="checkbox" />
-    <span class="checkmark">Student</span>
-  </label>
+<div class="filter-menu clearfix row">
+  <!-- <form class=""> -->
+    <fieldset class="col-6 col-md-3">
+      <legend>Categories</legend>
+      <label class="">
+        <input type="checkbox" id="cafe" name="cafe"/>
+        <span class="checkmark">Cafe & Bakery</span>
+      </label>
+      <label class="">
+        <input type="checkbox" id="bar" name="bar"/>
+        <span class="checkmark">Bar & Pub</span>
+      </label>
+    </fieldset>
+    <fieldset class="col-6 col-md-3">
+      <legend>Programs</legend>
+      <label class="">
+        <input type="checkbox" id="nottingham" name="nottingham"/>
+        <span class="checkmark">Nottingham</span>
+      </label>
+    </fieldset>
+    <fieldset class="col-6 col-md-3">
+      <legend>Posted by</legend>
+      <label class="">
+        <input type="checkbox" id="student" name="student"/>
+        <span class="checkmark">Student</span>
+      </label>
+      <label class="">
+        <input type="checkbox" id="alumni" name="alumni"/>
+        <span class="checkmark">Alumni</span>
+      </label>
+    </fieldset>
+    <fieldset class="col-6 col-md-3">
+      <legend>[Another Category]</legend>
+      <label class="">
+        <input type="checkbox" id="" name=""/>
+        <span class="checkmark">opt 1</span>
+      </label>
+      <label class="">
+        <input type="checkbox" id="" name=""/>
+        <span class="checkmark">opt 2</span>
+      </label>
+    </fieldset>
+  <!-- </form> -->
 </div>
-<div class="restaurant-page">
-  <div>
-    <a href="/">One</a>
-    <a href="/">Two</a>
+<div class="restaurant-page clearfix row">
+  <div class="fav-place clear-card col-12 col-md-3">
+    <a href="/post/0000" class="sample-3">Somewhere in Vienna</a>
+    <img src="/img/vienna.jpg" alt="Vienna" />
+  </div>
+  <div class="fav-place clear-card col-12 col-md-3">
+    <a href="/post/0000" class="sample-3">Hai Di Lao</a>
+    <img src="/img/vienna.jpg" alt="Vienna" />
+  </div>
+  <div class="fav-place clear-card col-12 col-md-3">
+    <a href="/post/0000" class="sample-3">Somewhere</a>
+    <img src="/img/vienna.jpg" alt="Vienna" />
+  </div>
+  <div class="fav-place clear-card col-12 col-md-3">
+    <a href="/post/0000" class="sample-3">Somewhere</a>
+    <img src="/img/vienna.jpg" alt="Vienna" />
+  </div>
+</div>
+<div class="restaurant-page clearfix row">
+  <div class="fav-place clear-card col-12 col-md-3">
+    <a href="/post/0000" class="sample-3">Somewhere in Vienna</a>
+    <img src="/img/vienna.jpg" alt="Vienna" />
+  </div>
+  <div class="fav-place clear-card col-12 col-md-3">
+    <a href="/post/0000" class="sample-3">Hai Di Lao</a>
+    <img src="/img/vienna.jpg" alt="Vienna" />
+  </div>
+  <div class="fav-place clear-card col-12 col-md-3">
+    <a href="/post/0000" class="sample-3">Somewhere</a>
+    <img src="/img/vienna.jpg" alt="Vienna" />
+  </div>
+  <div class="fav-place clear-card col-12 col-md-3">
+    <a href="/post/0000" class="sample-3">Somewhere</a>
+    <img src="/img/vienna.jpg" alt="Vienna" />
   </div>
 </div>
