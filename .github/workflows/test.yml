@@ -38,4 +38,4 @@ jobs:
         run: |
           printf "$TEST_KEY\n" > .env        # Generate the environment file
           npm install                        # Install NPM packages
-          python3 scripts/test.py --backend  # Run backend tests 
+          python3 scripts/test.py --backend  # Run backend tests

@@ -44,7 +44,17 @@ def main() -> None:
 
     # If run with `-b` or `--backend` argument
     if args.backend:
-        os.system("npx jest --runInBand")
+        code: int = os.system("npx jest --runInBand --bail")
+
+        # If the exit code is anything but 0, exit with the code 1
+        # This is needed in order to make GitHub Actions fail the tests
+        #
+        # Logic: Despite the fact that Jest sometimes exits with code 1, the
+        #        Python script always returns code 0. Therefore, we need to
+        #        check if code is anything but 0.
+        if code:
+            exit(1)
+
         os.system("npx jest-coverage-badges")
 
     # If run with `-t` or `--test` argument
