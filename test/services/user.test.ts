@@ -1,4 +1,4 @@
-import { getDBM, closeDBM } from "./util";
+import { getDBM, closeDBM, getByProp } from "./util";
 import * as crypto from "crypto";
 import { getTime, checkPassword } from "../../src/services/util";
 import { LoginStatus } from "../../src/services/user";
@@ -70,22 +70,22 @@ test("User", async () => {
   expect(same).toBe(true);
 
   // Get unapproved users
+  await dbm.userService.setVerified(userID);
   let unapproved = await dbm.userService.getUnapproved();
-  expect(unapproved.length).toBe(1);
-  expect(unapproved[0]["userID"]).toBe(userID);
-  expect(unapproved[0].firstname).toBe(firstname);
-  expect(unapproved[0].lastname).toBe(lastname);
-  expect(unapproved[0].email).toBe(email);
-  expect(unapproved[0]["status"]).toBe("Student");
-  expect(unapproved[0].joinTime - getTime()).toBeLessThanOrEqual(3);
+  expect(unapproved.length).toBeGreaterThanOrEqual(1);
+  const unapprovedUser = getByProp(unapproved, "userID", userID);
+  expect(unapprovedUser["userID"]).toBe(userID);
+  expect(unapprovedUser.firstname).toBe(firstname);
+  expect(unapprovedUser.lastname).toBe(lastname);
+  expect(unapprovedUser.email).toBe(email);
+  expect(unapprovedUser["status"]).toBe("Student");
+  expect(unapprovedUser.joinTime - getTime()).toBeLessThanOrEqual(3);
 
   // Log user in
   await dbm.userService.setVerified(userID);
   await dbm.userService.setApproved(userID);
   let success = await dbm.userService.login(email, password);
   expect(success).toBe(LoginStatus.Success);
-  unapproved = await dbm.userService.getUnapproved();
-  expect(unapproved.length).toBe(0);
 
   // Check last login timestamp has changed
   user = await dbm.userService.getUser(userID);
