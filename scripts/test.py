@@ -53,6 +53,10 @@ def main() -> None:
 
         # If the exit code is anything but 0, exit with the code 1
         # This is needed in order to make GitHub Actions fail the tests
+        #
+        # Logic: Despite the fact that Jest sometimes exits with code 1, the
+        #        Python script always returns code 0. Therefore, we need to
+        #        check if code is 0.
         if code:
             exit(1)
 
