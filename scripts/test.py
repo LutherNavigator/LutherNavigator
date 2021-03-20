@@ -44,7 +44,7 @@ def main() -> None:
 
     # If run with `-b` or `--backend` argument
     if args.backend:
-        code = os.system("npx jest --runInBand --bail")
+        code: int = os.system("npx jest --runInBand --bail")
 
         # If the exit code is anything but 0, exit with the code 1
         # This is needed in order to make GitHub Actions fail the tests
