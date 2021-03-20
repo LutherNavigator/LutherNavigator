@@ -34,7 +34,7 @@ experiences abroad.
 ### Cloning the Project
 
 ```console
-$ git clone https://github.com/WKHAllen/LutherNavigator.git
+$ git clone https://github.com/LutherNavigator/LutherNavigator.git
 ```
 
 ### Local Deployment
@@ -42,7 +42,7 @@ $ git clone https://github.com/WKHAllen/LutherNavigator.git
 In order to build and run the application, run the following command:
 
 ```console
-heroku local web
+$ heroku local web
 ```
 
 After the local deployment, the built application can be accessed at
@@ -58,7 +58,7 @@ Several testing packages are used:
 For getting more help on running the tests, execute the following:
 
 ```console
-python3 scripts/test.py -h
+$ python3 scripts/test.py -h
 ```
 
 ### Database
@@ -67,7 +67,7 @@ It is also possible to interface with the MySQL database. In order to achieve
 this, run:
 
 ```console
-python3 scripts/db.py
+$ python3 scripts/db.py
 ```
 
 ### Backend
@@ -77,14 +77,13 @@ and rendering. Routes will, if necessary, make use of the services. The
 services make database queries. This is done using the NPM package
 [mysql](https://www.npmjs.com/package/mysql).
 
-
 ### Admin
 
 It is also possible to change administrators from the terminal. In order to
 get more help, run the following:
 
-```sh
-python3 scripts/admin.py -h
+```console
+$ python3 scripts/admin.py -h
 ```
 
 ### Frontend
