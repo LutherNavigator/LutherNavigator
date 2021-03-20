@@ -56,7 +56,7 @@ def main() -> None:
         #
         # Logic: Despite the fact that Jest sometimes exits with code 1, the
         #        Python script always returns code 0. Therefore, we need to
-        #        check if code is 0.
+        #        check if code is anything but 0.
         if code:
             exit(1)
 
