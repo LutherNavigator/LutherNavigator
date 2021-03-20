@@ -49,7 +49,12 @@ def main() -> None:
 
     # If run with `-t` or `--test` argument
     elif args.test:
-        os.system(f"npx jest -t {args.test}")
+        code = os.system(f"npx jest -t {args.test}")
+
+        # If the exit code is anything but 0, exit with the code 1
+        # This is needed in order to make GitHub Actions fail the tests
+        if code:
+            exit(1)
 
     # If run with `-e` or `--emulation` argument
     if args.emulation:

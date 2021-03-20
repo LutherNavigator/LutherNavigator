@@ -24,7 +24,7 @@ test("Rating", async () => {
 
   // Get missing rating
   rating2 = await dbm.ratingService.getRating("!!!!");
-  expect(rating2).toBe(undefined);
+  expect(rating2).toBe(1);
 
   // Delete rating
   await dbm.ratingService.deleteRating(ratingID);
