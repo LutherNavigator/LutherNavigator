@@ -44,12 +44,7 @@ def main() -> None:
 
     # If run with `-b` or `--backend` argument
     if args.backend:
-        os.system("npx jest --runInBand")
-        os.system("npx jest-coverage-badges")
-
-    # If run with `-t` or `--test` argument
-    elif args.test:
-        code = os.system(f"npx jest -t {args.test}")
+        code = os.system("npx jest --runInBand --bail")
 
         # If the exit code is anything but 0, exit with the code 1
         # This is needed in order to make GitHub Actions fail the tests
@@ -59,6 +54,12 @@ def main() -> None:
         #        check if code is anything but 0.
         if code:
             exit(1)
+
+        os.system("npx jest-coverage-badges")
+
+    # If run with `-t` or `--test` argument
+    elif args.test:
+        os.system(f"npx jest -t {args.test}")
 
     # If run with `-e` or `--emulation` argument
     if args.emulation:
