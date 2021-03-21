@@ -8,23 +8,30 @@ import db
 from typing import Any, List
 
 
-ADMIN_FIELDS = ["id", "firstname", "lastname", "email"]
+# Fields required for the admin
+ADMIN_FIELDS: List[str] = ["id", "firstname", "lastname", "email"]
 
 
 def get_conn() -> Any:
+    """Get the connected component."""
+
     envars = env.get_env(".env")
     args = db.parse_db_url(envars["DATABASE_URL"])
 
+    # Connect to the database
     the_db = mysql.connector.connect(
         host=args["host"],
         user=args["user"],
         password=args["password"],
         database=args["name"],
     )
+
     return the_db
 
 
 def add_admin(email: str) -> str:
+    """Adds an admin to the list of admins."""
+
     conn = get_conn()
     cur = conn.cursor()
 
@@ -54,6 +61,8 @@ def add_admin(email: str) -> str:
 
 
 def remove_admin(email: str) -> str:
+    """Removes an admin from the list of admins."""
+
     conn = get_conn()
     cur = conn.cursor()
 
@@ -83,10 +92,10 @@ def remove_admin(email: str) -> str:
 
 
 def list_admins() -> List[str]:
+    """Lists all admins."""
+
     conn = get_conn()
     cur = conn.cursor()
-
-    err = ""
 
     cur.execute(
         f"SELECT {', '.join(ADMIN_FIELDS)} FROM User WHERE admin = TRUE;"
@@ -100,6 +109,8 @@ def list_admins() -> List[str]:
 
 
 def max_length(list: List[Any], index: int) -> int:
+    """Computs the maximum length."""
+
     maxlen = 0
 
     for item in list:
@@ -110,6 +121,8 @@ def max_length(list: List[Any], index: int) -> int:
 
 
 def display_admins(admins: List[Any]) -> None:
+    """Show all admins."""
+
     maxlens = {
         ADMIN_FIELDS[i]: max(max_length(admins, i), len(ADMIN_FIELDS[i]))
         for i in range(len(ADMIN_FIELDS))

@@ -110,10 +110,9 @@ documentation, open the file `docs/index.html`.
 
 ### GitHub Actions
 
-Tests are run automatically on push or pull request. The GitHub Actions reports
-can be accessed
+Tests are run automatically on push or pull request. GitHub Actions reports can
+be accessed
 [here](https://github.com/LutherNavigator/LutherNavigator/actions).
-
 
 ### Style Guide
 
