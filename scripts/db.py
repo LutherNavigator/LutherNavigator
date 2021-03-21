@@ -6,6 +6,8 @@ from typing import Dict
 
 
 def parse_db_url(url: str) -> Dict:
+    """Parses database URL."""
+
     host_start_idx = url.index("@") + 1
     host_end_idx = url[host_start_idx:].index("/")
     host = url[host_start_idx : host_start_idx + host_end_idx]
@@ -37,6 +39,8 @@ def parse_db_url(url: str) -> Dict:
 
 
 def main() -> None:
+    """Process the command line arguments."""
+
     envars = env.get_env(".env")
     args = parse_db_url(envars["DATABASE_URL"])
 
