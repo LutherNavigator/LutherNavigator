@@ -87,7 +87,7 @@ def main() -> None:
 
     # If all arguments are specified, save the table
     if args.out and args.table and args.fields:
-        # Convert to CSV format
+        # Append CSV extension
         out: str = args.out
         if os.path.splitext(out)[1] == "":
             out += ".csv"
