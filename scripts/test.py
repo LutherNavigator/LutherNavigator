@@ -1,5 +1,6 @@
 import argparse
 import os
+import sys
 
 import env
 
@@ -53,7 +54,7 @@ def main() -> None:
         #        Python script always returns code 0. Therefore, we need to
         #        check if code is anything but 0.
         if code:
-            exit(1)
+            sys.exit(1)
 
         os.system("npx jest-coverage-badges")
 

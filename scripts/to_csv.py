@@ -1,6 +1,6 @@
+import argparse
 import csv
 import os
-import sys
 
 import mysql.connector
 
@@ -11,12 +11,16 @@ from typing import List
 
 
 def get_columns(cur, table: str) -> List[str]:
+    """Get the columns from MySQL database."""
+
     cur.execute(f"SHOW COLUMNS FROM {table};")
     columns = [column[0] for column in cur]
     return columns
 
 
 def save_table(outfile: str, table: str, fields: List[str] = None) -> None:
+    """Saves the database table."""
+
     envars = env.get_env(".env")
     args = db.parse_db_url(envars["DATABASE_URL"])
 
@@ -46,20 +50,50 @@ def save_table(outfile: str, table: str, fields: List[str] = None) -> None:
 
 
 def main() -> None:
-    args = sys.argv[2:]
-    if len(args) < 2:
-        print(
-            f"Usage: {sys.argv[1].strip()} <output path> <table name> [table fields ...]"
-        )
-        sys.exit(1)
+    """Process the command line arguments."""
 
-    outfile = args[0]
-    if os.path.splitext(outfile)[1] == "":
-        outfile += ".csv"
-    table = args[1]
-    fields = args[2:]
+    # Parse command-line arguments
+    parser = argparse.ArgumentParser(description="A CSV utility")
 
-    save_table(outfile, table, fields)
+    # Specify output filename/path
+    parser.add_argument(
+        "-o",
+        "--out",
+        type=str,
+        default="",
+        help="output filaname/path",
+    )
+
+    # Specify table name
+    parser.add_argument(
+        "-t",
+        "--table",
+        type=str,
+        default="",
+        help="table name",
+    )
+
+    # Specify table fields
+    parser.add_argument(
+        "-f",
+        "--fields",
+        type=str,
+        default="",
+        help="table fields",
+    )
+
+    # Get the values of the arguments
+    args = parser.parse_args()
+
+    # If all arguments are specified, save the table
+    if args.out and args.table and args.fields:
+        # Convert to CSV format
+        out: str = args.out
+        if os.path.splitext(out)[1] == "":
+            out += ".csv"
+
+        # Save the table
+        save_table(out, args.table, args.fields)
 
 
 if __name__ == "__main__":
