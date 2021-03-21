@@ -114,7 +114,6 @@ Tests are run automatically on push or pull request. GitHub Actions reports can
 be accessed
 [here](https://github.com/LutherNavigator/LutherNavigator/actions).
 
-
 ### Style Guide
 
 The codebase is developed in a style-consistent manner. Black and Prettier are
