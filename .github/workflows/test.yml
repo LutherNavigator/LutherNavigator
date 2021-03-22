@@ -63,11 +63,7 @@ jobs:
           cd docs
 
           # Include coverage numbers
-          mkdir coverage
-          cd coverage
-          cp ../../../coverage/badge-functions.svg .
-          cp ../../../coverage/badge-lines.svg .
-          cp ../../../coverage/badge-statements.svg .
+          cp -R ../../../coverage .
 
           # Update, commmit, and push
           git add .
