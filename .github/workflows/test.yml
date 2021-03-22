@@ -47,7 +47,7 @@ jobs:
             BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
             BOT_USER: ${{ secrets.BOT_USER }}
         run: |
-          # Document generation
+          # Documentation generation
           npm run document
 
           # Authentication
