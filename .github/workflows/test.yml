@@ -70,5 +70,5 @@ jobs:
           git commit -m "Update docs"
           git push "https://$BOT_AUTH@github.com/luthernavigator/docs.git"
 
-          # Exit with code 0 as nothing new to commit means exit code 1
+          # Exit with code 0 as no new additions means exit code 1
           exit 0
