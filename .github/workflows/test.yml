@@ -41,7 +41,7 @@ jobs:
           python3 scripts/test.py --backend  # Run backend tests
 
       # Generate the documentation and push to the docs repo
-      - name: Generate documentation
+      - name: Generate docs
         env:
             BOT_AUTH: ${{ secrets.BOT_AUTH }}
             BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
