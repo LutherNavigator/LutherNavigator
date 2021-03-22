@@ -63,7 +63,7 @@ jobs:
           cd docs
 
           # Include coverage numbers
-          cp -R ../../../coverage .
+          cp -R ../../coverage .
 
           # Update, commmit, and push
           git add .
