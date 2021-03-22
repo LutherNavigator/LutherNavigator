@@ -1,5 +1,5 @@
 # Name of the action
-name: Run tests
+name: Run tests, generate and push documentation
 
 # Controls when the action will run
 on:
@@ -23,7 +23,7 @@ jobs:
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE, so job can access it
       - name: Clone the repo and checkout `dev` branch
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
       # Use Node.js
       - name: Use Node version 12.19.0
@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: "12.19.0"
 
-      # Run a set of commands for testing using the runners shell
+      # Run the tests
       - name: Run tests
         env:
             TEST_KEY: ${{ secrets.TEST_AUTOMATION_SECRET }}
@@ -39,3 +39,37 @@ jobs:
           printf "$TEST_KEY\n" > .env        # Generate the environment file
           npm install                        # Install NPM packages
           python3 scripts/test.py --backend  # Run backend tests
+
+      # Generate the documentation and push to the docs repo
+      - name: Generate documentation
+        env:
+            BOT_AUTH: ${{ secrets.BOT_AUTH }}
+            BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
+            BOT_USER: ${{ secrets.BOT_USER }}
+        run: |
+          # Document generation
+          npm run document
+
+          # Authentication
+          git config --global user.email "$BOT_EMAIL"
+          git config --global user.name "$BOT_USER"
+
+          # Clone the repo and update the docs
+          git clone "https://github.com/luthernavigator/docs.git"
+          mv documentation docs
+          cd docs
+          rm -rf docs
+          mv documentation docs
+          cd docs
+
+          # Include coverage numbers
+          mkdir coverage
+          cd coverage
+          cp ../../../coverage/badge-functions.svg .
+          cp ../../../coverage/badge-lines.svg .
+          cp ../../../coverage/badge-statements.svg .
+
+          # Update, commmit, and push
+          git add .
+          git commit -m "Update docs"
+          git push "https://$BOT_AUTH@github.com/luthernavigator/docs.git"
