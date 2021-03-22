@@ -1,5 +1,5 @@
 # Name of the action
-name: Run tests, generate and push documentation
+name: Run tests, generate and push the documentation
 
 # Controls when the action will run
 on:
