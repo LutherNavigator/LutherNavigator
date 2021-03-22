@@ -41,13 +41,13 @@ jobs:
           python3 scripts/test.py --backend  # Run backend tests
 
       # Generate the documentation and push to the docs repo
-      - name: Generate documentation
+      - name: Generate docs
         env:
             BOT_AUTH: ${{ secrets.BOT_AUTH }}
             BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
             BOT_USER: ${{ secrets.BOT_USER }}
         run: |
-          # Document generation
+          # Documentation generation
           npm run document
 
           # Authentication
@@ -67,5 +67,6 @@ jobs:
 
           # Update, commmit, and push
           git add .
-          git commit -m "Update docs"
+          # Exit with code 0 as no new additions means exit code 1
+          git commit -m "Update docs" || exit 0
           git push "https://$BOT_AUTH@github.com/luthernavigator/docs.git"
