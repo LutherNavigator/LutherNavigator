@@ -6,7 +6,7 @@
   "scripts": {
     "build": "cd src && npm run build",
     "document": "npm run documentcode",
-    "documentcode": "./node_modules/typedoc/bin/typedoc --out docs src/*.ts src/services src/routes --theme ./node_modules/typedoc-neo-theme/bin/default",
+    "documentcode": "./node_modules/typedoc/bin/typedoc --out documentation src/*.ts src/services src/routes --theme ./node_modules/typedoc-neo-theme/bin/default",
     "format": "cd src && npm run format",
     "formatcode": "cd src && npm run formatcode",
     "formatscripts": "cd src && npm run formatscripts",

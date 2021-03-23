@@ -1,0 +1,72 @@
+# Name of the action
+name: Run tests, generate and push the docs
+
+# Controls when the action will run
+on:
+  # Triggers the workflow on push or pull request events on `dev` branch
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ dev ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# Jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "test"
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Define a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE, so job can access it
+      - name: Clone the repo and checkout `dev` branch
+        uses: actions/checkout@v2
+
+      # Use Node.js
+      - name: Use Node version 12.19.0
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.19.0"
+
+      # Run the tests
+      - name: Run tests
+        env:
+            TEST_KEY: ${{ secrets.TEST_AUTOMATION_SECRET }}
+        run: |
+          printf "$TEST_KEY\n" > .env        # Generate the environment file
+          npm install                        # Install NPM packages
+          python3 scripts/test.py --backend  # Run backend tests
+
+      # Generate the documentation and push to the docs repo
+      - name: Generate docs
+        env:
+            BOT_AUTH: ${{ secrets.BOT_AUTH }}
+            BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
+            BOT_USER: ${{ secrets.BOT_USER }}
+        run: |
+          # Documentation generation
+          npm run document
+
+          # Authentication
+          git config --global user.email "$BOT_EMAIL"
+          git config --global user.name "$BOT_USER"
+
+          # Clone the repo and update the docs
+          git clone "https://github.com/luthernavigator/docs.git"
+          mv documentation docs
+          cd docs
+          rm -rf docs
+          mv documentation docs
+          cd docs
+
+          # Include coverage numbers
+          cp -R ../../coverage .
+
+          # Update, commmit, and push
+          git add .
+          # Exit with code 0 as no new additions means exit code 1
+          git commit -m "Update docs" || exit 0
+          git push "https://$BOT_AUTH@github.com/luthernavigator/docs.git"
