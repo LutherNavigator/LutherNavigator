@@ -1,23 +1,21 @@
 <div class="sm-width div-center">
-  <div class="clear-card">
-    <div class="col">
-      <h1 class="center">Account Verification</h1>
-    </div>
-    <div class="col">
-      {{#if valid}}
-      <p>
-        Success! Your account has been verified! Your account must now be
-        approved by an administrator, but after that you will be able to log in
-        and begin posting. We'll send you an email when your account has been
-        approved.
-      </p>
-      {{else}}
-      <p>
-        Invalid verification code. This is likely because the link expired.
-        Please <a href="/register">register again</a>, bearing in mind you have
-        little time before the link in the email expires.
-      </p>
-      {{/if}}
-    </div>
+  <div class="col">
+    <h1 class="center">Account Verification</h1>
+  </div>
+  <div class="col">
+    {{#if valid}}
+    <p>
+      Success! Your account has been verified! Your account must now be
+      approved by an administrator, but after that you will be able to log in
+      and begin posting. We'll send you an email when your account has been
+      approved.
+    </p>
+    {{else}}
+    <p>
+      Invalid verification code. This is likely because the link expired.
+      Please <a href="/register">register again</a>, bearing in mind you have
+      little time before the link in the email expires.
+    </p>
+    {{/if}}
   </div>
 </div>
