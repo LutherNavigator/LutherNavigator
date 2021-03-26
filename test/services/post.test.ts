@@ -142,6 +142,7 @@ test("Post", async () => {
   expect(posts.length).toBe(2);
   expect(posts[0].id === postID || posts[0].id === postID2).toBeTruthy();
   expect(posts[1].id === postID || posts[1].id === postID2).toBeTruthy();
+  expect(posts[0].id).not.toBe(posts[1].id);
 
   // Delete all user posts
   await dbm.postService.deleteUserPosts(userID);
