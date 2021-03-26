@@ -58,6 +58,25 @@ export function getTime(): number {
 }
 
 /**
+ * Set a timeout without the 32-bit limit.
+ *
+ * @param callback The callback.
+ * @param ms Number of milliseconds before calling the callback.
+ * @param args Arguments to pass to the callback.
+ */
+export function setBigTimeout(
+  callback: (...args: any[]) => void,
+  ms: number,
+  ...args: any[]
+) {
+  if (ms < 2 ** 31) {
+    setTimeout(callback, ms, ...args);
+  } else {
+    setTimeout(setBigTimeout, ms - (2 ** 31 - 1), ...args);
+  }
+}
+
+/**
  * Generate a new ID.
  *
  * @param len The length of the ID.
@@ -333,12 +352,7 @@ export async function pruneSuspension(
     timeRemaining = (suspension.suspendedUntil - getTime()) * 1000;
   }
 
-  // setTimeout will not allow more than a 32-bit signed integer for the timeout argument
-  if (timeRemaining >= 2 ** 31) {
-    return;
-  }
-
-  setTimeout(async () => {
+  setBigTimeout(async () => {
     await dbm.suspendedService.deleteSuspension(suspensionID);
   }, timeRemaining);
 }
