@@ -10,6 +10,8 @@ import {
   getErrorMessage,
   setErrorMessage,
   getHostname,
+  getForm,
+  setForm,
 } from "./util";
 import wrapRoute from "../asyncCatch";
 import { sendFormattedEmail } from "../emailer";
@@ -26,10 +28,12 @@ registerRouter.get(
     const dbm = getDBM(req);
 
     const error = getErrorMessage(req, res);
+    const form = getForm(req, res);
     const userStatuses = await dbm.userStatusService.getStatuses();
 
     await renderPage(req, res, "register", {
       error,
+      form,
       userStatuses,
     });
   })
@@ -48,73 +52,54 @@ registerRouter.post(
     const confirmPassword: string = req.body.confirmPassword;
     const userStatus: number = parseInt(req.body.userStatus) || 0;
 
+    const emailUnique = await dbm.userService.uniqueEmail(email);
+    const validUserStatus = await dbm.userStatusService.validStatus(userStatus);
+
     // Validation
     if (firstname.length < 1 || firstname.length > 63) {
       setErrorMessage(res, "First name must be less than 64 characters");
-      res.redirect("/register");
-      return;
-    }
-
-    if (lastname.length < 1 || lastname.length > 63) {
+    } else if (lastname.length < 1 || lastname.length > 63) {
       setErrorMessage(res, "Last name must be less than 64 characters");
-      res.redirect("/register");
-      return;
-    }
-
-    if (email.length < 5 || email.length > 63) {
+    } else if (email.length < 5 || email.length > 63) {
       setErrorMessage(res, "Email must be less than 64 characters");
-      res.redirect("/register");
-      return;
-    }
-
-    if (password !== confirmPassword) {
+    } else if (password !== confirmPassword) {
       setErrorMessage(res, "Passwords do not match");
-      res.redirect("/register");
-      return;
     } else if (password.length < 8) {
       setErrorMessage(res, "Password must be at least 8 characters");
-      res.redirect("/register");
-      return;
-    }
-
-    const emailUnique = await dbm.userService.uniqueEmail(email);
-    if (!emailUnique) {
+    } else if (!emailUnique) {
       setErrorMessage(res, "Email address is already in use");
-      res.redirect("/register");
-      return;
-    }
-
-    const validUserStatus = await dbm.userStatusService.validStatus(userStatus);
-    if (!validUserStatus) {
+    } else if (!validUserStatus) {
       setErrorMessage(res, "Invalid user status");
-      res.redirect("/register");
+    } else {
+      // Verification
+      const verifyID = await dbm.verifyService.createVerifyRecord(email);
+
+      if (verifyID) {
+        const userID = await dbm.userService.createUser(
+          firstname,
+          lastname,
+          email,
+          password,
+          userStatus
+        );
+
+        sendFormattedEmail(
+          email,
+          "Luther Navigator - Verify Email",
+          "verification",
+          {
+            host: getHostname(req),
+            verifyID,
+          }
+        );
+      }
+
+      res.redirect("/register/register-success");
       return;
     }
 
-    // Verification
-    const verifyID = await dbm.verifyService.createVerifyRecord(email);
-
-    if (verifyID) {
-      const userID = await dbm.userService.createUser(
-        firstname,
-        lastname,
-        email,
-        password,
-        userStatus
-      );
-
-      sendFormattedEmail(
-        email,
-        "Luther Navigator - Verify Email",
-        "verification",
-        {
-          host: getHostname(req),
-          verifyID,
-        }
-      );
-    }
-
-    res.redirect("/register/register-success");
+    setForm(res, req.body);
+    res.redirect("/register");
   })
 );
 
