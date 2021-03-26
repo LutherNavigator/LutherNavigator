@@ -20,6 +20,7 @@ import {
 import wrapRoute from "../asyncCatch";
 import { RatingParams } from "../services/rating";
 import { metaConfig } from "../config";
+import * as jimp from "jimp";
 
 /**
  * The post router.
@@ -102,11 +103,35 @@ postRouter.post(
     const validLocationTypeID = dbm.locationTypeService.validLocation(
       locationTypeID
     );
-    const imageData = files.map((file) => file.buffer);
+    const imageData = await Promise.all(
+      files.map(
+        async (file): Promise<Buffer> => {
+          return new Promise((resolve) => {
+            if (file.size < maxImageSize) {
+              resolve(file.buffer);
+            } else {
+              jimp.read(file.buffer).then((img) => {
+                const shrinkFactor = (file.size / maxImageSize) ** 0.3 / 0.8;
+                const width = img.bitmap.width;
+                img
+                  .resize(Math.floor(width / shrinkFactor), jimp.AUTO)
+                  .quality(60)
+                  .getBufferAsync(jimp.MIME_JPEG)
+                  .then((buffer) => {
+                    resolve(buffer);
+                  });
+              });
+            }
+          });
+        }
+      )
+    );
     const imageTypesGood = files.map((file) =>
       mimetypes.includes(file.mimetype)
     );
-    const imageSizesGood = files.map((file) => file.size < maxImageSize);
+    const imageSizesGood = imageData.map(
+      (image) => image.length < maxImageSize
+    );
     const ratingsGood = ratings.map((rating) => rating >= 0 && rating <= 5);
 
     // Validation
@@ -119,7 +144,7 @@ postRouter.post(
     } else if (imageSizesGood.includes(false)) {
       setErrorMessage(
         res,
-        `All images must be less than ${Math.floor(maxImageSize / 1024)} KB`
+        `Please use images less than ${Math.floor(maxImageSize / 1024)} KB`
       );
     } else if (location.length <= 0 || location.length > 255) {
       setErrorMessage(res, "Location name must be less than 256 characters");
