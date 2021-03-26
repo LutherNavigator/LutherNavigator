@@ -8,8 +8,8 @@
       {{/if}}
 
       <p class="text-h3">
-        Please fill out the form below. If you already have an account,
-        please <a href="/login">log in here</a>.
+        Please fill out the form below. If you already have an account, please
+        <a href="/login">log in here</a>.
       </p>
     </div>
 
@@ -17,6 +17,17 @@
     <div class="row align-items-center mt-4">
       <div class="col-sm-6 col-12 mb-3 form-group">
         <label for="firstname">First name</label>
+        {{#if form}}
+        <input
+          type="text"
+          class="form-control clear-input"
+          id="firstname"
+          name="firstname"
+          maxlength="63"
+          value="{{form.firstname}}"
+          required
+        />
+        {{else}}
         <input
           type="text"
           class="form-control clear-input"
@@ -25,9 +36,21 @@
           maxlength="63"
           required
         />
+        {{/if}}
       </div>
       <div class="col-sm-6 col-12 mb-3 form-group">
         <label for="lastname">Last name</label>
+        {{#if form}}
+        <input
+          type="text"
+          class="form-control clear-input"
+          id="lastname"
+          name="lastname"
+          maxlength="63"
+          value="{{form.lastname}}"
+          required
+        />
+        {{else}}
         <input
           type="text"
           class="form-control clear-input"
@@ -36,6 +59,7 @@
           maxlength="63"
           required
         />
+        {{/if}}
       </div>
     </div>
 
@@ -43,6 +67,17 @@
     <div class="row align-items-center">
       <div class="col-12 mb-3 form-group">
         <label for="email">Email address</label>
+        {{#if form}}
+        <input
+          type="email"
+          class="form-control clear-input"
+          id="email"
+          name="email"
+          maxlength="63"
+          value="{{form.email}}"
+          required
+        />
+        {{else}}
         <input
           type="email"
           class="form-control clear-input"
@@ -51,6 +86,7 @@
           maxlength="63"
           required
         />
+        {{/if}}
       </div>
     </div>
 
@@ -58,25 +94,53 @@
     <div class="row align-items-center">
       <div class="col-sm-6 col-12 mb-3 form-group">
         <label for="password">Password</label>
+        {{#if form}}
         <input
           type="password"
           class="form-control clear-input"
           id="password"
           name="password"
+          minlength="8"
+          maxlength="255"
+          value="{{form.password}}"
+          required
+        />
+        {{else}}
+        <input
+          type="password"
+          class="form-control clear-input"
+          id="password"
+          name="password"
+          minlength="8"
           maxlength="255"
           required
         />
+        {{/if}}
       </div>
       <div class="col-sm-6 col-12 mb-3 form-group">
         <label for="confirmPassword">Confirm password</label>
+        {{#if form}}
         <input
           type="password"
           class="form-control clear-input"
           id="confirmPassword"
           name="confirmPassword"
+          minlength="8"
+          maxlength="255"
+          value="{{form.confirmPassword}}"
+          required
+        />
+        {{else}}
+        <input
+          type="password"
+          class="form-control clear-input"
+          id="confirmPassword"
+          name="confirmPassword"
+          minlength="8"
           maxlength="255"
           required
         />
+        {{/if}}
       </div>
     </div>
 
@@ -95,6 +159,11 @@
           <option value="{{this.id}}">{{this.name}}</option>
           {{/each}}
         </select>
+        {{#if form}}
+        <script type="text/javascript">
+          document.getElementById("userStatus").value = "{{form.userStatus}}";
+        </script>
+        {{/if}}
       </div>
     </div>
 
@@ -104,9 +173,7 @@
         <label class="form-check-label">
           <input type="checkbox" class="form-check-input" required />
           I have read and accept the
-          <a href="/terms"
-            >Terms and Conditions</a
-          >
+          <a href="/terms">Terms and Conditions</a>
         </label>
       </div>
     </div>
