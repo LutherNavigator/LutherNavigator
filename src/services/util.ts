@@ -72,7 +72,13 @@ export function setBigTimeout(
   if (ms < 2 ** 31) {
     setTimeout(callback, ms, ...args);
   } else {
-    setTimeout(setBigTimeout, ms - (2 ** 31 - 1), ...args);
+    setTimeout(
+      setBigTimeout,
+      2 ** 31 - 1,
+      callback,
+      ms - (2 ** 31 - 1),
+      ...args
+    );
   }
 }
 
