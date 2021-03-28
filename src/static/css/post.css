@@ -34,12 +34,22 @@ h4 {
   border-radius: 10px;
 }
 
-.fa.fa-star {
+.fa-star {
   font-size: 10px;
 }
 
 .checked {
   color: #e88900;
+}
+
+.fa-thumbs-up, .fa-thumbs-down {
+  color: #0064a1;
+  font-size: 20px;
+}
+
+a:hover, i:hover {
+  text-decoration: none;
+  color: #000000;
 }
 
 .location-info a {
