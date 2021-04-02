@@ -247,7 +247,7 @@
       <!-- Images -->
       <div class="row align-items-center">
         <div class="col-12 mb-4 form-group">
-          <label for="imageDiv">Images (up to 20) *</label>
+          <label for="imageDiv">Images (up to {{maxImages}})</label>
           <div class="custom-file" id="imageDiv">
             <input
               type="file"
@@ -256,7 +256,6 @@
               name="images"
               accept=".jpg, .jpeg, .png"
               multiple
-              required
             />
             <label class="custom-file-label" for="images">Choose files</label>
           </div>

@@ -50,6 +50,9 @@ postRouter.get(
     const form = getForm(req, res);
     const locationTypes = await dbm.locationTypeService.getLocations();
     const programs = await dbm.programService.getPrograms();
+    const maxImages =
+      parseInt(await dbm.metaService.get("Images per post")) ||
+      metaConfig["Images per post"];
 
     await renderPage(req, res, "createPost", {
       title: "New post",
@@ -65,6 +68,7 @@ postRouter.get(
             : camelToTitle(ratingType),
         required: ratingType === "general",
       })),
+      maxImages,
     });
   })
 );
@@ -137,8 +141,8 @@ postRouter.post(
     // Validation
     if (content.length <= 0 || content.length > 750) {
       setErrorMessage(res, "Post content must be no more than 750 characters");
-    } else if (imageData.length <= 0 || imageData.length > maxImages) {
-      setErrorMessage(res, `Please upload between 1 and ${maxImages} images`);
+    } else if (imageData.length < 0 || imageData.length > maxImages) {
+      setErrorMessage(res, `Please upload no more than ${maxImages} images`);
     } else if (imageTypesGood.includes(false)) {
       setErrorMessage(res, "All images must be in PNG, JPG, or JPEG format");
     } else if (imageSizesGood.includes(false)) {
