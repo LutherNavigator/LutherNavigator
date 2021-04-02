@@ -23,21 +23,14 @@ const PAGEMAP = {
 
 // Devices to test
 const device_names = [
-  "iPhone SE",
-  "iPhone SE landscape",
-  "iPhone X",
-  "iPhone X landscape",
-  "iPhone XR",
-  "iPhone XR landscape",
-  "iPhone XR landscape",
-  "iPad (gen 6)",
-  "iPad (gen 6) landscape",
-  "iPad (gen 7)",
-  "iPad (gen 7) landscape",
-  "iPad Mini",
-  "iPad Mini landscape",
-  "iPad Pro 11",
-  "iPad Pro 11 landscape",
+  "iPhone SE 280-320px",
+  "iPhone X 375-425px",
+  "iPad 768 px",
+  "iPad mini landscape",
+  "Google Nexus 6P landscape",
+  "Google Pixel 2 XL",
+  "Samsung Galaxy S5",
+  "Amazon Kindle Fire HDX",
 ];
 
 (async () => {
