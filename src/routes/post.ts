@@ -92,11 +92,9 @@ postRouter.post(
     const location: string = req.body.location;
     const locationTypeID: number = parseInt(req.body.locationType) || 0;
     const programID: number = parseInt(req.body.program);
-    const threeWords = [
-      req.body.wordOne,
-      req.body.wordTwo,
-      req.body.wordThree,
-    ].join(", ");
+    const threeWords = [req.body.wordOne, req.body.wordTwo, req.body.wordThree]
+      .filter((word) => !!word)
+      .join(", ");
     const address: string = req.body.address || null;
     const phone: string = req.body.phone.replace(/[\(\) \-\+]/g, "") || null;
     const website: string = req.body.website || null;
@@ -104,7 +102,7 @@ postRouter.post(
       (ratingType) => parseInt(req.body[`${ratingType}Rating`]) || 0
     );
 
-    const validLocationTypeID = dbm.locationTypeService.validLocation(
+    const validLocationTypeID = await dbm.locationTypeService.validLocation(
       locationTypeID
     );
     const imageData = await Promise.all(
@@ -154,7 +152,7 @@ postRouter.post(
       setErrorMessage(res, "Location name must be less than 256 characters");
     } else if (!validLocationTypeID) {
       setErrorMessage(res, "Invalid location type");
-    } else if (threeWords.length < 7 || threeWords.length > 63) {
+    } else if (threeWords.length < 0 || threeWords.length > 63) {
       setErrorMessage(
         res,
         "Three word description must total to less than 64 characters"
