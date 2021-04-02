@@ -50,6 +50,9 @@ postRouter.get(
     const form = getForm(req, res);
     const locationTypes = await dbm.locationTypeService.getLocations();
     const programs = await dbm.programService.getPrograms();
+    const maxImages =
+      parseInt(await dbm.metaService.get("Images per post")) ||
+      metaConfig["Images per post"];
 
     await renderPage(req, res, "createPost", {
       title: "New post",
@@ -65,6 +68,7 @@ postRouter.get(
             : camelToTitle(ratingType),
         required: ratingType === "general",
       })),
+      maxImages,
     });
   })
 );
@@ -89,10 +93,12 @@ postRouter.post(
     const locationTypeID: number = parseInt(req.body.locationType) || 0;
     const programID: number = parseInt(req.body.program);
     const threeWords = [
-      req.body.wordOne,
-      req.body.wordTwo,
-      req.body.wordThree,
-    ].join(", ");
+      (req.body.wordOne as string).trim(),
+      (req.body.wordTwo as string).trim(),
+      (req.body.wordThree as string).trim(),
+    ]
+      .filter((word) => !!word)
+      .join(", ");
     const address: string = req.body.address || null;
     const phone: string = req.body.phone.replace(/[\(\) \-\+]/g, "") || null;
     const website: string = req.body.website || null;
@@ -100,7 +106,7 @@ postRouter.post(
       (ratingType) => parseInt(req.body[`${ratingType}Rating`]) || 0
     );
 
-    const validLocationTypeID = dbm.locationTypeService.validLocation(
+    const validLocationTypeID = await dbm.locationTypeService.validLocation(
       locationTypeID
     );
     const imageData = await Promise.all(
@@ -137,8 +143,8 @@ postRouter.post(
     // Validation
     if (content.length <= 0 || content.length > 750) {
       setErrorMessage(res, "Post content must be no more than 750 characters");
-    } else if (imageData.length <= 0 || imageData.length > maxImages) {
-      setErrorMessage(res, `Please upload between 1 and ${maxImages} images`);
+    } else if (imageData.length < 0 || imageData.length > maxImages) {
+      setErrorMessage(res, `Please upload no more than ${maxImages} images`);
     } else if (imageTypesGood.includes(false)) {
       setErrorMessage(res, "All images must be in PNG, JPG, or JPEG format");
     } else if (imageSizesGood.includes(false)) {
@@ -150,7 +156,7 @@ postRouter.post(
       setErrorMessage(res, "Location name must be less than 256 characters");
     } else if (!validLocationTypeID) {
       setErrorMessage(res, "Invalid location type");
-    } else if (threeWords.length < 7 || threeWords.length > 63) {
+    } else if (threeWords.length < 0 || threeWords.length > 63) {
       setErrorMessage(
         res,
         "Three word description must total to less than 64 characters"

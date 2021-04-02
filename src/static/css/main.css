@@ -225,7 +225,7 @@ footer a {
 
 /* filtered post's div / index & query pages */
 .a-location {
-  padding: 5px 0px;
+  padding: 10px 0px;
 }
 
 * > .a-location:hover > img {

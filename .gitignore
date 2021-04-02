@@ -123,6 +123,8 @@ screenshots/
 # Coverage
 coverage/coverage-summary.json
 coverage/badge-branches.svg
+coverage/lcov-report
+coverage/lcov.info
 
 # Documentation
 docs/

@@ -87,7 +87,7 @@ imageRouter.get(
           res.end();
         });
       } else {
-        next(); // 404
+        res.sendFile("vienna.jpg", { root: "static/img" });
       }
     } else {
       next(); // 404
