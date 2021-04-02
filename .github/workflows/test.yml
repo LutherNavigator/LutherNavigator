@@ -79,7 +79,7 @@ jobs:
           cd ../..
           git clone "https://github.com/luthernavigator/coverage.git" cvg
           cd cvg
-          cp -R ../coverage/lcov-report .
+          cp ../coverage/lcov-report/* .
           cp ../coverage/lcov.info .
           git add .
           git commit -m "Update coverage" || exit 0
