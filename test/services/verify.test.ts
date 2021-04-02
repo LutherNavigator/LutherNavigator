@@ -101,5 +101,15 @@ test("Verify", async () => {
   recordExists = await dbm.verifyService.verifyRecordExists(verifyID5);
   expect(recordExists).toBe(false);
 
+  // Attempt to verify a user that does not exist
+  const verifyID6 = await dbm.verifyService.createVerifyRecord(email, false);
+  success = await dbm.verifyService.verifyUser(verifyID6);
+  expect(success).toBe(false);
+
+  // Attempt to create a record with the same email
+  const verifyID7 = await dbm.verifyService.createVerifyRecord(email, false);
+  expect(verifyID7).toBeNull();
+  await dbm.verifyService.deleteVerifyRecord(verifyID6);
+
   await closeDBM(dbm);
 });
