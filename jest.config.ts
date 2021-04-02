@@ -8,7 +8,7 @@ const config: Config.InitialOptions = {
   globalSetup: "./test/services/setup.ts",
   testTimeout: 30000,
   collectCoverage: true,
-  coverageReporters: ["lcov", "json-summary"],
+  coverageReporters: ["json-summary", "lcov"],
   collectCoverageFrom: ["./src/services/*", "!./src/services/util.ts"]
 };
 
