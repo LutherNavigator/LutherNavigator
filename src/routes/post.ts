@@ -92,7 +92,11 @@ postRouter.post(
     const location: string = req.body.location;
     const locationTypeID: number = parseInt(req.body.locationType) || 0;
     const programID: number = parseInt(req.body.program);
-    const threeWords = [req.body.wordOne, req.body.wordTwo, req.body.wordThree]
+    const threeWords = [
+      (req.body.wordOne as string).trim(),
+      (req.body.wordTwo as string).trim(),
+      (req.body.wordThree as string).trim(),
+    ]
       .filter((word) => !!word)
       .join(", ");
     const address: string = req.body.address || null;
