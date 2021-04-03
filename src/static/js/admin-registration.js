@@ -11,11 +11,10 @@ function approveUser(userID, approved, reason) {
     },
     success: () => {
       hideError();
-      refreshRegistration();
+      populateRegistration();
     },
     error: () => {
       showError("Failed to approve/deny user account");
-      refreshRegistration();
     },
   });
 }

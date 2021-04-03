@@ -23,7 +23,7 @@ function suspendAccount(event) {
   });
 }
 
-function endSuspension(suspensionID, thisElement) {
+function endSuspension(suspensionID) {
   $.ajax({
     url: "/api/endSuspension",
     data: {
@@ -31,7 +31,7 @@ function endSuspension(suspensionID, thisElement) {
     },
     success: () => {
       hideError();
-      thisElement.closest("tr").remove();
+      populateSuspension();
     },
     error: () => {
       showError("Failed to end user suspension");
@@ -58,7 +58,7 @@ function createSuspensionRow(user) {
     })
     .html('<i class="fas fa-check"></i>')
     .click(function () {
-      endSuspension(user.suspensionID, $(this));
+      endSuspension(user.suspensionID);
     });
   const endSuspensionCell = newElement("td").append(endSuspensionButton);
   const row = newElement("tr").append(

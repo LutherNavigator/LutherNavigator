@@ -1,7 +1,7 @@
 const statusesTimeout = 60 * 1000; // One minute
 
 // Approve or deny a user status change request
-function approveStatus(requestID, approved, thisElement) {
+function approveStatus(requestID, approved) {
   $.ajax({
     url: "/api/approveStatusChangeRequest",
     data: {
@@ -10,13 +10,12 @@ function approveStatus(requestID, approved, thisElement) {
     },
     success: () => {
       hideError();
-      thisElement.closest("tr").remove();
+      populateStatuses();
     },
     error: () => {
-      showError("Failed to approve status change request");
+      showError("Failed to approve/deny status change request");
     },
   });
-  updateNotifications();
 }
 
 // Create a row in the user status change request table
@@ -34,7 +33,7 @@ function createStatusRow(user) {
     })
     .html('<i class="fas fa-check"></i>')
     .click(function () {
-      approveStatus(user.requestID, true, $(this));
+      approveStatus(user.requestID, true);
     });
   const disapproveButton = newElement("button")
     .addClass("btn btn-light")
@@ -43,7 +42,7 @@ function createStatusRow(user) {
     })
     .html('<i class="fas fa-times"></i>')
     .click(function () {
-      approveStatus(user.requestID, false, $(this));
+      approveStatus(user.requestID, false);
     });
   const approve = newElement("td")
     .addClass("nowrap")
