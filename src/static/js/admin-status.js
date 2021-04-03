@@ -32,7 +32,7 @@ function createStatusRow(user) {
       type: "button",
     })
     .html('<i class="fas fa-check"></i>')
-    .click(function () {
+    .click(() => {
       approveStatus(user.requestID, true);
     });
   const disapproveButton = newElement("button")
@@ -41,7 +41,7 @@ function createStatusRow(user) {
       type: "button",
     })
     .html('<i class="fas fa-times"></i>')
-    .click(function () {
+    .click(() => {
       approveStatus(user.requestID, false);
     });
   const approve = newElement("td")

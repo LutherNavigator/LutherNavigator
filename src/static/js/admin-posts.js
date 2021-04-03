@@ -1,12 +1,14 @@
 const postsTimeout = 60 * 1000; // One minute
+let currentPostID = null;
 
 // Set a post's approved status
-function approvePost(postID, approved) {
+function approvePost(postID, approved, reason) {
   $.ajax({
     url: "/api/approvePost",
     data: {
       postID,
       approved,
+      reason,
     },
     success: () => {
       hideError();
@@ -16,6 +18,13 @@ function approvePost(postID, approved) {
       showError("Failed to approve/deny post");
     },
   });
+}
+
+// Deny a post with a reason
+function denyPost() {
+  $("#denialReasonModal").modal("hide");
+  const reason = $("#denial-reason").val();
+  approvePost(currentPostID, false, reason);
 }
 
 // Create a row in the unapproved posts table
@@ -41,8 +50,8 @@ function createPostRow(post) {
       type: "button",
     })
     .html('<i class="fas fa-check"></i>')
-    .click(function () {
-      approvePost(post.postID, true);
+    .click(() => {
+      approvePost(post.postID, true, "");
     });
   const disapproveButton = newElement("button")
     .addClass("btn btn-light")
@@ -50,8 +59,9 @@ function createPostRow(post) {
       type: "button",
     })
     .html('<i class="fas fa-times"></i>')
-    .click(function () {
-      approvePost(post.postID, false);
+    .click(() => {
+      currentPostID = post.postID;
+      $("#denialReasonModal").modal("show");
     });
   const approve = newElement("td")
     .addClass("nowrap")

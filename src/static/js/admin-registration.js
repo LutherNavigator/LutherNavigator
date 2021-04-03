@@ -1,4 +1,5 @@
 const registrationTimeout = 60 * 1000; // One minute
+let currentUserID = null;
 
 // Set a user's approved status
 function approveUser(userID, approved, reason) {
@@ -23,7 +24,7 @@ function approveUser(userID, approved, reason) {
 function denyUser() {
   $("#denialReasonModal").modal("hide");
   const reason = $("#denial-reason").val();
-  approveUser(user.userID, false, reason);
+  approveUser(currentUserID, false, reason);
 }
 
 // Create a row in the unapproved users table
@@ -42,7 +43,7 @@ function createUserRow(user) {
       type: "button",
     })
     .html('<i class="fas fa-check"></i>')
-    .click(function () {
+    .click(() => {
       approveUser(user.userID, true, "");
     });
   const denyButton = newElement("button")
@@ -51,7 +52,8 @@ function createUserRow(user) {
       type: "button",
     })
     .html('<i class="fas fa-times"></i>')
-    .click(function () {
+    .click(() => {
+      currentUserID = user.userID;
       $("#denialReasonModal").modal("show");
     });
   const approve = newElement("td")

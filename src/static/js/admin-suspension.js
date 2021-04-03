@@ -57,7 +57,7 @@ function createSuspensionRow(user) {
       type: "button",
     })
     .html('<i class="fas fa-check"></i>')
-    .click(function () {
+    .click(() => {
       endSuspension(user.suspensionID);
     });
   const endSuspensionCell = newElement("td").append(endSuspensionButton);
