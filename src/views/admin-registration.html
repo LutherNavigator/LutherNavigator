@@ -22,3 +22,46 @@
   <tbody id="unapproved-registration"></tbody>
 </table>
 <p id="registration-status">Fetching unapproved users...</p>
+
+<div
+  class="modal fade"
+  id="denialReasonModal"
+  tabindex="-1"
+  aria-labelledby="denialReasonModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="denialReasonModalLabel">
+          Reason for registration denial
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Please state why the registration request is being denied.</p>
+        <form>
+          <div class="form-group">
+            <label for="denial-reason" class="col-form-label">Reason</label>
+            <textarea class="form-control" id="denial-reason"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" onclick="denyUser();">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
