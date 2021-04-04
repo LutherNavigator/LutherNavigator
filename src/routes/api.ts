@@ -100,6 +100,7 @@ apiRouter.get(
     const postID = req.query.postID as string;
     const reason = req.query.reason as string;
 
+    const post = await dbm.postService.getPost(postID);
     const postUser = await dbm.postService.getPostUser(postID);
 
     await dbm.postService.deletePost(postID);
@@ -110,6 +111,7 @@ apiRouter.get(
       "postDeleted",
       {
         host: getHostname(req),
+        location: post.location,
         reason,
       }
     );
