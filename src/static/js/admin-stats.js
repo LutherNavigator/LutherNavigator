@@ -66,6 +66,46 @@ function createPostRow(post) {
   return row;
 }
 
+// Delete a user's account
+function deleteUser(userID) {
+  $.ajax({
+    url: "/api/deleteUser",
+    data: {
+      userID,
+    },
+    success: () => {
+      hideError();
+      updateNotifications();
+      populateStats();
+      populateUsers();
+      populatePosts();
+    },
+    error: () => {
+      showError("Failed to delete user");
+    },
+  });
+}
+
+// Delete a post
+function deletePost(postID) {
+  $.ajax({
+    url: "/api/deletePost",
+    data: {
+      postID,
+    },
+    success: () => {
+      hideError();
+      updateNotifications();
+      populateStats();
+      populateUsers();
+      populatePosts();
+    },
+    error: () => {
+      showError("Failed to delete post");
+    },
+  });
+}
+
 // Populate statistics on the stats page
 async function populateStats() {
   const statsURL = "/api/adminStats";
