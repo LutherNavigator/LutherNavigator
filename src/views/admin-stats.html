@@ -49,16 +49,16 @@
 
 <div
   class="modal fade"
-  id="deleteUserConfirmationModal"
+  id="deleteUserReasonModal"
   tabindex="-1"
-  aria-labelledby="deleteUserConfirmationModalLabel"
+  aria-labelledby="deleteUserReasonModalLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteUserConfirmationModalLabel">
-          Delete user confirmation
+        <h5 class="modal-title" id="deleteUserReasonModalLabel">
+          Reason for user deletion
         </h5>
         <button
           type="button"
@@ -70,10 +70,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>
-          Are you sure you want to permanently delete this user and all of their
-          posts?
-        </p>
+        <p>Please state why the user's account is being deleted.</p>
+        <form>
+          <div class="form-group">
+            <label for="user-deletion-reason" class="col-form-label"
+              >Reason</label
+            >
+            <textarea class="form-control" id="user-deletion-reason"></textarea>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -93,16 +98,16 @@
 
 <div
   class="modal fade"
-  id="deletePostConfirmationModal"
+  id="deletePostReasonModal"
   tabindex="-1"
-  aria-labelledby="deletePostConfirmationModalLabel"
+  aria-labelledby="deletePostReasonModalLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deletePostConfirmationModalLabel">
-          Delete post confirmation
+        <h5 class="modal-title" id="deletePostReasonModalLabel">
+          Reason for post deletion
         </h5>
         <button
           type="button"
@@ -114,7 +119,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to permanently delete this post?</p>
+        <p>Please state why the post is being deleted.</p>
+        <form>
+          <div class="form-group">
+            <label for="post-deletion-reason" class="col-form-label"
+              >Reason</label
+            >
+            <textarea class="form-control" id="post-deletion-reason"></textarea>
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
