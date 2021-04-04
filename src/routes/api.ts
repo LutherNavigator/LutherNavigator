@@ -62,6 +62,36 @@ apiRouter.get(
   })
 );
 
+// Delete a user
+apiRouter.get(
+  "/deleteUser",
+  adminAuth,
+  wrapRoute(async (req, res) => {
+    const dbm = getDBM(req);
+
+    const userID = req.query.userID as string;
+
+    await dbm.userService.deleteUser(userID);
+
+    res.end();
+  })
+);
+
+// Delete a post
+apiRouter.get(
+  "/deletePost",
+  adminAuth,
+  wrapRoute(async (req, res) => {
+    const dbm = getDBM(req);
+
+    const postID = req.query.postID as string;
+
+    await dbm.postService.deletePost(postID);
+
+    res.end();
+  })
+);
+
 // Admin variables
 apiRouter.get(
   "/adminVariables",

@@ -119,14 +119,13 @@ export class UserService extends BaseService {
    * @param userID A user's ID.
    */
   public async deleteUser(userID: string): Promise<void> {
+    await this.dbm.sessionService.deleteUserSessions(userID);
+    await this.dbm.postService.deleteUserPosts(userID);
     await this.deleteUserImage(userID);
 
     const sql = `DELETE FROM User WHERE id = ?;`;
     const params = [userID];
     await this.dbm.execute(sql, params);
-
-    await this.dbm.sessionService.deleteUserSessions(userID);
-    await this.dbm.postService.deleteUserPosts(userID);
   }
 
   /**
