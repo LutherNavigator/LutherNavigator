@@ -15,6 +15,7 @@ function suspendAccount(event) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populateSuspension();
     },
     error: () => {
@@ -31,6 +32,7 @@ function endSuspension(suspensionID) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populateSuspension();
     },
     error: () => {

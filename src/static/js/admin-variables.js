@@ -8,6 +8,7 @@ function setVariable(name, value) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populateVariables();
     },
     error: () => {
@@ -25,6 +26,7 @@ function resetVariable(name) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populateVariables();
     },
     error: () => {

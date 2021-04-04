@@ -70,8 +70,21 @@ apiRouter.get(
     const dbm = getDBM(req);
 
     const userID = req.query.userID as string;
+    const reason = req.query.reason as string;
+
+    const user = await dbm.userService.getUser(userID);
 
     await dbm.userService.deleteUser(userID);
+
+    await sendFormattedEmail(
+      user.email,
+      "Luther Navigator - Account Deleted",
+      "accountDeleted",
+      {
+        host: getHostname(req),
+        reason,
+      }
+    );
 
     res.end();
   })
@@ -85,8 +98,23 @@ apiRouter.get(
     const dbm = getDBM(req);
 
     const postID = req.query.postID as string;
+    const reason = req.query.reason as string;
+
+    const post = await dbm.postService.getPost(postID);
+    const postUser = await dbm.postService.getPostUser(postID);
 
     await dbm.postService.deletePost(postID);
+
+    await sendFormattedEmail(
+      postUser.email,
+      "Luther Navigator - Post Deleted",
+      "postDeleted",
+      {
+        host: getHostname(req),
+        location: post.location,
+        reason,
+      }
+    );
 
     res.end();
   })
@@ -164,7 +192,7 @@ apiRouter.get(
     const userID = req.query.userID as string;
     const approved =
       req.query.approved === undefined || req.query.approved === "true";
-    const reason = req.query.reason;
+    const reason = req.query.reason as string;
 
     const user = await dbm.userService.getUser(userID);
 
@@ -222,7 +250,7 @@ apiRouter.get(
     const postID = req.query.postID as string;
     const approved =
       req.query.approved === undefined || req.query.approved === "true";
-    const reason = req.query.reason;
+    const reason = req.query.reason as string;
 
     const post = await dbm.postService.getPost(postID);
     const user = await dbm.postService.getPostUser(postID);

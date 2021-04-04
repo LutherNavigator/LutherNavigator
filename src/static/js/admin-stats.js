@@ -2,6 +2,62 @@ const statsTimeout = 60 * 1000; // One minute
 let currentUserID = null;
 let currentPostID = null;
 
+// Delete a user's account
+function deleteUser(userID, reason) {
+  $.ajax({
+    url: "/api/deleteUser",
+    data: {
+      userID,
+      reason,
+    },
+    success: () => {
+      hideError();
+      updateNotifications();
+      populateStats();
+      populateUsers();
+      populatePosts();
+    },
+    error: () => {
+      showError("Failed to delete user");
+    },
+  });
+}
+
+// Delete the current user's account
+function deleteCurrentUser() {
+  $("#deleteUserReasonModal").modal("hide");
+  const reason = $("#user-deletion-reason").val();
+  deleteUser(currentUserID, reason);
+}
+
+// Delete a post
+function deletePost(postID, reason) {
+  $.ajax({
+    url: "/api/deletePost",
+    data: {
+      postID,
+      reason,
+    },
+    success: () => {
+      hideError();
+      updateNotifications();
+      populateStats();
+      populateUsers();
+      populatePosts();
+    },
+    error: () => {
+      showError("Failed to delete post");
+    },
+  });
+}
+
+// Delete the current post
+function deleteCurrentPost() {
+  $("#deletePostReasonModal").modal("hide");
+  const reason = $("#post-deletion-reason").val();
+  deletePost(currentPostID, reason);
+}
+
 // Create a row in the users table
 function createUserRow(user) {
   const userID = newElement("td").text(user.userID);
@@ -29,7 +85,7 @@ function createUserRow(user) {
     .html('<i class="fas fa-trash-alt"></i>')
     .click(() => {
       currentUserID = user.userID;
-      $("#deleteUserConfirmationModal").modal("show");
+      $("#deleteUserReasonModal").modal("show");
     });
   const deleteUser = newElement("td").append(deleteUserButton);
   const row = newElement("tr").append(
@@ -76,7 +132,7 @@ function createPostRow(post) {
     .html('<i class="fas fa-trash-alt"></i>')
     .click(() => {
       currentPostID = post.postID;
-      $("#deletePostConfirmationModal").modal("show");
+      $("#deletePostReasonModal").modal("show");
     });
   const deletePost = newElement("td").append(deletePostButton);
   const row = newElement("tr").append(
@@ -90,58 +146,6 @@ function createPostRow(post) {
     deletePost
   );
   return row;
-}
-
-// Delete a user's account
-function deleteUser(userID) {
-  $.ajax({
-    url: "/api/deleteUser",
-    data: {
-      userID,
-    },
-    success: () => {
-      hideError();
-      updateNotifications();
-      populateStats();
-      populateUsers();
-      populatePosts();
-    },
-    error: () => {
-      showError("Failed to delete user");
-    },
-  });
-}
-
-// Delete the current user's account
-function deleteCurrentUser() {
-  $("#deleteUserConfirmationModal").modal("hide");
-  deleteUser(currentUserID);
-}
-
-// Delete a post
-function deletePost(postID) {
-  $.ajax({
-    url: "/api/deletePost",
-    data: {
-      postID,
-    },
-    success: () => {
-      hideError();
-      updateNotifications();
-      populateStats();
-      populateUsers();
-      populatePosts();
-    },
-    error: () => {
-      showError("Failed to delete post");
-    },
-  });
-}
-
-// Delete the current post
-function deleteCurrentPost() {
-  $("#deletePostConfirmationModal").modal("hide");
-  deletePost(currentPostID);
 }
 
 // Populate statistics on the stats page

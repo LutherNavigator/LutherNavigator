@@ -12,6 +12,7 @@ function approveUser(userID, approved, reason) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populateRegistration();
     },
     error: () => {
