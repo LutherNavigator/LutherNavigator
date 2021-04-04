@@ -8,6 +8,7 @@ function setVariable(name, value) {
     },
     success: () => {
       hideError();
+      populateVariables();
     },
     error: () => {
       showError("Failed to set variable");
@@ -22,15 +23,14 @@ function resetVariable(name) {
     data: {
       name,
     },
-    success: (value) => {
+    success: () => {
       hideError();
-      $(`#var-${replaceSpaces(name)}`).val(value);
+      populateVariables();
     },
     error: () => {
       showError("Failed to reset variable");
     },
   });
-  updateNotifications();
 }
 
 // Create a new variable element

@@ -134,6 +134,7 @@ apiRouter.get(
     const userID = req.query.userID as string;
     const approved =
       req.query.approved === undefined || req.query.approved === "true";
+    const reason = req.query.reason;
 
     const user = await dbm.userService.getUser(userID);
 
@@ -158,6 +159,7 @@ apiRouter.get(
           "accountNotApproved",
           {
             host: getHostname(req),
+            reason,
           }
         );
       }
@@ -190,6 +192,7 @@ apiRouter.get(
     const postID = req.query.postID as string;
     const approved =
       req.query.approved === undefined || req.query.approved === "true";
+    const reason = req.query.reason;
 
     const post = await dbm.postService.getPost(postID);
     const user = await dbm.postService.getPostUser(postID);
@@ -218,6 +221,7 @@ apiRouter.get(
           {
             host: getHostname(req),
             location: post.location,
+            reason,
           }
         );
       }
