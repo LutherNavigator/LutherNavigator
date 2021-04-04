@@ -1,4 +1,6 @@
 const statsTimeout = 60 * 1000; // One minute
+let currentUserID = null;
+let currentPostID = null;
 
 // Create a row in the users table
 function createUserRow(user) {
@@ -19,6 +21,17 @@ function createUserRow(user) {
   const joinTime = newElement("td").text(
     new Date(parseInt(user.joinTime) * 1000).toLocaleString()
   );
+  const deleteUserButton = newElement("button")
+    .addClass("btn btn-danger")
+    .attr({
+      type: "button",
+    })
+    .html('<i class="fas fa-trash-alt"></i>')
+    .click(() => {
+      currentUserID = user.userID;
+      $("#deleteUserConfirmationModal").modal("show");
+    });
+  const deleteUser = newElement("td").append(deleteUserButton);
   const row = newElement("tr").append(
     userID,
     firstname,
@@ -28,7 +41,8 @@ function createUserRow(user) {
     verified,
     approved,
     admin,
-    joinTime
+    joinTime,
+    deleteUser
   );
   return row;
 }
@@ -54,6 +68,17 @@ function createPostRow(post) {
   const createTime = newElement("td").text(
     new Date(parseInt(post.createTime) * 1000).toLocaleString()
   );
+  const deletePostButton = newElement("button")
+    .addClass("btn btn-danger")
+    .attr({
+      type: "button",
+    })
+    .html('<i class="fas fa-trash-alt"></i>')
+    .click(() => {
+      currentPostID = post.postID;
+      $("#deletePostConfirmationModal").modal("show");
+    });
+  const deletePost = newElement("td").append(deletePostButton);
   const row = newElement("tr").append(
     postID,
     location,
@@ -61,7 +86,8 @@ function createPostRow(post) {
     program,
     rating,
     approved,
-    createTime
+    createTime,
+    deletePost
   );
   return row;
 }
@@ -86,6 +112,12 @@ function deleteUser(userID) {
   });
 }
 
+// Delete the current user's account
+function deleteCurrentUser() {
+  $("#deleteUserConfirmationModal").modal("hide");
+  deleteUser(currentUserID);
+}
+
 // Delete a post
 function deletePost(postID) {
   $.ajax({
@@ -104,6 +136,12 @@ function deletePost(postID) {
       showError("Failed to delete post");
     },
   });
+}
+
+// Delete the current post
+function deleteCurrentPost() {
+  $("#deletePostConfirmationModal").modal("hide");
+  deletePost(currentPostID);
 }
 
 // Populate statistics on the stats page
