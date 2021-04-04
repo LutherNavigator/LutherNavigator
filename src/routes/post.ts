@@ -240,7 +240,7 @@ postRouter.get(
     }
 
     const postUserStatusName = await dbm.userStatusService.getStatusName(
-      postUser.statusID
+      post.currentUserStatusID
     );
     const program = await dbm.programService.getProgramName(post.programID);
     const images = await dbm.postService.getPostImages(postID);
