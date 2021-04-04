@@ -10,6 +10,7 @@ function approveStatus(requestID, approved) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populateStatuses();
     },
     error: () => {

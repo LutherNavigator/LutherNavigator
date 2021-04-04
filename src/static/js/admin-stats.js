@@ -32,7 +32,6 @@ function deleteCurrentUser() {
 
 // Delete a post
 function deletePost(postID, reason) {
-  console.log(postID, reason);
   $.ajax({
     url: "/api/deletePost",
     data: {

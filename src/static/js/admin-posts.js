@@ -12,6 +12,7 @@ function approvePost(postID, approved, reason) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populatePosts();
     },
     error: () => {
