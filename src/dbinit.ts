@@ -297,7 +297,7 @@ export default async function initDB(
     CREATE TABLE IF NOT EXISTS AdminFavorites (
       id         CHAR(4)      NOT NULL,
       postID     CHAR(4)      NOT NULL,
-      createTime INT UNSIGNED NOT NULL
+      createTime INT UNSIGNED NOT NULL,
 
       PRIMARY KEY (id),
 

@@ -26,7 +26,25 @@ export class AdminFavoritesService extends BaseService {
    * @returns The admin favorite record.
    */
   public async getFavorite(favoriteID: string): Promise<AdminFavorites> {
+    const sql = `SELECT * FROM AdminFavorites WHERE id = ?;`;
+    const params = [favoriteID];
+    const rows: AdminFavorites[] = await this.dbm.execute(sql, params);
 
+    return rows[0];
+  }
+
+  /**
+   * Get an admin favorite record by post ID.
+   *
+   * @param postID A post's ID.
+   * @returns The admin favorite record.
+   */
+  public async getFavoriteByPostID(postID: string): Promise<AdminFavorites> {
+    const sql = `SELECT * FROM AdminFavorites WHERE postID = ?;`;
+    const params = [postID];
+    const rows: AdminFavorites[] = await this.dbm.execute(sql, params);
+
+    return rows[0];
   }
 
   /**
@@ -36,7 +54,25 @@ export class AdminFavoritesService extends BaseService {
    * @returns The new favorite's ID.
    */
   public async favorite(postID: string): Promise<string> {
+    const favorited = await this.isFavorite(postID);
 
+    if (!favorited) {
+      const favoriteID = await newUniqueID(this.dbm, "AdminFavorites");
+
+      const sql = `
+        INSERT INTO AdminFavorites (
+          id, postID, createTime
+        ) VALUES (
+          ?, ?, ?
+        );
+      `;
+      const params = [favoriteID, postID, getTime()];
+      await this.dbm.execute(sql, params);
+
+      return favoriteID;
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -45,7 +81,9 @@ export class AdminFavoritesService extends BaseService {
    * @param postID A post's ID.
    */
   public async unfavorite(postID: string): Promise<void> {
-
+    const sql = `DELETE FROM AdminFavorites WHERE postID = ?;`;
+    const params = [postID];
+    await this.dbm.execute(sql, params);
   }
 
   /**
@@ -55,7 +93,11 @@ export class AdminFavoritesService extends BaseService {
    * @returns Whether or not the post is an admin favorite.
    */
   public async isFavorite(postID: string): Promise<boolean> {
+    const sql = `SELECT id FROM AdminFavorites WHERE postID = ?;`;
+    const params = [postID];
+    const rows: AdminFavorites[] = await this.dbm.execute(sql, params);
 
+    return rows.length > 0;
   }
 
   /**
@@ -64,7 +106,11 @@ export class AdminFavoritesService extends BaseService {
    * @returns All admin favorited items.
    */
   public async getFavorites(): Promise<AdminFavorites[]> {
+    const sql = `SELECT * FROM AdminFavorites`;
+    const params = [];
+    const rows: AdminFavorites[] = await this.dbm.execute(sql, params);
 
+    return rows;
   }
 
   /**
@@ -73,7 +119,17 @@ export class AdminFavoritesService extends BaseService {
    * @returns All admin favorited posts.
    */
   public async getFavoritePosts(): Promise<Post[]> {
+    const sql = `
+      SELECT Post.*
+        FROM Post
+        JOIN AdminFavorites
+          ON Post.id = AdminFavorites.postID
+      ORDER BY AdminFavorites.createTime;
+    `;
+    const params = [];
+    const rows: Post[] = await this.dbm.execute(sql, params);
 
+    return rows;
   }
 
   /**
@@ -83,6 +139,17 @@ export class AdminFavoritesService extends BaseService {
    * @returns Recently made favorited posts.
    */
   public async getRecentFavorites(num: number): Promise<Post[]> {
-    
+    const sql = `
+      SELECT Post.*
+        FROM Post
+        JOIN AdminFavorites
+          ON Post.id = AdminFavorites.postID
+      ORDER BY Post.createTime DESC
+      LIMIT ?;
+    `;
+    const params = [num];
+    const rows: Post[] = await this.dbm.execute(sql, params);
+
+    return rows;
   }
 }
