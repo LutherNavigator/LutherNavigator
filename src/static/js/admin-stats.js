@@ -72,6 +72,7 @@ function toggleFavoritePost(postID) {
       } else {
         $(`#favorite-${postID}`).removeClass("fas").addClass("far");
       }
+
       hideError();
       updateNotifications();
       populateStats();
