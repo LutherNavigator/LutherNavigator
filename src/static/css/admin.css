@@ -77,3 +77,23 @@ html {
 .checked {
   color: #e88900;
 }
+
+.far.far.fa-heart,
+.fas.fa-heart {
+  font-size: 20px;
+  transition: 0.2s;
+}
+
+.far.fa-heart {
+  color: black;
+}
+
+.fas.fa-heart {
+  color: #ff006a;
+}
+
+.far.fa-heart:hover,
+.fas.fa-heart:hover {
+  color: #c20051;
+  transform: scale(1.2);
+}
