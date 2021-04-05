@@ -1,0 +1,8 @@
+Hello, one of your posts was deleted by an admin. Location: {location}. The reason for this is stated below:
+
+{reason}
+
+If you would like to contact us, you can do so through our website.
+
+Sincerely,
+The Luther Navigator Team

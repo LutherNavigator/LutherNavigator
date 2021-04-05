@@ -20,6 +20,7 @@ export interface Post {
   programID: number;
   ratingID: string;
   threeWords: string;
+  currentUserStatusID: number;
   address: string | null;
   phone: string | null;
   website: string | null;
@@ -63,14 +64,15 @@ export class PostService extends BaseService {
   ): Promise<string> {
     const postID = await newUniqueID(this.dbm, "Post");
     const ratingID = await this.dbm.ratingService.createRating(rating);
+    const user = await this.dbm.userService.getUser(userID);
 
     const sql = `
       INSERT INTO Post (
         id, userID, content, location, locationTypeID, programID, ratingID,
-        threeWords, address, phone, website, createTime
+        threeWords, currentUserStatusID, address, phone, website, createTime
       ) VALUES (
         ?, ?, ?, ?, ?, ?, ?,
-        ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?
       );
     `;
     const params = [
@@ -82,6 +84,7 @@ export class PostService extends BaseService {
       programID,
       ratingID,
       threeWords,
+      user.statusID,
       address,
       phone,
       website,

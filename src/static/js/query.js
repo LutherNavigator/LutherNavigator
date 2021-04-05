@@ -8,7 +8,9 @@ function populateForm() {
     });
 
   for (const item in query) {
-    if (item === "search" || item === "sortBy" || item === "sortOrder") {
+    if (item === "search") {
+      $(`#${item}`).val(decodeURIComponent(query[item].replace(/\+/g, "%20")));
+    } else if (item === "sortBy" || item === "sortOrder") {
       $(`#${item}`).val(query[item]);
     } else {
       $(`#${item}`).prop("checked", true);

@@ -1,4 +1,6 @@
-Hello, your account was not approved.
+Hello, your account was not approved. The reason for this is stated below:
+
+{reason}
 
 Please register again using the link below. If you would like to contact us, you can do so through our website.
 

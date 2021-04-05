@@ -176,20 +176,21 @@ export default async function initDB(
   `;
   const postTable = `
     CREATE TABLE IF NOT EXISTS Post (
-      id             CHAR(4)      NOT NULL,
-      userID         CHAR(4)      NOT NULL,
-      content        VARCHAR(750) NOT NULL,
-      location       VARCHAR(255) NOT NULL,
-      locationTypeID INT          NOT NULL,
-      programID      INT UNSIGNED NOT NULL,
-      ratingID       CHAR(4)      NOT NULL,
-      threeWords     VARCHAR(63)  NOT NULL,
-      address        VARCHAR(255),
-      phone          VARCHAR(13),
-      website        VARCHAR(255),
-      approved       BOOL         NOT NULL DEFAULT FALSE,
-      createTime     INT UNSIGNED NOT NULL,
-      editTime       INT UNSIGNED,
+      id                  CHAR(4)      NOT NULL,
+      userID              CHAR(4)      NOT NULL,
+      content             VARCHAR(750) NOT NULL,
+      location            VARCHAR(255) NOT NULL,
+      locationTypeID      INT          NOT NULL,
+      programID           INT UNSIGNED NOT NULL,
+      ratingID            CHAR(4)      NOT NULL,
+      threeWords          VARCHAR(63)  NOT NULL,
+      currentUserStatusID INT          NOT NULL,
+      address             VARCHAR(255),
+      phone               VARCHAR(13),
+      website             VARCHAR(255),
+      approved            BOOL         NOT NULL DEFAULT FALSE,
+      createTime          INT UNSIGNED NOT NULL,
+      editTime            INT UNSIGNED,
 
       PRIMARY KEY (id),
 
@@ -203,7 +204,10 @@ export default async function initDB(
         REFERENCES Program (id),
 
       FOREIGN KEY (ratingID)
-        REFERENCES Rating (id)
+        REFERENCES Rating (id),
+
+      FOREIGN KEY (currentUserStatusID)
+        REFERENCES UserStatus (id)
     );
   `;
   const postImageTable = `

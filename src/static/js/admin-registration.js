@@ -1,22 +1,31 @@
 const registrationTimeout = 60 * 1000; // One minute
+let currentUserID = null;
 
 // Set a user's approved status
-function approveUser(userID, approved, thisElement) {
+function approveUser(userID, approved, reason) {
   $.ajax({
     url: "/api/approveRegistration",
     data: {
       userID,
       approved,
+      reason,
     },
     success: () => {
       hideError();
-      thisElement.closest("tr").remove();
+      updateNotifications();
+      populateRegistration();
     },
     error: () => {
-      showError("Failed to approve user account");
+      showError("Failed to approve/deny user account");
     },
   });
-  updateNotifications();
+}
+
+// Deny a user's account registration with a reason
+function denyUser() {
+  $("#denialReasonModal").modal("hide");
+  const reason = $("#denial-reason").val();
+  approveUser(currentUserID, false, reason);
 }
 
 // Create a row in the unapproved users table
@@ -35,21 +44,22 @@ function createUserRow(user) {
       type: "button",
     })
     .html('<i class="fas fa-check"></i>')
-    .click(function () {
-      approveUser(user.userID, true, $(this));
+    .click(() => {
+      approveUser(user.userID, true, "");
     });
-  const disapproveButton = newElement("button")
+  const denyButton = newElement("button")
     .addClass("btn btn-light")
     .attr({
       type: "button",
     })
     .html('<i class="fas fa-times"></i>')
-    .click(function () {
-      approveUser(user.userID, false, $(this));
+    .click(() => {
+      currentUserID = user.userID;
+      $("#denialReasonModal").modal("show");
     });
   const approve = newElement("td")
     .addClass("nowrap")
-    .append(approveButton, disapproveButton);
+    .append(approveButton, denyButton);
   const row = newElement("tr").append(
     userID,
     firstname,

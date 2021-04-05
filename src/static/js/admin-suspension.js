@@ -15,6 +15,7 @@ function suspendAccount(event) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populateSuspension();
     },
     error: () => {
@@ -23,7 +24,7 @@ function suspendAccount(event) {
   });
 }
 
-function endSuspension(suspensionID, thisElement) {
+function endSuspension(suspensionID) {
   $.ajax({
     url: "/api/endSuspension",
     data: {
@@ -31,7 +32,8 @@ function endSuspension(suspensionID, thisElement) {
     },
     success: () => {
       hideError();
-      thisElement.closest("tr").remove();
+      updateNotifications();
+      populateSuspension();
     },
     error: () => {
       showError("Failed to end user suspension");
@@ -57,8 +59,8 @@ function createSuspensionRow(user) {
       type: "button",
     })
     .html('<i class="fas fa-check"></i>')
-    .click(function () {
-      endSuspension(user.suspensionID, $(this));
+    .click(() => {
+      endSuspension(user.suspensionID);
     });
   const endSuspensionCell = newElement("td").append(endSuspensionButton);
   const row = newElement("tr").append(

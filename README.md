@@ -18,6 +18,7 @@ experiences abroad.
 - [Admin](#admin)
 - [Frontend](#frontend)
 - [Deployment](#deployment)
+- [Coverage](#coverage)
 - [Documentation](#documentation)
 - [GitHub Actions](#github-actions)
 - [Style Guide](#style-guide)
@@ -98,6 +99,11 @@ rendering.
 
 The application is deployed to [Heroku](https://heroku.com/). It can be found
 at [luthernavigator.com](https://www.luthernavigator.com/).
+
+### Coverage
+
+Coverage numbers are shown above. More detailed coverage report is available at
+[luthernavigator.github.io/coverage/](https://luthernavigator.github.io/coverage/).
 
 ### Documentation
 

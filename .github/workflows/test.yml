@@ -38,10 +38,14 @@ jobs:
         run: |
           printf "$TEST_KEY\n" > .env        # Generate the environment file
           npm install                        # Install NPM packages
-          python3 scripts/test.py --backend  # Run backend tests
+          python3 scripts/test.py --backend  # Run backend tests (+coverage)
 
       # Generate the documentation and push to the docs repo
-      - name: Generate docs
+      # Generate the coverage report and push the coverage repo
+      #
+      # NOTE: After running the backend tests, coverage report gets
+      #       (re)generated automatically
+      - name: Generate docs and coverage report
         env:
             BOT_AUTH: ${{ secrets.BOT_AUTH }}
             BOT_EMAIL: ${{ secrets.BOT_EMAIL }}
@@ -70,3 +74,13 @@ jobs:
           # Exit with code 0 as no new additions means exit code 1
           git commit -m "Update docs" || exit 0
           git push "https://$BOT_AUTH@github.com/luthernavigator/docs.git"
+
+          # Clone the coverage repo and update the coverage report
+          cd ../..
+          git clone "https://github.com/luthernavigator/coverage.git" cvg
+          cd cvg
+          cp ../coverage/lcov-report/* .
+          cp ../coverage/lcov.info .
+          git add .
+          git commit -m "Update coverage" || exit 0
+          git push "https://$BOT_AUTH@github.com/luthernavigator/coverage.git"

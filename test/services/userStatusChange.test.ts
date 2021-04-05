@@ -1,5 +1,6 @@
 import { getDBM, closeDBM, getByID, getByProp } from "./util";
 import { getTime } from "../../src/services/util";
+import * as crypto from "crypto";
 
 // Test user status service
 test("UserStatusChange", async () => {
@@ -90,6 +91,30 @@ test("UserStatusChange", async () => {
   expect(userRequest["newStatus"]).toBe("Alum");
   expect(userRequest["requestID"]).toBe(requestID);
 
+  // Create new post
+  const content = "QUERY POST CONTENT";
+  const location = "QUERY POST LOCATION";
+  const locationTypeID = 6; // Restaurant
+  const programID = 1;
+  const threeWords = "Three word description";
+  const generalRating = 5;
+  const rating = { general: generalRating };
+  const len = Math.floor(Math.random() * 63) + 1;
+  const buf = crypto.randomBytes(len);
+  const postID = await dbm.postService.createPost(
+    userID,
+    content,
+    [],
+    location,
+    locationTypeID,
+    programID,
+    rating,
+    threeWords
+  );
+  await dbm.postService.setPostImages(postID, [buf]);
+  let post = await dbm.postService.getPost(postID);
+  expect(post.currentUserStatusID).toBe(statusID);
+
   // Approve request
   let user = await dbm.userService.getUser(userID);
   expect(user.statusID).toBe(statusID);
@@ -100,6 +125,11 @@ test("UserStatusChange", async () => {
   expect(exists).toBe(false);
   user = await dbm.userService.getUser(userID);
   expect(user.statusID).toBe(newStatusID);
+
+  // Check post status ID
+  post = await dbm.postService.getPost(postID);
+  expect(post.currentUserStatusID).toBe(statusID);
+  await dbm.postService.deletePost(postID);
 
   // Deny request
   requestID = await dbm.userStatusChangeService.createStatusChangeRequest(

@@ -1,4 +1,62 @@
 const statsTimeout = 60 * 1000; // One minute
+let currentUserID = null;
+let currentPostID = null;
+
+// Delete a user's account
+function deleteUser(userID, reason) {
+  $.ajax({
+    url: "/api/deleteUser",
+    data: {
+      userID,
+      reason,
+    },
+    success: () => {
+      hideError();
+      updateNotifications();
+      populateStats();
+      populateUsers();
+      populatePosts();
+    },
+    error: () => {
+      showError("Failed to delete user");
+    },
+  });
+}
+
+// Delete the current user's account
+function deleteCurrentUser() {
+  $("#deleteUserReasonModal").modal("hide");
+  const reason = $("#user-deletion-reason").val();
+  deleteUser(currentUserID, reason);
+}
+
+// Delete a post
+function deletePost(postID, reason) {
+  $.ajax({
+    url: "/api/deletePost",
+    data: {
+      postID,
+      reason,
+    },
+    success: () => {
+      hideError();
+      updateNotifications();
+      populateStats();
+      populateUsers();
+      populatePosts();
+    },
+    error: () => {
+      showError("Failed to delete post");
+    },
+  });
+}
+
+// Delete the current post
+function deleteCurrentPost() {
+  $("#deletePostReasonModal").modal("hide");
+  const reason = $("#post-deletion-reason").val();
+  deletePost(currentPostID, reason);
+}
 
 // Create a row in the users table
 function createUserRow(user) {
@@ -19,6 +77,17 @@ function createUserRow(user) {
   const joinTime = newElement("td").text(
     new Date(parseInt(user.joinTime) * 1000).toLocaleString()
   );
+  const deleteUserButton = newElement("button")
+    .addClass("btn btn-danger")
+    .attr({
+      type: "button",
+    })
+    .html('<i class="fas fa-trash-alt"></i>')
+    .click(() => {
+      currentUserID = user.userID;
+      $("#deleteUserReasonModal").modal("show");
+    });
+  const deleteUser = newElement("td").append(deleteUserButton);
   const row = newElement("tr").append(
     userID,
     firstname,
@@ -28,7 +97,8 @@ function createUserRow(user) {
     verified,
     approved,
     admin,
-    joinTime
+    joinTime,
+    deleteUser
   );
   return row;
 }
@@ -54,6 +124,17 @@ function createPostRow(post) {
   const createTime = newElement("td").text(
     new Date(parseInt(post.createTime) * 1000).toLocaleString()
   );
+  const deletePostButton = newElement("button")
+    .addClass("btn btn-danger")
+    .attr({
+      type: "button",
+    })
+    .html('<i class="fas fa-trash-alt"></i>')
+    .click(() => {
+      currentPostID = post.postID;
+      $("#deletePostReasonModal").modal("show");
+    });
+  const deletePost = newElement("td").append(deletePostButton);
   const row = newElement("tr").append(
     postID,
     location,
@@ -61,7 +142,8 @@ function createPostRow(post) {
     program,
     rating,
     approved,
-    createTime
+    createTime,
+    deletePost
   );
   return row;
 }

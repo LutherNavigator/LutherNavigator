@@ -106,7 +106,7 @@
 
       <!-- Three words -->
       <div class="col">
-        <label>Three Word Description *</label>
+        <label>Three Word Description</label>
       </div>
       <div class="row align-items-center">
         <div class="col-12 col-sm-4 mb-3 form-group">
@@ -118,7 +118,6 @@
             name="wordOne"
             maxlength="19"
             value="{{form.wordOne}}"
-            required
           />
           {{else}}
           <input
@@ -127,7 +126,6 @@
             id="wordOne"
             name="wordOne"
             maxlength="19"
-            required
           />
           {{/if}}
         </div>
@@ -140,7 +138,6 @@
             name="wordTwo"
             maxlength="19"
             value="{{form.wordTwo}}"
-            required
           />
           {{else}}
           <input
@@ -149,7 +146,6 @@
             id="wordTwo"
             name="wordTwo"
             maxlength="19"
-            required
           />
           {{/if}}
         </div>
@@ -162,7 +158,6 @@
             name="wordThree"
             maxlength="19"
             value="{{form.wordThree}}"
-            required
           />
           {{else}}
           <input
@@ -171,7 +166,6 @@
             id="wordThree"
             name="wordThree"
             maxlength="19"
-            required
           />
           {{/if}}
         </div>
@@ -247,7 +241,7 @@
       <!-- Images -->
       <div class="row align-items-center">
         <div class="col-12 mb-4 form-group">
-          <label for="imageDiv">Images (up to 20) *</label>
+          <label for="imageDiv">Images (up to {{maxImages}})</label>
           <div class="custom-file" id="imageDiv">
             <input
               type="file"
@@ -256,7 +250,6 @@
               name="images"
               accept=".jpg, .jpeg, .png"
               multiple
-              required
             />
             <label class="custom-file-label" for="images">Choose files</label>
           </div>

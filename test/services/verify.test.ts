@@ -80,8 +80,36 @@ test("Verify", async () => {
   // Check record has been removed
   recordExists = await dbm.verifyService.verifyRecordExists(verifyID4);
   expect(recordExists).toBe(false);
-
   await dbm.userService.deleteUser(userID3);
+
+  // Delete unverified user
+  const verifyID5 = await dbm.verifyService.createVerifyRecord(email, false);
+  const userID4 = await dbm.userService.createUser(
+    firstname,
+    lastname,
+    email,
+    password,
+    statusID
+  );
+  let userExists = await dbm.userService.userExists(userID4);
+  expect(userExists).toBe(true);
+  const userVerified = await dbm.userService.isVerified(userID4);
+  expect(userVerified).toBe(false);
+  await dbm.verifyService.deleteUnverifiedUser(verifyID5);
+  userExists = await dbm.userService.userExists(userID4);
+  expect(userExists).toBe(false);
+  recordExists = await dbm.verifyService.verifyRecordExists(verifyID5);
+  expect(recordExists).toBe(false);
+
+  // Attempt to verify a user that does not exist
+  const verifyID6 = await dbm.verifyService.createVerifyRecord(email, false);
+  success = await dbm.verifyService.verifyUser(verifyID6);
+  expect(success).toBe(false);
+
+  // Attempt to create a record with the same email
+  const verifyID7 = await dbm.verifyService.createVerifyRecord(email, false);
+  expect(verifyID7).toBeNull();
+  await dbm.verifyService.deleteVerifyRecord(verifyID6);
 
   await closeDBM(dbm);
 });

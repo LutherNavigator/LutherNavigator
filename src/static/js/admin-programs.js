@@ -9,6 +9,7 @@ function createProgram(programName) {
     },
     success: () => {
       hideError();
+      updateNotifications();
       populatePrograms();
     },
     error: () => {
@@ -30,6 +31,7 @@ function setProgram(programID, programName) {
         showError(err);
       } else {
         hideError();
+        updateNotifications();
       }
     },
     error: () => {
@@ -50,6 +52,7 @@ function deleteProgram(programID) {
         showError(err);
       } else {
         hideError();
+        updateNotifications();
         populatePrograms();
       }
     },

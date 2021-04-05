@@ -1,4 +1,4 @@
-import { getDBM, closeDBM, wait } from "./util";
+import { getDBM, closeDBM, wait, getByProp } from "./util";
 import * as crypto from "crypto";
 import { getTime } from "../../src/services/util";
 
@@ -67,22 +67,24 @@ test("Post", async () => {
   expect(post.locationTypeID).toBe(locationTypeID);
   expect(post.programID).toBe(programID);
   expect(post.threeWords).toBe(threeWords);
+  expect(post.currentUserStatusID).toBe(statusID);
   expect(post.approved).toBeFalsy();
   expect(post.createTime - getTime()).toBeLessThanOrEqual(3);
   expect(post.editTime).toBeNull();
 
   // Get unapproved posts
-  let unapproved = await dbm.postService.getUnapproved();
-  expect(unapproved.length).toBe(1);
-  expect(unapproved[0]["postID"]).toBe(postID);
-  expect(unapproved[0]["firstname"]).toBe(firstname);
-  expect(unapproved[0]["lastname"]).toBe(lastname);
-  expect(unapproved[0].content).toBe(content);
-  expect(unapproved[0].location).toBe(location);
-  expect(unapproved[0]["locationType"]).toBe("Restaurant");
-  expect(unapproved[0]["program"]).toBe(programName);
-  expect(unapproved[0].threeWords).toBe(threeWords);
-  expect(unapproved[0].createTime - getTime()).toBeLessThanOrEqual(3);
+  let unapprovedPosts = await dbm.postService.getUnapproved();
+  expect(unapprovedPosts.length).toBeGreaterThanOrEqual(1);
+  const unapproved = getByProp(unapprovedPosts, "postID", postID);
+  expect(unapproved["postID"]).toBe(postID);
+  expect(unapproved["firstname"]).toBe(firstname);
+  expect(unapproved["lastname"]).toBe(lastname);
+  expect(unapproved.content).toBe(content);
+  expect(unapproved.location).toBe(location);
+  expect(unapproved["locationType"]).toBe("Restaurant");
+  expect(unapproved["program"]).toBe(programName);
+  expect(unapproved.threeWords).toBe(threeWords);
+  expect(unapproved.createTime - getTime()).toBeLessThanOrEqual(3);
 
   // Get post user
   const postUser = await dbm.postService.getPostUser(postID);
@@ -124,8 +126,8 @@ test("Post", async () => {
   await dbm.postService.setApproved(postID);
   approved = await dbm.postService.isApproved(postID);
   expect(approved).toBe(true);
-  unapproved = await dbm.postService.getUnapproved();
-  expect(unapproved.length).toBe(0);
+  unapprovedPosts = await dbm.postService.getUnapproved();
+  expect(unapprovedPosts.length).toBeGreaterThanOrEqual(0);
 
   // Get all user posts
   const postID2 = await dbm.postService.createPost(
@@ -140,8 +142,9 @@ test("Post", async () => {
   );
   let posts = await dbm.postService.getUserPosts(userID);
   expect(posts.length).toBe(2);
-  expect(posts[0].id).toBe(postID);
-  expect(posts[1].id).toBe(postID2);
+  expect(posts[0].id === postID || posts[0].id === postID2).toBeTruthy();
+  expect(posts[1].id === postID || posts[1].id === postID2).toBeTruthy();
+  expect(posts[0].id).not.toBe(posts[1].id);
 
   // Delete all user posts
   await dbm.postService.deleteUserPosts(userID);
