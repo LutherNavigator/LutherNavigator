@@ -92,8 +92,8 @@ test("UserStatusChange", async () => {
   expect(userRequest["requestID"]).toBe(requestID);
 
   // Create new post
-  const content = "QUERY POST CONTENT";
-  const location = "QUERY POST LOCATION";
+  const content = "Post content";
+  const location = "Post location";
   const locationTypeID = 6; // Restaurant
   const programID = 1;
   const threeWords = "Three word description";

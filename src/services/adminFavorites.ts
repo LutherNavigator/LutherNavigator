@@ -106,7 +106,7 @@ export class AdminFavoritesService extends BaseService {
    * @returns All admin favorited items.
    */
   public async getFavorites(): Promise<AdminFavorites[]> {
-    const sql = `SELECT * FROM AdminFavorites`;
+    const sql = `SELECT * FROM AdminFavorites ORDER BY createTime`;
     const params = [];
     const rows: AdminFavorites[] = await this.dbm.execute(sql, params);
 
