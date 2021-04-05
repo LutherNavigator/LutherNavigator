@@ -6,6 +6,7 @@
 import { DB } from "./db";
 
 import { AdminService } from "./services/admin";
+import { AdminFavoritesService } from "./services/adminFavorites";
 import { ImageService } from "./services/image";
 import { LocationTypeService } from "./services/locationType";
 import { MetaService } from "./services/meta";
@@ -25,6 +26,7 @@ import { VerifyService } from "./services/verify";
 export default class DatabaseManager {
   readonly db: DB;
   readonly adminService: AdminService;
+  readonly adminFavoritesService: AdminFavoritesService;
   readonly imageService: ImageService;
   readonly locationTypeService: LocationTypeService;
   readonly metaService: MetaService;
@@ -44,6 +46,7 @@ export default class DatabaseManager {
   constructor(dbURL: string) {
     this.db = new DB(dbURL);
     this.adminService = new AdminService(this);
+    this.adminFavoritesService = new AdminFavoritesService(this);
     this.imageService = new ImageService(this);
     this.locationTypeService = new LocationTypeService(this);
     this.metaService = new MetaService(this);

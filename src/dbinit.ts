@@ -293,6 +293,18 @@ export default async function initDB(
       PRIMARY KEY (name)
     );
   `; // MySQL fails to parse 'key' as a column name, so we use 'name' instead
+  const adminFavoritesTable = `
+    CREATE TABLE IF NOT EXISTS AdminFavorites (
+      id         CHAR(4)      NOT NULL,
+      postID     CHAR(4)      NOT NULL,
+      createTime INT UNSIGNED NOT NULL,
+
+      PRIMARY KEY (id),
+
+      FOREIGN KEY (postID)
+        REFERENCES Post (id)
+    );
+  `;
   await dbm.db.executeMany([
     imageTable,
     userStatusTable,
@@ -308,6 +320,7 @@ export default async function initDB(
     userStatusChangeTable,
     suspendedTable,
     metaTable,
+    adminFavoritesTable,
   ]);
 
   // Create triggers
