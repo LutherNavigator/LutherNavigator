@@ -36,10 +36,14 @@ test("Session", async () => {
   expect(session.updateTime - getTime()).toBeLessThanOrEqual(3);
 
   // Get userID by sessionID
-  const sessionUserID = await dbm.sessionService.getUserIDBySessionID(
-    sessionID
-  );
+  let sessionUserID = await dbm.sessionService.getUserIDBySessionID(sessionID);
   expect(sessionUserID).toBe(userID);
+
+  // Get userID by sessionID for invalid sessionID
+  sessionUserID = await dbm.sessionService.getUserIDBySessionID(
+    "!!!!!!!!!!!!!!!!"
+  );
+  expect(sessionUserID).toBeUndefined();
 
   // Get user by sessionID
   const sessionUser = await dbm.sessionService.getUserBySessionID(sessionID);

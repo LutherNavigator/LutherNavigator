@@ -168,6 +168,10 @@ test("Query", async () => {
     lastRating = res["rating"];
   }
 
+  // Advanced query with empty list
+  results = await dbm.queryService.advancedQuery({ programIDs: [] }, "program");
+  expect(results.length).toBeGreaterThan(0);
+
   await dbm.postService.deletePost(postID);
   await dbm.userService.deleteUser(userID);
 

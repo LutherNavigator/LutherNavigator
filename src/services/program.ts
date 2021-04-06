@@ -35,7 +35,7 @@ export class ProgramService extends BaseService {
     const params1 = [name];
     const rows = await this.dbm.db.executeMany([sql1, sql2], [params1, []]);
 
-    return rows[1][0]?.id;
+    return rows[1][0].id;
   }
 
   /**
