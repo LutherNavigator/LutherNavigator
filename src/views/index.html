@@ -61,29 +61,45 @@
   <div class="home-card home-suggestions mb-4">
     <h3>Popular Luther Programs</h3>
     <div class="row">
-      <a href="/query?search=&prog-131=on&sortBy=locationType&sortOrder=1" class="a-location col-12 col-md-4">
-        <img src="/img/nottingham.jpg" alt="Bestwood Lodge Hotel, Nottingham, England" /><span>Nottingham</span>
+      <a
+        href="/query?search=&prog-131=on&sortBy=locationType&sortOrder=1"
+        class="a-location col-12 col-md-4"
+      >
+        <img
+          src="/img/nottingham.jpg"
+          alt="Bestwood Lodge Hotel, Nottingham, England"
+        /><span>Nottingham</span>
       </a>
-      <a href="/query?search=&prog-141=on&sortBy=locationType&sortOrder=1" class="a-location col-12 col-md-4">
-        <img src="/img/malta.jpg" alt="Multiple living complexes in Malta" /><span>Malta</span>
+      <a
+        href="/query?search=&prog-141=on&sortBy=locationType&sortOrder=1"
+        class="a-location col-12 col-md-4"
+      >
+        <img
+          src="/img/malta.jpg"
+          alt="Multiple living complexes in Malta"
+        /><span>Malta</span>
       </a>
-      <a href="/query?search=&prog-151=on&sortBy=locationType&sortOrder=1" class="a-location col-12 col-md-4">
-        <img src="/img/münster.jpg" alt="Street View of Münster at night" /><span>M&#252nster</span>
+      <a
+        href="/query?search=&prog-151=on&sortBy=locationType&sortOrder=1"
+        class="a-location col-12 col-md-4"
+      >
+        <img
+          src="/img/münster.jpg"
+          alt="Street View of Münster at night"
+        /><span>M&#252;nster</span>
       </a>
     </div>
   </div>
   <div class="home-card home-suggestions mb-2">
-    <h3>Developer Favorites</h3>
+    <h3>CGL Favorites</h3>
     <div class="row">
-      <a href="/post/test" class="a-location col-12 col-md-4">
-        <img src="/img/mabes.jpg" alt="Mabe's Pizza restaurant front" /><span>Mabe's Pizza</span>
+      {{#each adminFavorites}}
+      <a href="/post/{{ this.id }}" class="a-location col-12 col-md-4">
+        <img src="/image/post/{{ this.id }}/0" alt="{{ this.location }}" /><span
+          >{{ this.location }}</span
+        >
       </a>
-      <a href="/post/test" class="a-location col-12 col-md-4">
-        <img src="/img/mabes.jpg" alt="Mabe's Pizza restaurant front" /><span>Mabe's Pizza</span>
-      </a>
-      <a href="/post/test" class="a-location col-12 col-md-4">
-        <img src="/img/mabes.jpg" alt="Mabe's Pizza restaurant front" /><span>Mabe's Pizza</span>
-      </a>
+      {{/each}}
     </div>
   </div>
 </div>
