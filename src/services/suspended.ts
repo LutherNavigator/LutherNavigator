@@ -57,6 +57,8 @@ export class SuspendedService extends BaseService {
       }
 
       return suspensionID;
+    } else {
+      return null;
     }
   }
 

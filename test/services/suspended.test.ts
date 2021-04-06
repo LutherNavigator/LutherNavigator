@@ -41,6 +41,14 @@ test("Suspended", async () => {
   let exists = await dbm.suspendedService.suspensionExists(suspensionID);
   expect(exists).toBe(true);
 
+  // Try to suspend the same account twice
+  const suspensionID2 = await dbm.suspendedService.suspendUser(
+    userID,
+    getTime(),
+    false
+  );
+  expect(suspensionID2).toBeNull();
+
   // Get suspension
   const suspension = await dbm.suspendedService.getSuspension(suspensionID);
   expect(suspension.id).toBe(suspensionID);

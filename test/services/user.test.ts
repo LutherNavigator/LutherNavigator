@@ -104,14 +104,25 @@ test("User", async () => {
   const statusName = await dbm.userStatusService.getStatusName(statusID);
   expect(userStatusName).toBe(statusName);
 
+  // Get user status name for invalid user
+  const userStatusName2 = await dbm.userService.getUserStatusName("!!!!");
+  expect(userStatusName2).toBeUndefined();
+
   // Get null user image
   let userImage = await dbm.userService.getUserImage(userID);
   expect(userImage).toBe(undefined);
+
+  // Get user image for invalid user
+  userImage = await dbm.userService.getUserImage("!!!!");
+  expect(userImage).toBeUndefined();
 
   // Set user image
   const len = Math.floor(Math.random() * 63) + 1;
   const buf = crypto.randomBytes(len);
   await dbm.userService.setUserImage(userID, buf);
+
+  // Set user image for invalid user
+  await dbm.userService.setUserImage("!!!!", buf);
 
   // Get new user image
   userImage = await dbm.userService.getUserImage(userID);
@@ -125,9 +136,16 @@ test("User", async () => {
   userImage = await dbm.userService.getUserImage(userID);
   expect(userImage).toBe(undefined);
 
+  // Delete user image for invalid user
+  await dbm.userService.deleteUserImage("!!!!");
+
   // Check if user is verified
   await dbm.userService.setVerified(userID, false);
   let verified = await dbm.userService.isVerified(userID);
+  expect(verified).toBe(false);
+
+  // Check if user is verified for invalid user
+  verified = await dbm.userService.isVerified("!!!!");
   expect(verified).toBe(false);
 
   // Set user to verified
@@ -140,6 +158,10 @@ test("User", async () => {
   let approved = await dbm.userService.isApproved(userID);
   expect(approved).toBe(false);
 
+  // Check is user has been approved for invalid user
+  approved = await dbm.userService.isApproved("!!!!");
+  expect(approved).toBe(false);
+
   // Set user to approved
   await dbm.userService.setApproved(userID);
   approved = await dbm.userService.isApproved(userID);
@@ -149,8 +171,18 @@ test("User", async () => {
   let admin = await dbm.userService.isAdmin(userID);
   expect(admin).toBe(false);
 
+  // Check if user is an admin for invalid user
+  admin = await dbm.userService.isAdmin("!!!!");
+  expect(admin).toBe(false);
+
   // Make user an admin
   await dbm.userService.setAdmin(userID);
+  admin = await dbm.userService.isAdmin(userID);
+  expect(admin).toBe(true);
+  await dbm.userService.setAdmin(userID, false);
+  admin = await dbm.userService.isAdmin(userID);
+  expect(admin).toBe(false);
+  await dbm.userService.setAdmin(userID, true);
   admin = await dbm.userService.isAdmin(userID);
   expect(admin).toBe(true);
 
