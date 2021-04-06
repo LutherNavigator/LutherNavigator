@@ -126,6 +126,15 @@ test("UserStatusChange", async () => {
   user = await dbm.userService.getUser(userID);
   expect(user.statusID).toBe(newStatusID);
 
+  // Try to approve the request again
+  await dbm.userStatusChangeService.approveStatusChangeRequest(requestID);
+  exists = await dbm.userStatusChangeService.statusChangeRequestExists(
+    requestID
+  );
+  expect(exists).toBe(false);
+  user = await dbm.userService.getUser(userID);
+  expect(user.statusID).toBe(newStatusID);
+
   // Check post status ID
   post = await dbm.postService.getPost(postID);
   expect(post.currentUserStatusID).toBe(statusID);
