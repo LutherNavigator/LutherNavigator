@@ -37,6 +37,10 @@ test("Post", async () => {
     safety: 7,
   };
 
+  const address = "111 W. Water St, Decorah, IA";
+  const phone = "5632222225";
+  const website = "https://mabespizza.com/";
+
   // Create post
   let lastPostTime = (await dbm.userService.getUser(userID)).lastPostTime;
   expect(lastPostTime).toBeNull();
@@ -48,7 +52,10 @@ test("Post", async () => {
     locationTypeID,
     programID,
     rating,
-    threeWords
+    threeWords,
+    address,
+    phone,
+    website
   );
   expect(postID.length).toBe(4);
   lastPostTime = (await dbm.userService.getUser(userID)).lastPostTime;
@@ -68,6 +75,9 @@ test("Post", async () => {
   expect(post.programID).toBe(programID);
   expect(post.threeWords).toBe(threeWords);
   expect(post.currentUserStatusID).toBe(statusID);
+  expect(post.address).toBe(address);
+  expect(post.phone).toBe(phone);
+  expect(post.website).toBe(website);
   expect(post.approved).toBeFalsy();
   expect(post.createTime - getTime()).toBeLessThanOrEqual(3);
   expect(post.editTime).toBeNull();
@@ -87,17 +97,30 @@ test("Post", async () => {
   expect(unapproved.createTime - getTime()).toBeLessThanOrEqual(3);
 
   // Get post user
-  const postUser = await dbm.postService.getPostUser(postID);
+  let postUser = await dbm.postService.getPostUser(postID);
   const user = await dbm.userService.getUser(userID);
   expect(postUser).toMatchObject(user);
+  expect(postUser.id).toBe(user.id);
+
+  // Get post user for invalid post
+  postUser = await dbm.postService.getPostUser("!!!!");
+  expect(postUser).toBeUndefined();
 
   // Get post rating
-  const postRating = await dbm.postService.getPostRating(postID);
+  let postRating = await dbm.postService.getPostRating(postID);
   expect(postRating).toMatchObject(rating);
 
+  // Get post rating for invalid post
+  postRating = await dbm.postService.getPostRating("!!!!");
+  expect(postRating).toBeUndefined();
+
   // Get post content
-  const postContent = await dbm.postService.getPostContent(postID);
+  let postContent = await dbm.postService.getPostContent(postID);
   expect(postContent).toBe(content);
+
+  // Get post content for invalid post
+  postContent = await dbm.postService.getPostContent("!!!!");
+  expect(postContent).toBeUndefined();
 
   // Set post content
   const newContent = "Goodbye, post!";
@@ -122,12 +145,22 @@ test("Post", async () => {
   let approved = await dbm.postService.isApproved(postID);
   expect(approved).toBe(false);
 
+  // Check approved for invalid post
+  approved = await dbm.postService.isApproved("!!!!");
+  expect(approved).toBe(false);
+
   // Set approved
   await dbm.postService.setApproved(postID);
   approved = await dbm.postService.isApproved(postID);
   expect(approved).toBe(true);
   unapprovedPosts = await dbm.postService.getUnapproved();
   expect(unapprovedPosts.length).toBeGreaterThanOrEqual(0);
+
+  // Set unapproved
+  await dbm.postService.setApproved(postID, false);
+  approved = await dbm.postService.isApproved(postID);
+  expect(approved).toBe(false);
+  await dbm.postService.setApproved(postID);
 
   // Get all user posts
   const postID2 = await dbm.postService.createPost(
@@ -172,6 +205,11 @@ test("Post", async () => {
   await dbm.postService.deletePost(postID3);
 
   // Check post is gone
+  postExists = await dbm.postService.postExists(postID3);
+  expect(postExists).toBe(false);
+
+  // Try to delete nonexistant post
+  await dbm.postService.deletePost(postID3);
   postExists = await dbm.postService.postExists(postID3);
   expect(postExists).toBe(false);
 

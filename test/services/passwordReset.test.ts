@@ -89,7 +89,15 @@ test("PasswordReset", async () => {
   recordExists = await dbm.passwordResetService.resetRecordExists(resetID4);
   expect(recordExists).toBe(false);
 
+  // Attempt to reset with a user that does not exist
+  const resetID6 = await dbm.passwordResetService.requestPasswordReset(
+    email,
+    false
+  );
+  expect(resetID6).not.toBeNull();
   await dbm.userService.deleteUser(userID);
+  success = await dbm.passwordResetService.resetPassword(resetID6, newPassword);
+  expect(success).toBeFalsy();
 
   await closeDBM(dbm);
 });

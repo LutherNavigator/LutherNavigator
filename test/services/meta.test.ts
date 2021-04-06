@@ -21,6 +21,10 @@ test("Meta", async () => {
   let value = await dbm.metaService.get(key1);
   expect(value).toBe(value1);
 
+  // Get missing value
+  value = await dbm.metaService.get("Missing key");
+  expect(value).toBeUndefined();
+
   // Set value
   await dbm.metaService.set(key1, value1_2);
   value = await dbm.metaService.get(key1);
