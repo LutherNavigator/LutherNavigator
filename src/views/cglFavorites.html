@@ -1,0 +1,12 @@
+<div class="div-center background-white tablet-content">
+  <h1 class="text-center">CGL Favorites</h1>
+  <div class="row">
+    {{#each adminFavorites}}
+    <a href="/post/{{ this.id }}" class="a-location col-12 col-md-4">
+      <img src="/image/post/{{ this.id }}/0" alt="{{ this.location }}" /><span
+        >{{ this.location }}</span
+      >
+    </a>
+    {{/each}}
+  </div>
+</div>
