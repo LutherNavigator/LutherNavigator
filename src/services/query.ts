@@ -4,7 +4,6 @@
  */
 
 import { BaseService } from "./util";
-import { Post } from "./post";
 
 /**
  * Query parameters.

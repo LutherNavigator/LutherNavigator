@@ -6,10 +6,6 @@
 import DatabaseManager from "../services";
 import * as crypto from "crypto";
 import * as bcrypt from "bcrypt";
-import { Session } from "./session";
-import { Verify } from "./verify";
-import { PasswordReset } from "./passwordReset";
-import { Suspended } from "./suspended";
 import { metaConfig } from "../config";
 
 /**
