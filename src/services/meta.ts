@@ -14,6 +14,20 @@ export interface Meta {
 }
 
 /**
+ * Meta with only name architecture.
+ */
+interface MetaName {
+  name: string;
+}
+
+/**
+ * Meta with only value architecture.
+ */
+interface MetaValue {
+  value: string;
+}
+
+/**
  * Meta services.
  */
 export class MetaService extends BaseService {
@@ -26,7 +40,7 @@ export class MetaService extends BaseService {
   public async exists(name: string): Promise<boolean> {
     const sql = `SELECT name FROM Meta WHERE name = ?;`;
     const params = [name];
-    const rows: Meta[] = await this.dbm.execute(sql, params);
+    const rows: MetaName[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
@@ -40,7 +54,7 @@ export class MetaService extends BaseService {
   public async get(name: string): Promise<string> {
     const sql = `SELECT value FROM Meta WHERE name = ?;`;
     const params = [name];
-    const rows: Meta[] = await this.dbm.execute(sql, params);
+    const rows: MetaValue[] = await this.dbm.execute(sql, params);
 
     return rows[0]?.value;
   }

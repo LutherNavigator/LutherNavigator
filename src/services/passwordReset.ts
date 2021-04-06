@@ -21,6 +21,13 @@ export interface PasswordReset {
 }
 
 /**
+ * Password reset with only ID architecture.
+ */
+interface PasswordResetID {
+  id: string;
+}
+
+/**
  * Password reset services.
  */
 export class PasswordResetService extends BaseService {
@@ -53,7 +60,7 @@ export class PasswordResetService extends BaseService {
     // Check that no password reset has already been requested
     let sql = `SELECT id FROM PasswordReset WHERE email = ?;`;
     let params: any[] = [email];
-    let rows: PasswordReset[] = await this.dbm.execute(sql, params);
+    let rows: PasswordResetID[] = await this.dbm.execute(sql, params);
 
     if (rows.length > 0) {
       return null;
@@ -92,7 +99,7 @@ export class PasswordResetService extends BaseService {
   public async resetRecordExists(resetID: string): Promise<boolean> {
     const sql = `SELECT id FROM PasswordReset WHERE id = ?;`;
     const params = [resetID];
-    const rows: PasswordReset[] = await this.dbm.execute(sql, params);
+    const rows: PasswordResetID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }

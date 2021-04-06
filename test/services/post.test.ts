@@ -86,13 +86,13 @@ test("Post", async () => {
   let unapprovedPosts = await dbm.postService.getUnapproved();
   expect(unapprovedPosts.length).toBeGreaterThanOrEqual(1);
   const unapproved = getByProp(unapprovedPosts, "postID", postID);
-  expect(unapproved["postID"]).toBe(postID);
-  expect(unapproved["firstname"]).toBe(firstname);
-  expect(unapproved["lastname"]).toBe(lastname);
+  expect(unapproved.postID).toBe(postID);
+  expect(unapproved.firstname).toBe(firstname);
+  expect(unapproved.lastname).toBe(lastname);
   expect(unapproved.content).toBe(content);
   expect(unapproved.location).toBe(location);
-  expect(unapproved["locationType"]).toBe("Restaurant");
-  expect(unapproved["program"]).toBe(programName);
+  expect(unapproved.locationType).toBe("Restaurant");
+  expect(unapproved.program).toBe(programName);
   expect(unapproved.threeWords).toBe(threeWords);
   expect(unapproved.createTime - getTime()).toBeLessThanOrEqual(3);
 
