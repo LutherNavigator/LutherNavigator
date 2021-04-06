@@ -28,10 +28,22 @@ p {
 
 a:hover {
   color: black;
+  text-decoration: none;
 }
 
 .center {
   text-align: center;
+}
+
+.socials {
+  display: inline-block;
+  transition: all ease 500ms;
+}
+
+.socials a i:hover,
+.socials a img:hover{
+  transform: scale(1.1);
+  color: #ffffff;
 }
 
 .div-center {
@@ -221,6 +233,25 @@ footer {
 
 footer a {
   color: white;
+}
+
+.luther {
+  margin: 0;
+  color: #ffffff;
+}
+
+/* .luther:hover {
+  box-shadow: 0 0px 10px 1px #ffffff;
+} */
+
+.fab {
+  font-size: 28pt;
+  vertical-align: middle;
+}
+
+footer a:hover,
+.socials a:hover {
+  text-decoration: none;
 }
 
 /* filtered post's div / index & query pages */

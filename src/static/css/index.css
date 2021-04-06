@@ -14,7 +14,7 @@
 
 .adv-search,
 .intro-text,
-.intro-text a i {
+.zoom a i {
   color: #ffffff;
 }
 
@@ -22,12 +22,12 @@
   text-align: left;
 }
 
-.intro-text a i {
+.zoom a i {
   font-size: 40pt;
   transition: all ease 500ms;
 }
 
-a i:hover{
+.zoom a i:hover{
   transform: scale(1.1);
 }
 
@@ -50,11 +50,11 @@ a i:hover{
     padding: 20px;
   }
 
-  .intro-text a i {
+  .zoom a i {
     font-size: 32pt;
   }
 
-  a i:hover{
+  .zoom a i:hover{
     transform: scale(1.25);
   }
 }
