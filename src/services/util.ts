@@ -38,6 +38,51 @@ export const verifyIDLength = 16;
 export const passwordResetIDLength = 16;
 
 /**
+ * Table with a string ID field.
+ */
+interface TableStringID {
+  id: string;
+}
+
+/**
+ * Session with only update time architecture.
+ */
+interface SessionUpdateTime {
+  updateTime: number;
+}
+
+/**
+ * Session with only ID and update time architecture.
+ */
+interface SessionIDUpdateTime {
+  id: string;
+  updateTime: number;
+}
+
+/**
+ * Verify with only ID and create time architecture.
+ */
+interface VerifyIDCreateTime {
+  id: string;
+  createTime: number;
+}
+
+/**
+ * Password reset with only ID and create time architecture.
+ */
+interface PasswordResetIDCreateTime {
+  id: string;
+  createTime: number;
+}
+
+/**
+ * Suspended with only ID architecture.
+ */
+interface SuspendedID {
+  id: string;
+}
+
+/**
  * Base service class.
  */
 export abstract class BaseService {
@@ -119,7 +164,7 @@ export async function newUniqueID(
   let base64ID = await newID(len);
 
   const sql = `SELECT id FROM ${table} WHERE id = ?;`;
-  let rows = await dbm.execute(sql, [base64ID]);
+  let rows: TableStringID[] = await dbm.execute(sql, [base64ID]);
 
   while (rows.length > 0) {
     base64ID = await newID(len);
@@ -217,7 +262,7 @@ export async function pruneSession(
   setTimeout(async () => {
     let sql = `SELECT updateTime FROM Session WHERE id = ?;`;
     let params = [sessionID];
-    const rows: Session[] = await dbm.execute(sql, params);
+    const rows: SessionUpdateTime[] = await dbm.execute(sql, params);
 
     const updateTime = rows[0]?.updateTime;
     const deleteTime = updateTime + sessionAge / 1000;
@@ -238,7 +283,7 @@ export async function pruneSession(
 export async function pruneSessions(dbm: DatabaseManager): Promise<void> {
   const sql = `SELECT id, updateTime FROM Session;`;
   const params = [];
-  const rows: Session[] = await dbm.execute(sql, params);
+  const rows: SessionIDUpdateTime[] = await dbm.execute(sql, params);
 
   const sessionAge =
     (parseInt(await dbm.metaService.get("Session age")) ||
@@ -282,7 +327,7 @@ export async function pruneVerifyRecord(
 export async function pruneVerifyRecords(dbm: DatabaseManager): Promise<void> {
   const sql = `SELECT id, createTime FROM Verify;`;
   const params = [];
-  const rows: Verify[] = await dbm.execute(sql, params);
+  const rows: VerifyIDCreateTime[] = await dbm.execute(sql, params);
 
   const verifyAge =
     (parseInt(await dbm.metaService.get("Verify age")) ||
@@ -328,7 +373,7 @@ export async function prunePasswordResetRecords(
 ): Promise<void> {
   const sql = `SELECT id, createTime FROM PasswordReset;`;
   const params = [];
-  const rows: PasswordReset[] = await dbm.execute(sql, params);
+  const rows: PasswordResetIDCreateTime[] = await dbm.execute(sql, params);
 
   const passwordResetAge =
     (parseInt(await dbm.metaService.get("Password reset age")) ||
@@ -370,7 +415,7 @@ export async function pruneSuspension(
  */
 export async function pruneSuspensions(dbm: DatabaseManager): Promise<void> {
   const sql = `SELECT id FROM Suspended;`;
-  const rows: Suspended[] = await dbm.execute(sql);
+  const rows: SuspendedID[] = await dbm.execute(sql);
 
   rows.forEach((row) => {
     pruneSession(dbm, row.id);
