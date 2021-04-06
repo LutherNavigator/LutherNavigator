@@ -28,6 +28,15 @@ export type QuerySortOptions =
   | "timestamp";
 
 /**
+ * Query post architecture.
+ */
+export interface QueryPost {
+  id: string;
+  location: string;
+  rating: number;
+}
+
+/**
  * Query services.
  */
 export class QueryService extends BaseService {
@@ -37,7 +46,7 @@ export class QueryService extends BaseService {
    * @param search Search parameters.
    * @returns All posts that match the search parameters.
    */
-  public async query(search: string): Promise<Post[]> {
+  public async query(search: string): Promise<QueryPost[]> {
     const searchLike = "%" + search + "%";
 
     const sql = `
@@ -58,7 +67,7 @@ export class QueryService extends BaseService {
       ORDER BY Post.createTime DESC;
     `;
     const params = [searchLike, searchLike, searchLike];
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: QueryPost[] = await this.dbm.execute(sql, params);
 
     return rows;
   }
@@ -75,7 +84,7 @@ export class QueryService extends BaseService {
     parameters: QueryParams,
     sortBy: QuerySortOptions,
     sortAscending: boolean = true
-  ): Promise<Post[]> {
+  ): Promise<QueryPost[]> {
     const whereOptions = {
       programIDs: "Post.programID",
       locationTypeIDs: "Post.locationTypeID",
@@ -150,7 +159,7 @@ export class QueryService extends BaseService {
     }
 
     const sql = `${sqlStart} WHERE ${whereClause.join(" AND ")} ${sqlEnd}`;
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: QueryPost[] = await this.dbm.execute(sql, params);
 
     return rows;
   }
