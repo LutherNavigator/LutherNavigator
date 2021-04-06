@@ -4,8 +4,6 @@
  */
 
 import { BaseService, getTime } from "./util";
-import { User } from "./user";
-import { Post } from "./post";
 
 /**
  * Post vote architecture.
