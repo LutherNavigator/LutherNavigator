@@ -310,6 +310,7 @@ export default async function initDB(
       id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
       userID     CHAR(4)      NOT NULL,
       postID     CHAR(4)      NOT NULL,
+      voteType   VARCHAR(64)  NOT NULL,
       createTime INT UNSIGNED NOT NULL,
 
       PRIMARY KEY (id),
