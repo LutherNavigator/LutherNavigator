@@ -120,6 +120,26 @@ apiRouter.get(
   })
 );
 
+// Toggle a post as an admin favorite
+apiRouter.get(
+  "/toggleAdminFavorite",
+  adminAuth,
+  wrapRoute(async (req, res) => {
+    const dbm = getDBM(req);
+
+    const postID = req.query.postID as string;
+
+    const favorited = await dbm.adminFavoritesService.isFavorite(postID);
+    if (favorited) {
+      await dbm.adminFavoritesService.unfavorite(postID);
+    } else {
+      await dbm.adminFavoritesService.favorite(postID);
+    }
+
+    res.end((!favorited).toString());
+  })
+);
+
 // Admin variables
 apiRouter.get(
   "/adminVariables",
