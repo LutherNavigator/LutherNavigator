@@ -270,6 +270,8 @@ footer a:hover,
   border-radius: 10px;
   opacity: 35%;
   transition: 0.2s;
+  height: 220px;
+  object-fit: cover;
 }
 
 /* link for the post */
@@ -452,6 +454,16 @@ footer a:hover,
 @media screen and (min-width: 576px) {
   .a-location {
     padding: 10px;
+  }
+
+  .a-location > img {
+    height: 250px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .a-location > img {
+    height: 140px;
   }
 
   .a-location > span {
