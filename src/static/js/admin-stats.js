@@ -65,14 +65,7 @@ function toggleFavoritePost(postID) {
     data: {
       postID,
     },
-    success: (favString) => {
-      const favorited = favString === "true" ? true : false;
-      if (favorited) {
-        $(`#favorite-${postID}`).removeClass("far").addClass("fas");
-      } else {
-        $(`#favorite-${postID}`).removeClass("fas").addClass("far");
-      }
-
+    success: () => {
       hideError();
       updateNotifications();
       populateStats();
@@ -83,6 +76,16 @@ function toggleFavoritePost(postID) {
       showError("Failed to favorite post");
     },
   });
+}
+
+// Toggle favorite heart icon
+function toggleFavoriteHeart(postID) {
+  const favorited = $(`#favorite-${postID}.fas`).length === 0;
+  if (favorited) {
+    $(`#favorite-${postID}`).removeClass("far").addClass("fas");
+  } else {
+    $(`#favorite-${postID}`).removeClass("fas").addClass("far");
+  }
 }
 
 // Create a row in the users table
@@ -159,6 +162,7 @@ function createPostRow(post) {
     )
     .click(() => {
       toggleFavoritePost(post.postID);
+      toggleFavoriteHeart(post.postID);
     });
   const favoriteButton = newElement("td").append(favoriteHeart);
   const deletePostButton = newElement("button")
