@@ -129,6 +129,7 @@
       </p>
     </div>
     <div class="center">
+      {{#if loggedIn}}
       <span onclick="toggleUpvote();">
         {{#if upvoted}}
         <i class="fas fa-thumbs-up" id="upvote"></i>
@@ -136,6 +137,11 @@
         <i class="far fa-thumbs-up" id="upvote"></i>
         {{/if}}
       </span>
+      {{else}}
+      <span class="static-upvote">
+        <i class="far fa-thumbs-up" id="upvote"></i>
+      </span>
+      {{/if}}
       <br />
       <span id="num-upvotes">{{ numUpvotes }}</span>
     </div>

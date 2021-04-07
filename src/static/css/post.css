@@ -53,6 +53,11 @@ h4 {
   transform: scale(1.2);
 }
 
+.static-upvote .fa-thumbs-up:hover {
+  color: #0069ab;
+  transform: none;
+}
+
 .location-info a {
   color: #ffffff;
   font-size: 11pt;
