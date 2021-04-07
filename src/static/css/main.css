@@ -434,6 +434,25 @@ footer a:hover,
   background-color: #0061a3;
 }
 
+.short-list {
+  padding-inline-start: 0;
+  margin-bottom: 0;
+}
+
+.short-list li {
+  list-style: none;
+  display: inline;
+}
+
+.short-list li:after {
+  content: " \2022  ";
+  padding: 0 8px;
+}
+
+.short-list li:last-child:after {
+  content: none;
+}
+
 /*tablet 768px*/
 @media screen and (min-width: 425px) {
   .tablet-content {

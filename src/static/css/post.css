@@ -76,3 +76,11 @@ h4 {
   height: 25px;
   transform: rotate(90deg);
 }
+
+#post-details {
+  color: #808080;
+}
+
+#post-details li:after {
+  color: black;
+}

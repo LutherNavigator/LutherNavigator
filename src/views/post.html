@@ -122,11 +122,12 @@
   <div class="col flex-between mb-3">
     <div class="mr-2">
       <h3 class="tagline">{{ threeWords }}</h3>
-      <h4>{{ firstname }} {{ lastname }}, {{ status }}</h4>
-      <p class="post mb-4">
-        {{ program }} | Posted on
-        <span class="timestamp">{{ createTime }}</span>
-      </p>
+      <ul class="short-list" id="post-details">
+        <li>{{ firstname}} {{ lastname }}</li>
+        <li>{{ status }}</li>
+        <li>{{ program }}</li>
+        <li><span class="timestamp-date">{{ createTime }}</span></li>
+      </ul>
     </div>
     <div class="center">
       {{#if loggedIn}}
