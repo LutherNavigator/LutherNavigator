@@ -43,14 +43,13 @@ h4 {
 }
 
 .fa-thumbs-up {
-  color: #0064a1;
+  color: #0069ab;
   font-size: 20px;
   transition: 0.2s;
 }
 
 .fa-thumbs-up:hover {
-  text-decoration: none;
-  color: #000000;
+  color: #0083d5;
   transform: scale(1.2);
 }
 

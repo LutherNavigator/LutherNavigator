@@ -128,16 +128,16 @@
         <span class="timestamp">{{ createTime }}</span>
       </p>
     </div>
-    <div>
+    <div class="center">
       <span onclick="toggleUpvote();">
         {{#if upvoted}}
-        <i class="fas fa-thumbs-up"></i>
+        <i class="fas fa-thumbs-up" id="upvote"></i>
         {{else}}
-        <i class="far fa-thumbs-up"></i>
+        <i class="far fa-thumbs-up" id="upvote"></i>
         {{/if}}
       </span>
       <br />
-      <span>0</span>
+      <span id="num-upvotes">0</span>
     </div>
   </div>
   <div class="col"></div>
