@@ -190,6 +190,7 @@ export class UserService extends BaseService {
   public async deleteUser(userID: string): Promise<void> {
     await this.dbm.sessionService.deleteUserSessions(userID);
     await this.dbm.postService.deleteUserPosts(userID);
+    await this.dbm.postVoteService.deleteUserVotes(userID);
     await this.deleteUserImage(userID);
 
     const sql = `DELETE FROM User WHERE id = ?;`;

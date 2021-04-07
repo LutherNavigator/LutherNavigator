@@ -203,6 +203,7 @@ export class PostService extends BaseService {
 
     await this.dbm.postImageService.deletePostImages(postID);
     await this.dbm.adminFavoritesService.unfavorite(postID);
+    await this.dbm.postVoteService.deletePostVotes(postID);
 
     sql = `DELETE FROM Post WHERE id = ?;`;
     params = [postID];

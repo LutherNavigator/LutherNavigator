@@ -13,6 +13,7 @@ import { MetaService } from "./services/meta";
 import { PasswordResetService } from "./services/passwordReset";
 import { PostService } from "./services/post";
 import { PostImageService } from "./services/postImage";
+import { PostVoteService } from "./services/postVote";
 import { ProgramService } from "./services/program";
 import { QueryService } from "./services/query";
 import { RatingService } from "./services/rating";
@@ -33,6 +34,7 @@ export default class DatabaseManager {
   readonly passwordResetService: PasswordResetService;
   readonly postService: PostService;
   readonly postImageService: PostImageService;
+  readonly postVoteService: PostVoteService;
   readonly programService: ProgramService;
   readonly queryService: QueryService;
   readonly ratingService: RatingService;
@@ -53,6 +55,7 @@ export default class DatabaseManager {
     this.passwordResetService = new PasswordResetService(this);
     this.postService = new PostService(this);
     this.postImageService = new PostImageService(this);
+    this.postVoteService = new PostVoteService(this);
     this.programService = new ProgramService(this);
     this.queryService = new QueryService(this);
     this.ratingService = new RatingService(this);
