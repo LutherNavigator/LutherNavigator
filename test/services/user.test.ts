@@ -74,11 +74,11 @@ test("User", async () => {
   let unapproved = await dbm.userService.getUnapproved();
   expect(unapproved.length).toBeGreaterThanOrEqual(1);
   const unapprovedUser = getByProp(unapproved, "userID", userID);
-  expect(unapprovedUser["userID"]).toBe(userID);
+  expect(unapprovedUser.userID).toBe(userID);
   expect(unapprovedUser.firstname).toBe(firstname);
   expect(unapprovedUser.lastname).toBe(lastname);
   expect(unapprovedUser.email).toBe(email);
-  expect(unapprovedUser["status"]).toBe("Student");
+  expect(unapprovedUser.status).toBe("Student");
   expect(unapprovedUser.joinTime - getTime()).toBeLessThanOrEqual(3);
 
   // Log user in

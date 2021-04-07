@@ -15,6 +15,13 @@ export interface Image {
 }
 
 /**
+ * Image with only ID architecture.
+ */
+interface ImageID {
+  id: string;
+}
+
+/**
  * Image services.
  */
 export class ImageService extends BaseService {
@@ -43,7 +50,7 @@ export class ImageService extends BaseService {
   public async imageExists(imageID: string): Promise<boolean> {
     const sql = `SELECT id FROM Image WHERE id = ?;`;
     const params = [imageID];
-    const rows: Image[] = await this.dbm.execute(sql, params);
+    const rows: ImageID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }

@@ -21,6 +21,13 @@ export interface Verify {
 }
 
 /**
+ * Verify with only ID architecture.
+ */
+interface VerifyID {
+  id: string;
+}
+
+/**
  * Verification services.
  */
 export class VerifyService extends BaseService {
@@ -45,7 +52,7 @@ export class VerifyService extends BaseService {
     // Check that no verification record has already been created
     let sql = `SELECT id FROM Verify WHERE email = ?;`;
     let params: any[] = [email];
-    let rows: Verify[] = await this.dbm.execute(sql, params);
+    let rows: VerifyID[] = await this.dbm.execute(sql, params);
 
     if (rows.length > 0) {
       return null;
@@ -80,7 +87,7 @@ export class VerifyService extends BaseService {
   public async verifyRecordExists(verifyID: string): Promise<boolean> {
     const sql = `SELECT id FROM Verify WHERE id = ?;`;
     const params = [verifyID];
-    const rows: Verify[] = await this.dbm.execute(sql, params);
+    const rows: VerifyID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }

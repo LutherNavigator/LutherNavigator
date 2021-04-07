@@ -23,6 +23,20 @@ export interface Session {
 }
 
 /**
+ * Session with only ID architecture.
+ */
+interface SessionID {
+  id: string;
+}
+
+/**
+ * Session with only user ID architecture.
+ */
+interface SessionUserID {
+  userID: string;
+}
+
+/**
  * Session services.
  */
 export class SessionService extends BaseService {
@@ -70,7 +84,7 @@ export class SessionService extends BaseService {
   public async sessionExists(sessionID: string): Promise<boolean> {
     const sql = `SELECT id FROM Session WHERE id = ?;`;
     const params = [sessionID];
-    const rows: Session[] = await this.dbm.execute(sql, params);
+    const rows: SessionID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
@@ -134,7 +148,7 @@ export class SessionService extends BaseService {
   public async getUserIDBySessionID(sessionID: string): Promise<string> {
     const sql = `SELECT userID from Session WHERE id = ?;`;
     const params = [sessionID];
-    const rows: Session[] = await this.dbm.execute(sql, params);
+    const rows: SessionUserID[] = await this.dbm.execute(sql, params);
 
     return rows[0]?.userID;
   }
