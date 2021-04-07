@@ -4,7 +4,6 @@
  */
 
 import { BaseService, getTime, newUniqueID } from "./util";
-import { User } from "./user";
 
 /**
  * User status change architecture.
@@ -14,6 +13,26 @@ export interface UserStatusChange {
   userID: string;
   newStatusID: number;
   createTime: number;
+}
+
+/**
+ * User statuus change with only ID architecture.
+ */
+interface UserStatusChangeID {
+  id: string;
+}
+
+/**
+ * User status change requests architecture.
+ */
+export interface UserStatusChangeRequest {
+  userID: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  status: string;
+  newStatus: string;
+  requestID: string;
 }
 
 /**
@@ -35,7 +54,7 @@ export class UserStatusChangeService extends BaseService {
 
     let sql = `SELECT id FROM UserStatusChange WHERE userID = ?;`;
     let params: any[] = [userID];
-    const rows: UserStatusChange[] = await this.dbm.execute(sql, params);
+    const rows: UserStatusChangeID[] = await this.dbm.execute(sql, params);
 
     if (rows.length === 0) {
       sql = `
@@ -67,7 +86,7 @@ export class UserStatusChangeService extends BaseService {
   public async statusChangeRequestExists(requestID: string): Promise<boolean> {
     const sql = `SELECT id FROM UserStatusChange WHERE id = ?;`;
     const params = [requestID];
-    const rows: UserStatusChange[] = await this.dbm.execute(sql, params);
+    const rows: UserStatusChangeID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
@@ -112,7 +131,7 @@ export class UserStatusChangeService extends BaseService {
     return rows;
   }
 
-  public async getUserRequests(): Promise<User[]> {
+  public async getUserRequests(): Promise<UserStatusChangeRequest[]> {
     const sql = `
       SELECT
         User.id AS userID, firstname, lastname, email,
@@ -124,7 +143,7 @@ export class UserStatusChangeService extends BaseService {
       JOIN UserStatus AS us2 ON UserStatusChange.newStatusID = us2.id
       ORDER BY UserStatusChange.createTime;
     `;
-    const rows: User[] = await this.dbm.execute(sql);
+    const rows: UserStatusChangeRequest[] = await this.dbm.execute(sql);
 
     return rows;
   }

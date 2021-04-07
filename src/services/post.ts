@@ -30,6 +30,71 @@ export interface Post {
 }
 
 /**
+ * Post with only ID architecture.
+ */
+interface PostID {
+  id: string;
+}
+
+/**
+ * Post with only user ID architecture.
+ */
+interface PostUserID {
+  userID: string;
+}
+
+/**
+ * Post with only rating ID architecture.
+ */
+interface PostRatingID {
+  ratingID: string;
+}
+
+/**
+ * Post with only content architecture.
+ */
+interface PostContent {
+  content: string;
+}
+
+/**
+ * Post with only approved architecture.
+ */
+interface PostApproved {
+  approved: boolean;
+}
+
+/**
+ * Post with only ID and rating ID architecture.
+ */
+interface PostIDRatingID {
+  id: string;
+  ratingID: string;
+}
+
+/**
+ * Unapproved post architecture.
+ */
+export interface UnapprovedPost {
+  postID: string;
+  firstname: string;
+  lastname: string;
+  content: string;
+  location: string;
+  locationType: string;
+  program: string;
+  threeWords: string;
+  createTime: number;
+}
+
+/**
+ * User post architecture.
+ */
+export interface UserPost extends Post {
+  program: string;
+}
+
+/**
  * Post services.
  */
 export class PostService extends BaseService {
@@ -107,7 +172,7 @@ export class PostService extends BaseService {
   public async postExists(postID: string): Promise<boolean> {
     const sql = `SELECT id FROM Post WHERE id = ?;`;
     const params = [postID];
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: PostID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
@@ -134,7 +199,7 @@ export class PostService extends BaseService {
   public async deletePost(postID: string): Promise<void> {
     let sql = `SELECT ratingID FROM Post WHERE id = ?;`;
     let params = [postID];
-    let rows: Post[] = await this.dbm.execute(sql, params);
+    let rows: PostRatingID[] = await this.dbm.execute(sql, params);
 
     await this.dbm.postImageService.deletePostImages(postID);
     await this.dbm.adminFavoritesService.unfavorite(postID);
@@ -157,7 +222,7 @@ export class PostService extends BaseService {
   public async getPostUser(postID: string): Promise<User> {
     const sql = `SELECT userID FROM Post WHERE id = ?;`;
     const params = [postID];
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: PostUserID[] = await this.dbm.execute(sql, params);
 
     const userID = rows[0]?.userID;
     const user = await this.dbm.userService.getUser(userID);
@@ -174,7 +239,7 @@ export class PostService extends BaseService {
   public async getPostRating(postID: string): Promise<Rating> {
     const sql = `SELECT ratingID FROM Post WHERE id = ?;`;
     const params = [postID];
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: PostRatingID[] = await this.dbm.execute(sql, params);
 
     const ratingID = rows[0]?.ratingID;
     const rating = await this.dbm.ratingService.getRating(ratingID);
@@ -188,7 +253,7 @@ export class PostService extends BaseService {
    * @param userID A user's ID.
    * @returns A list of all posts made by the user.
    */
-  public async getUserPosts(userID: string): Promise<Post[]> {
+  public async getUserPosts(userID: string): Promise<UserPost[]> {
     const sql = `
       SELECT Post.*, Program.name AS program
         FROM Post
@@ -197,7 +262,7 @@ export class PostService extends BaseService {
       ORDER BY Post.createTime;
     `;
     const params = [userID];
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: UserPost[] = await this.dbm.execute(sql, params);
 
     return rows;
   }
@@ -210,7 +275,7 @@ export class PostService extends BaseService {
   public async deleteUserPosts(userID: string): Promise<void> {
     let sql = `SELECT id, ratingID FROM Post WHERE userID = ?;`;
     let params = [userID];
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: PostIDRatingID[] = await this.dbm.execute(sql, params);
 
     const postIDs = rows.map((post) => post.id);
 
@@ -240,7 +305,7 @@ export class PostService extends BaseService {
   public async getPostContent(postID: string): Promise<string> {
     const sql = `SELECT content FROM Post WHERE id = ?;`;
     const params = [postID];
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: PostContent[] = await this.dbm.execute(sql, params);
 
     return rows[0]?.content;
   }
@@ -290,7 +355,7 @@ export class PostService extends BaseService {
   public async isApproved(postID: string): Promise<boolean> {
     const sql = `SELECT approved FROM Post WHERE id = ?;`;
     const params = [postID];
-    const rows: Post[] = await this.dbm.execute(sql, params);
+    const rows: PostApproved[] = await this.dbm.execute(sql, params);
 
     return !!rows[0]?.approved;
   }
@@ -315,7 +380,7 @@ export class PostService extends BaseService {
    *
    * @returns All unapproved posts.
    */
-  public async getUnapproved(): Promise<Post[]> {
+  public async getUnapproved(): Promise<UnapprovedPost[]> {
     const sql = `
       SELECT
         Post.id AS postID, User.firstname AS firstname,
@@ -332,7 +397,7 @@ export class PostService extends BaseService {
       WHERE Post.approved = FALSE
       ORDER BY createTime;
     `;
-    const rows: Post[] = await this.dbm.execute(sql);
+    const rows: UnapprovedPost[] = await this.dbm.execute(sql);
 
     return rows;
   }

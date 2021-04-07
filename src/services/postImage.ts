@@ -15,6 +15,20 @@ export interface PostImage {
 }
 
 /**
+ * Post image count architecture.
+ */
+interface PostImageCount {
+  count: number;
+}
+
+/**
+ * Post image with only ID architecture.
+ */
+interface PostImageID {
+  imageID: string;
+}
+
+/**
  * Post image services.
  */
 export class PostImageService extends BaseService {
@@ -26,12 +40,11 @@ export class PostImageService extends BaseService {
    */
   public async getPostImages(postID: string): Promise<Image[]> {
     const sql = `
-      SELECT Image.id AS id, data, registerTime
-      FROM Image
-      JOIN (
-        SELECT * FROM PostImage WHERE postID = ?
-      ) AS PostImageRecords
-      ON Image.id = PostImageRecords.imageID
+      SELECT Image.*
+        FROM Image
+        JOIN (
+          SELECT * FROM PostImage WHERE postID = ?
+        ) AS PostImageRecords ON Image.id = PostImageRecords.imageID
       ORDER BY PostImageRecords.id;
     `;
     const params = [postID];
@@ -103,11 +116,11 @@ export class PostImageService extends BaseService {
    * @returns The number of images associated with the post.
    */
   public async numImages(postID: string): Promise<number> {
-    const sql = `SELECT COUNT(*) FROM PostImage WHERE postID = ?;`;
+    const sql = `SELECT COUNT(*) AS count FROM PostImage WHERE postID = ?;`;
     const params = [postID];
-    const rows = await this.dbm.execute(sql, params);
+    const rows: PostImageCount[] = await this.dbm.execute(sql, params);
 
-    return parseInt(rows[0]["COUNT(*)"]);
+    return rows[0].count;
   }
 
   /**
@@ -118,7 +131,7 @@ export class PostImageService extends BaseService {
   public async deletePostImages(postID: string): Promise<void> {
     let sql = `SELECT imageID FROM PostImage WHERE postID = ?`;
     let params: any = [postID];
-    const rows: PostImage[] = await this.dbm.execute(sql, params);
+    const rows: PostImageID[] = await this.dbm.execute(sql, params);
 
     const imageIDs = rows.map((postImage) => postImage.imageID);
 

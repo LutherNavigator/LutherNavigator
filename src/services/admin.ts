@@ -4,8 +4,42 @@
  */
 
 import { BaseService } from "./util";
-import { User } from "./user";
-import { Post } from "./post";
+
+/**
+ * Admin record count architecture.
+ */
+interface AdminRecordCount {
+  count: number;
+}
+
+/**
+ * Admin user architecture.
+ */
+export interface AdminUser {
+  userID: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  status: string;
+  verified: boolean;
+  approved: boolean;
+  admin: boolean;
+  joinTime: number;
+}
+
+/**
+ * Admin post architecture.
+ */
+export interface AdminPost {
+  postID: string;
+  location: string;
+  postUser: string;
+  program: string;
+  rating: number;
+  approved: boolean;
+  createTime: number;
+  adminFavorite: string | null;
+}
 
 /**
  * Admin services.
@@ -19,7 +53,7 @@ export class AdminService extends BaseService {
    */
   public async getRecords(table: string): Promise<number> {
     const sql = `SELECT COUNT(*) AS count FROM ${table}`;
-    const rows = await this.dbm.execute(sql);
+    const rows: AdminRecordCount[] = await this.dbm.execute(sql);
     return rows[0].count;
   }
 
@@ -28,7 +62,7 @@ export class AdminService extends BaseService {
    *
    * @returns All users in the database.
    */
-  public async getUsers(): Promise<User[]> {
+  public async getUsers(): Promise<AdminUser[]> {
     const sql = `
       SELECT
           User.id AS userID, firstname, lastname, email,
@@ -37,7 +71,7 @@ export class AdminService extends BaseService {
         JOIN UserStatus ON User.statusID = UserStatus.id
       ORDER BY User.joinTime;
     `;
-    const rows: User[] = await this.dbm.execute(sql);
+    const rows: AdminUser[] = await this.dbm.execute(sql);
 
     return rows;
   }
@@ -47,7 +81,7 @@ export class AdminService extends BaseService {
    *
    * @returns All posts in the database.
    */
-  public async getPosts(): Promise<Post[]> {
+  public async getPosts(): Promise<AdminPost[]> {
     const sql = `
       SELECT
           Post.id AS postID, location,
@@ -62,7 +96,7 @@ export class AdminService extends BaseService {
         LEFT JOIN AdminFavorites ON Post.id = AdminFavorites.postID
       ORDER BY Post.createTime;
     `;
-    const rows: Post[] = await this.dbm.execute(sql);
+    const rows: AdminPost[] = await this.dbm.execute(sql);
 
     return rows;
   }

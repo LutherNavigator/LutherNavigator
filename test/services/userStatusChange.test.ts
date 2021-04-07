@@ -83,13 +83,13 @@ test("UserStatusChange", async () => {
   const userRequests = await dbm.userStatusChangeService.getUserRequests();
   expect(userRequests.length).toBeGreaterThanOrEqual(1);
   const userRequest = getByProp(userRequests, "requestID", requestID);
-  expect(userRequest["userID"]).toBe(userID);
+  expect(userRequest.userID).toBe(userID);
   expect(userRequest.firstname).toBe(firstname);
   expect(userRequest.lastname).toBe(lastname);
   expect(userRequest.email).toBe(email);
-  expect(userRequest["status"]).toBe("Student");
-  expect(userRequest["newStatus"]).toBe("Alum");
-  expect(userRequest["requestID"]).toBe(requestID);
+  expect(userRequest.status).toBe("Student");
+  expect(userRequest.newStatus).toBe("Alum");
+  expect(userRequest.requestID).toBe(requestID);
 
   // Create new post
   const content = "Post content";

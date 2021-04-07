@@ -41,6 +41,75 @@ export interface User {
 }
 
 /**
+ * User with only ID architecture.
+ */
+interface UserID {
+  id: string;
+}
+
+/**
+ * User with only email architecture.
+ */
+interface UserEmail {
+  email: string;
+}
+
+/**
+ * User with only status ID architecture.
+ */
+interface UserStatusID {
+  statusID: number;
+}
+
+/**
+ * User with only verified architecture.
+ */
+interface UserVerified {
+  verified: boolean;
+}
+
+/**
+ * User with only approved architecture.
+ */
+interface UserApproved {
+  approved: boolean;
+}
+
+/**
+ * User with only admin architecture.
+ */
+interface UserAdmin {
+  admin: boolean;
+}
+
+/**
+ * User with only image ID architecture.
+ */
+interface UserImageID {
+  imageID: string | null;
+}
+
+/**
+ * User with only ID and password architecture.
+ */
+interface UserIDPassword {
+  id: string;
+  password: string;
+}
+
+/**
+ * Unapproved users architecture.
+ */
+export interface UnapprovedUsers {
+  userID: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  status: string;
+  joinTime: number;
+}
+
+/**
  * User services.
  */
 export class UserService extends BaseService {
@@ -94,7 +163,7 @@ export class UserService extends BaseService {
   public async userExists(userID: string): Promise<boolean> {
     const sql = `SELECT id FROM User WHERE id = ?;`;
     const params = [userID];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
@@ -152,7 +221,7 @@ export class UserService extends BaseService {
   public async uniqueEmail(email: string): Promise<boolean> {
     const sql = `SELECT email FROM User WHERE email = ?;`;
     const params = [email];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserEmail[] = await this.dbm.execute(sql, params);
 
     return rows.length === 0;
   }
@@ -167,7 +236,7 @@ export class UserService extends BaseService {
   public async login(email: string, password: string): Promise<LoginStatus> {
     let sql = `SELECT id, password FROM User WHERE email = ? AND verified = TRUE AND approved = TRUE;`;
     let params: any[] = [email];
-    let rows: User[] = await this.dbm.execute(sql, params);
+    let rows: UserIDPassword[] = await this.dbm.execute(sql, params);
 
     const hash = rows[0]?.password || "";
     const same = await checkPassword(password, hash);
@@ -198,7 +267,7 @@ export class UserService extends BaseService {
   public async getUserStatusName(userID: string): Promise<string> {
     const sql = `SELECT statusID FROM User WHERE id = ?;`;
     const params = [userID];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserStatusID[] = await this.dbm.execute(sql, params);
 
     const statusID = rows[0]?.statusID;
     const statusName = await this.dbm.userStatusService.getStatusName(statusID);
@@ -215,7 +284,7 @@ export class UserService extends BaseService {
   public async isVerified(userID: string): Promise<boolean> {
     const sql = `SELECT verified FROM User WHERE id = ?;`;
     const params = [userID];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserVerified[] = await this.dbm.execute(sql, params);
 
     return !!rows[0]?.verified;
   }
@@ -244,7 +313,7 @@ export class UserService extends BaseService {
   public async isApproved(userID: string): Promise<boolean> {
     const sql = `SELECT approved FROM User WHERE id = ?;`;
     const params = [userID];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserApproved[] = await this.dbm.execute(sql, params);
 
     return !!rows[0]?.approved;
   }
@@ -269,7 +338,7 @@ export class UserService extends BaseService {
    *
    * @returns All unapproved users.
    */
-  public async getUnapproved(): Promise<User[]> {
+  public async getUnapproved(): Promise<UnapprovedUsers[]> {
     const sql = `
       SELECT
         User.id AS userID, firstname, lastname, email, name AS status, joinTime
@@ -278,7 +347,7 @@ export class UserService extends BaseService {
       WHERE verified = TRUE AND approved = FALSE
       ORDER BY joinTime;
     `;
-    const rows: User[] = await this.dbm.execute(sql);
+    const rows: UnapprovedUsers[] = await this.dbm.execute(sql);
 
     return rows;
   }
@@ -292,7 +361,7 @@ export class UserService extends BaseService {
   public async isAdmin(userID: string): Promise<boolean> {
     const sql = `SELECT admin FROM User WHERE id = ?;`;
     const params = [userID];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserAdmin[] = await this.dbm.execute(sql, params);
 
     return !!rows[0]?.admin;
   }
@@ -318,7 +387,7 @@ export class UserService extends BaseService {
   public async getUserImage(userID: string): Promise<Image> {
     const sql = `SELECT imageID from User WHERE id = ?;`;
     const params = [userID];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserImageID[] = await this.dbm.execute(sql, params);
 
     const imageID = rows[0]?.imageID;
     const image = await this.dbm.imageService.getImage(imageID);
@@ -335,7 +404,7 @@ export class UserService extends BaseService {
   public async setUserImage(userID: string, imageData: Buffer): Promise<void> {
     let sql = `SELECT imageID from User WHERE id = ?;`;
     let params = [userID];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserImageID[] = await this.dbm.execute(sql, params);
 
     const newImageID = await this.dbm.imageService.createImage(imageData);
 
@@ -355,7 +424,7 @@ export class UserService extends BaseService {
   public async deleteUserImage(userID: string): Promise<void> {
     let sql = `SELECT imageID from User WHERE id = ?;`;
     let params = [userID];
-    const rows: User[] = await this.dbm.execute(sql, params);
+    const rows: UserImageID[] = await this.dbm.execute(sql, params);
 
     sql = `UPDATE User SET imageID = ? WHERE id = ?`;
     params = [null, userID];

@@ -14,6 +14,20 @@ export interface LocationType {
 }
 
 /**
+ * Location type with only ID architecture.
+ */
+interface LocationTypeID {
+  id: number;
+}
+
+/**
+ * Location type with only name architecture.
+ */
+interface LocationTypeName {
+  name: string;
+}
+
+/**
  * Location type services.
  */
 export class LocationTypeService extends BaseService {
@@ -23,7 +37,7 @@ export class LocationTypeService extends BaseService {
    * @returns All location types.
    */
   public async getLocations(): Promise<LocationType[]> {
-    const sql = `SELECT id, name FROM LocationType ORDER BY id;`;
+    const sql = `SELECT * FROM LocationType ORDER BY id;`;
     const rows: LocationType[] = await this.dbm.execute(sql);
 
     return rows;
@@ -38,7 +52,7 @@ export class LocationTypeService extends BaseService {
   public async getLocationName(locationID: number): Promise<string> {
     const sql = `SELECT name FROM LocationType WHERE id = ?;`;
     const params = [locationID];
-    const rows: LocationType[] = await this.dbm.execute(sql, params);
+    const rows: LocationTypeName[] = await this.dbm.execute(sql, params);
 
     return rows[0]?.name;
   }
@@ -52,7 +66,7 @@ export class LocationTypeService extends BaseService {
   public async validLocation(locationID: number): Promise<boolean> {
     const sql = `SELECT id FROM LocationType WHERE id = ?;`;
     const params = [locationID];
-    const rows: LocationType[] = await this.dbm.execute(sql, params);
+    const rows: LocationTypeID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }

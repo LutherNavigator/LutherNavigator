@@ -31,6 +31,13 @@ export interface RatingParams {
 }
 
 /**
+ * Rating with only ID architecture.
+ */
+interface RatingID {
+  id: string;
+}
+
+/**
  * Rating services.
  */
 export class RatingService extends BaseService {
@@ -67,7 +74,7 @@ export class RatingService extends BaseService {
   public async ratingExists(ratingID: string): Promise<boolean> {
     const sql = `SELECT id FROM Rating WHERE id = ?;`;
     const params = [ratingID];
-    const rows: Rating[] = await this.dbm.execute(sql, params);
+    const rows: RatingID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
