@@ -42,18 +42,20 @@ h4 {
   color: #e88900;
 }
 
-.fa-thumbs-up, .fa-thumbs-down {
+.fa-thumbs-up {
   color: #0064a1;
   font-size: 20px;
+  transition: 0.2s;
 }
 
-a:hover, i:hover {
+.fa-thumbs-up:hover {
   text-decoration: none;
   color: #000000;
+  transform: scale(1.2);
 }
 
 .location-info a {
-  color:#ffffff;
+  color: #ffffff;
   font-size: 11pt;
 }
 

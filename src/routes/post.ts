@@ -271,6 +271,8 @@ postRouter.get(
         : "http://" + post.website
       : null;
 
+    const upvoted = await dbm.postVoteService.voted(userID, postID);
+
     await renderPage(req, res, "post", {
       title: post.location,
       error,
@@ -292,6 +294,7 @@ postRouter.get(
       images,
       ratings,
       userPost: postUser.id === userID,
+      upvoted,
     });
   })
 );
