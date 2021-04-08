@@ -41,7 +41,7 @@ test("PostVote", async () => {
   );
   await dbm.postService.setPostImages(postID, [buf]);
 
-  const voteType = "Upvote";
+  const voteType = "Test vote type";
 
   // Check there are no votes on the post
   let postVotes = await dbm.postVoteService.getPostVotes(postID);
@@ -80,6 +80,20 @@ test("PostVote", async () => {
   expect(vote.postID).toBe(postID);
   expect(vote.voteType).toBe(voteType);
   expect(vote.createTime - getTime()).toBeLessThanOrEqual(3);
+
+  // Get vote type
+  const thisVoteType = await dbm.postVoteService.getPostVoteType(
+    userID,
+    postID
+  );
+  expect(thisVoteType).toBe(voteType);
+
+  // Get post vote count
+  const otherVoteType = "Other test vote type";
+  let numVotes = await dbm.postVoteService.getNumPostVotes(postID, voteType);
+  expect(numVotes).toBe(1);
+  numVotes = await dbm.postVoteService.getNumPostVotes(postID, otherVoteType);
+  expect(numVotes).toBe(0);
 
   // Get all votes
   const votes = await dbm.postVoteService.getVotes();

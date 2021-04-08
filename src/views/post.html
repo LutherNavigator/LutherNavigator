@@ -8,6 +8,7 @@
 />
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
 <link rel="stylesheet" type="text/css" href="/css/post.css" />
+<script type="text/javascript" src="/js/post.js"></script>
 
 <div class="div-center background-blue">
   <div class="div-center lg-width post-header">
@@ -23,11 +24,11 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-        <img
-          src="/img/toggle_menu.png"
-          class="delete-post-img"
-          alt="Three dots"
-        />
+          <img
+            src="/img/toggle_menu.png"
+            class="delete-post-img"
+            alt="Three dots"
+          />
           <!-- <i class="fas fa-ellipsis-h" aria-hidden="true"></i> -->
         </button>
         <div
@@ -118,24 +119,35 @@
     </div>
     {{/each}}
   </div>
-  <div class="row mb-3">
-    <div class="col-11">
+  <div class="col flex-between mb-3">
+    <div class="mr-2">
       <h3 class="tagline">{{ threeWords }}</h3>
-      <h4>{{ firstname }} {{ lastname }}, {{ status }}</h4>
-      <p class="post mb-4">
-        {{ program }} | Posted on <span class="timestamp">{{ createTime }}</span>
-      </p>
+      <ul class="short-list" id="post-details">
+        <li>{{ firstname}} {{ lastname }}</li>
+        <li>{{ status }}</li>
+        <li>{{ program }}</li>
+        <li><span class="timestamp-date">{{ createTime }}</span></li>
+      </ul>
     </div>
-    <div class="col-1">
-      <a href="/">
-        <i class="fas fa-thumbs-up"></i>
-      </a>
-      <p>0</p>
+    <div class="center">
+      {{#if loggedIn}}
+      <span onclick="toggleUpvote();">
+        {{#if upvoted}}
+        <i class="fas fa-thumbs-up" id="upvote"></i>
+        {{else}}
+        <i class="far fa-thumbs-up" id="upvote"></i>
+        {{/if}}
+      </span>
+      {{else}}
+      <span class="static-upvote">
+        <i class="far fa-thumbs-up" id="upvote"></i>
+      </span>
+      {{/if}}
+      <br />
+      <span id="num-upvotes">{{ numUpvotes }}</span>
     </div>
   </div>
-  <div class="col">
-    
-  </div>
+  <div class="col"></div>
   <div class="col post mb-5">
     <p>{{ content }}</p>
   </div>

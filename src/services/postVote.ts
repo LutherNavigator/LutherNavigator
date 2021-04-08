@@ -17,6 +17,20 @@ export interface PostVote {
 }
 
 /**
+ * Post vote with only vote type architecture.
+ */
+interface PostVoteType {
+  voteType: string;
+}
+
+/**
+ * Post vote count architecture.
+ */
+interface PostVoteCount {
+  count: number;
+}
+
+/**
  * Post vote services
  */
 export class PostVoteService extends BaseService {
@@ -125,6 +139,42 @@ export class PostVoteService extends BaseService {
     const rows: PostVote[] = await this.dbm.execute(sql, params);
 
     return rows;
+  }
+
+  /**
+   * Get the type of vote a user has made on a post.
+   *
+   * @param userID A user's ID.
+   * @param postID A post's ID.
+   * @returns The type of vote the user made on the post.
+   */
+  public async getPostVoteType(
+    userID: string,
+    postID: string
+  ): Promise<string> {
+    const sql = `SELECT voteType FROM PostVote WHERE userID = ? AND postID = ?;`;
+    const params = [userID, postID];
+    const rows: PostVoteType[] = await this.dbm.execute(sql, params);
+
+    return rows[0].voteType;
+  }
+
+  /**
+   * Get the number of votes a post has of a given vote type.
+   *
+   * @param postID A post's ID.
+   * @param voteType The type of vote.
+   * @returns The number of votes a post has of the given vote type.
+   */
+  public async getNumPostVotes(
+    postID: string,
+    voteType: string
+  ): Promise<number> {
+    const sql = `SELECT COUNT(*) AS count FROM PostVote WHERE postID = ? AND voteType = ?;`;
+    const params = [postID, voteType];
+    const rows: PostVoteCount[] = await this.dbm.execute(sql, params);
+
+    return rows[0].count;
   }
 
   /**
