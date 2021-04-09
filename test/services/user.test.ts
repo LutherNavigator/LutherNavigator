@@ -46,7 +46,7 @@ test("User", async () => {
   expect(user.approved).toBeFalsy();
   expect(user.admin).toBeFalsy();
   expect(user.imageID).toBeNull();
-  expect(user.joinTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - user.joinTime).toBeLessThanOrEqual(3);
   expect(user.lastLoginTime).toBeNull();
   expect(user.lastPostTime).toBeNull();
 
@@ -61,7 +61,7 @@ test("User", async () => {
   expect(user.approved).toBeFalsy();
   expect(user.admin).toBeFalsy();
   expect(user.imageID).toBeNull();
-  expect(user.joinTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - user.joinTime).toBeLessThanOrEqual(3);
   expect(user.lastLoginTime).toBeNull();
   expect(user.lastPostTime).toBeNull();
 
@@ -79,7 +79,7 @@ test("User", async () => {
   expect(unapprovedUser.lastname).toBe(lastname);
   expect(unapprovedUser.email).toBe(email);
   expect(unapprovedUser.status).toBe("Student");
-  expect(unapprovedUser.joinTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - unapprovedUser.joinTime).toBeLessThanOrEqual(3);
 
   // Log user in
   await dbm.userService.setVerified(userID);
@@ -89,7 +89,7 @@ test("User", async () => {
 
   // Check last login timestamp has changed
   user = await dbm.userService.getUser(userID);
-  expect(user.lastLoginTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - user.lastLoginTime).toBeLessThanOrEqual(3);
 
   // Attempt login with invalid email
   success = await dbm.userService.login(email + "a", password);
@@ -129,7 +129,7 @@ test("User", async () => {
   user = await dbm.userService.getUser(userID);
   expect(userImage.id).toBe(user.imageID);
   expect(userImage.data.toString()).toBe(buf.toString());
-  expect(userImage.registerTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - userImage.registerTime).toBeLessThanOrEqual(3);
 
   // Delete user image
   await dbm.userService.deleteUserImage(userID);
@@ -212,7 +212,7 @@ test("User", async () => {
   expect(lastPostTime).toBeNull();
   await dbm.userService.updateLastPostTime(userID);
   lastPostTime = (await dbm.userService.getUser(userID)).lastPostTime;
-  expect(lastPostTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - lastPostTime).toBeLessThanOrEqual(3);
 
   // Delete user
   await dbm.userService.deleteUser(userID);

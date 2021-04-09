@@ -53,7 +53,7 @@ test("Suspended", async () => {
   const suspension = await dbm.suspendedService.getSuspension(suspensionID);
   expect(suspension.id).toBe(suspensionID);
   expect(suspension.userID).toBe(userID);
-  expect(suspension.suspendedUntil - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - suspension.suspendedUntil).toBeLessThanOrEqual(3);
 
   // Check user is suspended
   suspended = await dbm.suspendedService.userIsSuspended(userID);

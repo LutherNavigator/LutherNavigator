@@ -75,24 +75,24 @@ test("AdminFavorites", async () => {
   expect(favorite1).not.toBeUndefined();
   expect(favorite1.id).toBe(favoriteID1);
   expect(favorite1.postID).toBe(postID1);
-  expect(favorite1.createTime - getTime()).toBeLessThanOrEqual(5);
+  expect(getTime() - favorite1.createTime).toBeLessThanOrEqual(5);
   let favorite2 = await dbm.adminFavoritesService.getFavorite(favoriteID2);
   expect(favorite2).not.toBeUndefined();
   expect(favorite2.id).toBe(favoriteID2);
   expect(favorite2.postID).toBe(postID2);
-  expect(favorite2.createTime - getTime()).toBeLessThanOrEqual(5);
+  expect(getTime() - favorite2.createTime).toBeLessThanOrEqual(5);
 
   // Get favorite records by post ID
   favorite1 = await dbm.adminFavoritesService.getFavoriteByPostID(postID1);
   expect(favorite1).not.toBeUndefined();
   expect(favorite1.id).toBe(favoriteID1);
   expect(favorite1.postID).toBe(postID1);
-  expect(favorite1.createTime - getTime()).toBeLessThanOrEqual(5);
+  expect(getTime() - favorite1.createTime).toBeLessThanOrEqual(5);
   favorite2 = await dbm.adminFavoritesService.getFavoriteByPostID(postID2);
   expect(favorite2).not.toBeUndefined();
   expect(favorite2.id).toBe(favoriteID2);
   expect(favorite2.postID).toBe(postID2);
-  expect(favorite2.createTime - getTime()).toBeLessThanOrEqual(5);
+  expect(getTime() - favorite2.createTime).toBeLessThanOrEqual(5);
 
   // Get all favorites
   let favorites = await dbm.adminFavoritesService.getFavorites();

@@ -79,7 +79,7 @@ test("PostVote", async () => {
   expect(vote.userID).toBe(userID);
   expect(vote.postID).toBe(postID);
   expect(vote.voteType).toBe(voteType);
-  expect(vote.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - vote.createTime).toBeLessThanOrEqual(3);
 
   // Get vote type
   const thisVoteType = await dbm.postVoteService.getPostVoteType(

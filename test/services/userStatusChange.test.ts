@@ -43,7 +43,7 @@ test("UserStatusChange", async () => {
   expect(request.id).toBe(requestID);
   expect(request.userID).toBe(userID);
   expect(request.newStatusID).toBe(newStatusID);
-  expect(request.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - request.createTime).toBeLessThanOrEqual(3);
 
   // Change status change request
   let requestID2 = await dbm.userStatusChangeService.createStatusChangeRequest(
@@ -77,7 +77,7 @@ test("UserStatusChange", async () => {
   expect(request.id).toBe(requestID);
   expect(request.userID).toBe(userID);
   expect(request.newStatusID).toBe(newStatusID);
-  expect(request.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - request.createTime).toBeLessThanOrEqual(3);
 
   // Get user requests
   const userRequests = await dbm.userStatusChangeService.getUserRequests();

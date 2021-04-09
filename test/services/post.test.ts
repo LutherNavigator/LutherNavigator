@@ -59,7 +59,7 @@ test("Post", async () => {
   );
   expect(postID.length).toBe(4);
   lastPostTime = (await dbm.userService.getUser(userID)).lastPostTime;
-  expect(lastPostTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - lastPostTime).toBeLessThanOrEqual(3);
 
   // Check post exists
   let postExists = await dbm.postService.postExists(postID);
@@ -79,7 +79,7 @@ test("Post", async () => {
   expect(post.phone).toBe(phone);
   expect(post.website).toBe(website);
   expect(post.approved).toBeFalsy();
-  expect(post.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - post.createTime).toBeLessThanOrEqual(3);
   expect(post.editTime).toBeNull();
 
   // Get unapproved posts
@@ -94,7 +94,7 @@ test("Post", async () => {
   expect(unapproved.locationType).toBe("Restaurant");
   expect(unapproved.program).toBe(programName);
   expect(unapproved.threeWords).toBe(threeWords);
-  expect(unapproved.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - unapproved.createTime).toBeLessThanOrEqual(3);
 
   // Get post user
   let postUser = await dbm.postService.getPostUser(postID);

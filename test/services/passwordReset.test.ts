@@ -59,7 +59,7 @@ test("PasswordReset", async () => {
   const resetRecord = await dbm.passwordResetService.getResetRecord(resetID);
   expect(resetRecord.id).toBe(resetID);
   expect(resetRecord.email).toBe(email);
-  expect(resetRecord.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - resetRecord.createTime).toBeLessThanOrEqual(3);
 
   // Delete reset record
   await dbm.passwordResetService.deleteResetRecord(resetID);

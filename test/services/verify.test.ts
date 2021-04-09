@@ -49,7 +49,7 @@ test("Verify", async () => {
   const verifyRecord = await dbm.verifyService.getVerifyRecord(verifyID);
   expect(verifyRecord.id).toBe(verifyID);
   expect(verifyRecord.email).toBe(email);
-  expect(verifyRecord.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - verifyRecord.createTime).toBeLessThanOrEqual(3);
 
   // Delete verification record
   await dbm.verifyService.deleteVerifyRecord(verifyID);
