@@ -6,7 +6,7 @@ test("UserStatus", async () => {
 
   // Get statuses
   const statuses = await dbm.userStatusService.getStatuses();
-  expect(statuses).toMatchObject([
+  expect(statuses).toEqual([
     { id: 1, name: "Student" },
     { id: 2, name: "Alum" },
     { id: 3, name: "Faculty/Staff" },

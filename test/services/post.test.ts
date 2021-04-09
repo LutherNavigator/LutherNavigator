@@ -34,7 +34,7 @@ test("Post", async () => {
   const rating = {
     general: 1,
     cost: 3,
-    safety: 7,
+    safety: 5,
   };
 
   const address = "111 W. Water St, Decorah, IA";
@@ -99,7 +99,7 @@ test("Post", async () => {
   // Get post user
   let postUser = await dbm.postService.getPostUser(postID);
   const user = await dbm.userService.getUser(userID);
-  expect(postUser).toMatchObject(user);
+  expect(postUser).toEqual(user);
   expect(postUser.id).toBe(user.id);
 
   // Get post user for invalid post
@@ -108,7 +108,15 @@ test("Post", async () => {
 
   // Get post rating
   let postRating = await dbm.postService.getPostRating(postID);
-  expect(postRating).toMatchObject(rating);
+  expect(postRating).toEqual({
+    id: post.ratingID,
+    general: rating.general,
+    cost: rating.cost,
+    quality: null,
+    safety: rating.safety,
+    cleanliness: null,
+    guestServices: null,
+  });
 
   // Get post rating for invalid post
   postRating = await dbm.postService.getPostRating("!!!!");
