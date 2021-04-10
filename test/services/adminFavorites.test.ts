@@ -22,6 +22,8 @@ test("AdminFavorites", async () => {
 
   const content = "Post content";
   const location = "Post location";
+  const city = "Decorah, IA";
+  const country = "USA";
   const locationTypeID = 6; // Restaurant
   const programID = 1;
   const threeWords = "Three word description";
@@ -34,6 +36,8 @@ test("AdminFavorites", async () => {
     content + " 1",
     [],
     location + " 1",
+    city,
+    country,
     locationTypeID,
     programID,
     rating,
@@ -46,6 +50,8 @@ test("AdminFavorites", async () => {
     content + " 2",
     [],
     location + " 2",
+    city,
+    country,
     locationTypeID,
     programID,
     rating,
