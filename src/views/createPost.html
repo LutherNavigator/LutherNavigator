@@ -21,8 +21,8 @@
 
       <div class="row align-items-center mt-4">
         <!-- Location name -->
-        <div class="col-6 col-sm-4 mb-3 form-group">
-          <label for="location">Location Name *</label>
+        <div class="col-12 col-sm-4 mb-3 form-group">
+          <label for="location">Location name *</label>
           {{#if form}}
           <input
             type="text"
@@ -44,9 +44,60 @@
           />
           {{/if}}
         </div>
-        <!-- Location type -->
+        <!-- City -->
         <div class="col-6 col-sm-4 mb-3 form-group">
-          <label for="locationType">Location Type *</label>
+          <label for="city">City *</label>
+          {{#if form}}
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="city"
+            name="city"
+            maxlength="255"
+            value="{{form.city}}"
+            required
+          />
+          {{else}}
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="city"
+            name="city"
+            maxlength="255"
+            required
+          />
+          {{/if}}
+        </div>
+        <!-- Country -->
+        <div class="col-6 col-sm-4 mb-3 form-group">
+          <label for="city">Country *</label>
+          {{#if form}}
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="country"
+            name="country"
+            maxlength="255"
+            value="{{form.country}}"
+            required
+          />
+          {{else}}
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="country"
+            name="country"
+            maxlength="255"
+            required
+          />
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row align-items-center">
+        <!-- Location type -->
+        <div class="col-6 mb-3 form-group">
+          <label for="locationType">Location type *</label>
           <select
             class="form-control clear-select"
             id="locationType"
@@ -66,7 +117,7 @@
           {{/if}}
         </div>
         <!-- Program -->
-        <div class="col-12 col-sm-4 mb-3 form-group">
+        <div class="col-6 mb-3 form-group">
           <label for="program">Program *</label>
           <select
             class="form-control clear-select"
@@ -106,7 +157,7 @@
 
       <!-- Three words -->
       <div class="col">
-        <label>Three Word Description</label>
+        <label>Three word description</label>
       </div>
       <div class="row align-items-center">
         <div class="col-12 col-sm-4 mb-3 form-group">
