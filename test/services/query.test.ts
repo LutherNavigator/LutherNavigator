@@ -22,6 +22,8 @@ test("Query", async () => {
 
   const content = "QUERY POST CONTENT";
   const location = "QUERY POST LOCATION";
+  const city = "Decorah, IA";
+  const country = "USA";
   const locationTypeID = 6; // Restaurant
   const programID = 1;
   const threeWords = "Three word description";
@@ -37,6 +39,8 @@ test("Query", async () => {
     content,
     [],
     location,
+    city,
+    country,
     locationTypeID,
     programID,
     rating,

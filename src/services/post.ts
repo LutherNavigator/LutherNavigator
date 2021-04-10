@@ -16,6 +16,8 @@ export interface Post {
   userID: string;
   content: string;
   location: string;
+  city: string;
+  country: string;
   locationTypeID: number;
   programID: number;
   ratingID: string;
@@ -81,6 +83,8 @@ export interface UnapprovedPost {
   lastname: string;
   content: string;
   location: string;
+  city: string;
+  country: string;
   locationType: string;
   program: string;
   threeWords: string;
@@ -105,6 +109,8 @@ export class PostService extends BaseService {
    * @param content The text content of the post.
    * @param imageData The binary data of the images associated with the post.
    * @param location The post's location.
+   * @param city The location's city.
+   * @param country The location's country.
    * @param locationTypeID The type ID of location.
    * @param programID The ID of the program the user is in.
    * @param rating The user's rating of the location.
@@ -119,6 +125,8 @@ export class PostService extends BaseService {
     content: string,
     imageData: Buffer[],
     location: string,
+    city: string,
+    country: string,
     locationTypeID: number,
     programID: number,
     rating: RatingParams,
@@ -133,11 +141,13 @@ export class PostService extends BaseService {
 
     const sql = `
       INSERT INTO Post (
-        id, userID, content, location, locationTypeID, programID, ratingID,
-        threeWords, currentUserStatusID, address, phone, website, createTime
+        id, userID, content, location, city, country, locationTypeID,
+        programID, ratingID, threeWords, currentUserStatusID, address, phone,
+        website, createTime
       ) VALUES (
         ?, ?, ?, ?, ?, ?, ?,
-        ?, ?, ?, ?, ?, ?
+        ?, ?, ?, ?, ?, ?,
+        ?, ?
       );
     `;
     const params = [
@@ -145,6 +155,8 @@ export class PostService extends BaseService {
       userID,
       content,
       location,
+      city,
+      country,
       locationTypeID,
       programID,
       ratingID,
@@ -384,7 +396,7 @@ export class PostService extends BaseService {
     const sql = `
       SELECT
         Post.id AS postID, User.firstname AS firstname,
-        User.lastname AS lastname, content, location,
+        User.lastname AS lastname, content, location, city, country,
         LocationType.name AS locationType, Program.name AS program,
         threeWords, createTime
       FROM Post

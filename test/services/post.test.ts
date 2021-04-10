@@ -23,6 +23,8 @@ test("Post", async () => {
 
   const content = "Hello, post!";
   const location = "Mabe's Pizza";
+  const city = "Decorah, IA";
+  const country = "USA";
   const locationTypeID = 6; // Restaurant
   const programID = 1;
   const programName = await dbm.programService.getProgramName(programID);
@@ -49,6 +51,8 @@ test("Post", async () => {
     content,
     [buf],
     location,
+    city,
+    country,
     locationTypeID,
     programID,
     rating,
@@ -71,6 +75,8 @@ test("Post", async () => {
   expect(post.userID).toBe(userID);
   expect(post.content).toBe(content);
   expect(post.location).toBe(location);
+  expect(post.city).toBe(city);
+  expect(post.country).toBe(country);
   expect(post.locationTypeID).toBe(locationTypeID);
   expect(post.programID).toBe(programID);
   expect(post.threeWords).toBe(threeWords);
@@ -91,6 +97,8 @@ test("Post", async () => {
   expect(unapproved.lastname).toBe(lastname);
   expect(unapproved.content).toBe(content);
   expect(unapproved.location).toBe(location);
+  expect(unapproved.city).toBe(city);
+  expect(unapproved.country).toBe(country);
   expect(unapproved.locationType).toBe("Restaurant");
   expect(unapproved.program).toBe(programName);
   expect(unapproved.threeWords).toBe(threeWords);
@@ -176,6 +184,8 @@ test("Post", async () => {
     content,
     [buf],
     location,
+    city,
+    country,
     locationTypeID,
     programID,
     rating,
@@ -203,6 +213,8 @@ test("Post", async () => {
     content,
     [buf],
     location,
+    city,
+    country,
     locationTypeID,
     programID,
     rating,

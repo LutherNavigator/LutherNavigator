@@ -180,6 +180,8 @@ export default async function initDB(
       userID              CHAR(4)      NOT NULL,
       content             VARCHAR(750) NOT NULL,
       location            VARCHAR(255) NOT NULL,
+      city                VARCHAR(255) NOT NULL,
+      country             VARCHAR(255) NOT NULL,
       locationTypeID      INT          NOT NULL,
       programID           INT UNSIGNED NOT NULL,
       ratingID            CHAR(4)      NOT NULL,

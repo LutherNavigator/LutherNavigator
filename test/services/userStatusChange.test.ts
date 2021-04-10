@@ -94,6 +94,8 @@ test("UserStatusChange", async () => {
   // Create new post
   const content = "Post content";
   const location = "Post location";
+  const city = "Decorah, IA";
+  const country = "USA";
   const locationTypeID = 6; // Restaurant
   const programID = 1;
   const threeWords = "Three word description";
@@ -106,6 +108,8 @@ test("UserStatusChange", async () => {
     content,
     [],
     location,
+    city,
+    country,
     locationTypeID,
     programID,
     rating,
