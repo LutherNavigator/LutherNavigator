@@ -21,7 +21,7 @@ test("Image", async () => {
   let image = await dbm.imageService.getImage(imageID);
   expect(image.id).toBe(imageID);
   expect(image.data.toString()).toBe(buf.toString());
-  expect(image.registerTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - image.registerTime).toBeLessThanOrEqual(3);
 
   // Get missing image
   image = await dbm.imageService.getImage("!!!!");

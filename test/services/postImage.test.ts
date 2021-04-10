@@ -28,7 +28,7 @@ test("PostImage", async () => {
   const rating = {
     general: 1,
     cost: 3,
-    safety: 7,
+    safety: 5,
   };
 
   // Create post
