@@ -13,7 +13,7 @@
 <div class="div-center background-blue">
   <div class="div-center lg-width post-header">
     <div class="flex-between">
-      <h1 class="mt-3 mb-3">{{ location }}</h1>
+      <h1 class="mt-3 mb-1">{{ location }}</h1>
       {{#if userPost}}
       <div class="dropdown mt-3 mr-3">
         <button
@@ -50,6 +50,9 @@
     </div>
     <div class="row">
       <h4 class="location-info mb-4 col-12 col-md-8">
+        <div class="row mb-2">
+          <h3>{{ city }}, {{ country }}</h3>
+        </div>
         {{#if address}}
         <div class="row mb-2">
           <a href="{{ addressURL }}" target="_blank">{{ address }}</a>
@@ -123,7 +126,7 @@
     <div class="mr-2">
       <h3 class="tagline">{{ threeWords }}</h3>
       <ul class="short-list" id="post-details">
-        <li>{{ firstname}} {{ lastname }}</li>
+        <li>{{ firstname }} {{ lastname }}</li>
         <li>{{ status }}</li>
         <li>{{ program }}</li>
         <li><span class="timestamp-date">{{ createTime }}</span></li>

@@ -286,6 +286,8 @@ postRouter.get(
       error,
       postID,
       location: post.location,
+      city: post.city,
+      country: post.country,
       firstname: postUser.firstname,
       lastname: postUser.lastname,
       status: postUserStatusName,
