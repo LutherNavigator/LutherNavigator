@@ -61,11 +61,13 @@ export class QueryService extends BaseService {
         AND (
              LOWER(Post.content)  LIKE LOWER(?)
           OR LOWER(Post.location) LIKE LOWER(?)
+          OR LOWER(Post.city)     LIKE LOWER(?)
+          OR LOWER(Post.country)  LIKE LOWER(?)
           OR LOWER(Program.name)  LIKE LOWER(?)
         )
       ORDER BY Post.createTime DESC;
     `;
-    const params = [searchLike, searchLike, searchLike];
+    const params = Array(5).fill(searchLike);
     const rows: QueryPost[] = await this.dbm.execute(sql, params);
 
     return rows;
@@ -116,6 +118,8 @@ export class QueryService extends BaseService {
     //   AND (
     //        LOWER(Post.content)  LIKE LOWER(%?%)
     //     OR LOWER(Post.location) LIKE LOWER(%?%)
+    //     OR LOWER(Post.city)     LIKE LOWER(%?%)
+    //     OR LOWER(Post.country)  LIKE LOWER(%?%)
     //     OR LOWER(Program.name)  LIKE LOWER(%?%)
     //   )
     //   AND Post.programID      IN (...)
@@ -148,9 +152,11 @@ export class QueryService extends BaseService {
         whereClause.push(`(
              LOWER(Post.content)  LIKE LOWER(?)
           OR LOWER(Post.location) LIKE LOWER(?)
+          OR LOWER(Post.city)     LIKE LOWER(?)
+          OR LOWER(Post.country)  LIKE LOWER(?)
           OR LOWER(Program.name)  LIKE LOWER(?)
         )`);
-        params.push(searchLike, searchLike, searchLike);
+        params.push(...Array(5).fill(searchLike));
       } else if (parameters[parameter].length > 0) {
         whereClause.push(`${whereOptions[parameter]} IN (?)`);
         params.push(parameters[parameter]);
