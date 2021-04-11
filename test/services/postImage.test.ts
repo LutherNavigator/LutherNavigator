@@ -21,6 +21,8 @@ test("PostImage", async () => {
 
   const content = "Hello, post!";
   const location = "Mabe's Pizza";
+  const city = "Decorah, IA";
+  const country = "USA";
   const locationTypeID = 6; // Restaurant
   const programID = 1;
   const threeWords = "Absolutely amazing pizza";
@@ -28,7 +30,7 @@ test("PostImage", async () => {
   const rating = {
     general: 1,
     cost: 3,
-    safety: 7,
+    safety: 5,
   };
 
   // Create post
@@ -37,6 +39,8 @@ test("PostImage", async () => {
     content,
     [],
     location,
+    city,
+    country,
     locationTypeID,
     programID,
     rating,

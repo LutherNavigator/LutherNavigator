@@ -38,10 +38,11 @@ function createPostRow(post) {
   const postID = newElement("td").append(postLink);
   const user = newElement("td").text(`${post.firstname} ${post.lastname}`);
   const location = newElement("td").text(post.location);
+  const city = newElement("td").text(post.city);
+  const country = newElement("td").text(post.country);
   const locationType = newElement("td").text(post.locationType);
   const program = newElement("td").text(post.program);
   const threeWords = newElement("td").text(post.threeWords);
-  const content = newElement("td").text(post.content);
   const createTime = newElement("td").text(
     new Date(parseInt(post.createTime) * 1000).toLocaleString()
   );
@@ -71,10 +72,11 @@ function createPostRow(post) {
     postID,
     user,
     location,
+    city,
+    country,
     locationType,
     program,
     threeWords,
-    content,
     createTime,
     approve
   );

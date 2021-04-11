@@ -6,7 +6,7 @@ test("LocationType", async () => {
 
   // Get locations
   const locations = await dbm.locationTypeService.getLocations();
-  expect(locations).toMatchObject([
+  expect(locations).toEqual([
     { id: 1, name: "Hotel" },
     { id: 2, name: "Hostel" },
     { id: 3, name: "B&B/Inn" },

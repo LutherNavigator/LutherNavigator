@@ -32,14 +32,18 @@ test("Session", async () => {
   let session = await dbm.sessionService.getSession(sessionID);
   expect(session.id).toBe(sessionID);
   expect(session.userID).toBe(userID);
-  expect(session.createTime - getTime()).toBeLessThanOrEqual(3);
-  expect(session.updateTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - session.createTime).toBeLessThanOrEqual(3);
+  expect(getTime() - session.updateTime).toBeLessThanOrEqual(3);
 
   // Get userID by sessionID
-  const sessionUserID = await dbm.sessionService.getUserIDBySessionID(
-    sessionID
-  );
+  let sessionUserID = await dbm.sessionService.getUserIDBySessionID(sessionID);
   expect(sessionUserID).toBe(userID);
+
+  // Get userID by sessionID for invalid sessionID
+  sessionUserID = await dbm.sessionService.getUserIDBySessionID(
+    "!!!!!!!!!!!!!!!!"
+  );
+  expect(sessionUserID).toBeUndefined();
 
   // Get user by sessionID
   const sessionUser = await dbm.sessionService.getUserBySessionID(sessionID);
@@ -57,7 +61,7 @@ test("Session", async () => {
   await dbm.sessionService.updateSession(sessionID, false);
   session = await dbm.sessionService.getSession(sessionID);
   expect(session.updateTime).toBeGreaterThan(previousUpdateTime);
-  expect(session.updateTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - session.updateTime).toBeLessThanOrEqual(3);
 
   // Get all sessions
   await wait(1000);

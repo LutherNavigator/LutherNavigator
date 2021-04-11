@@ -28,10 +28,26 @@ p {
 
 a:hover {
   color: black;
+  text-decoration: none;
 }
 
 .center {
   text-align: center;
+}
+
+.socials {
+  display: inline-block;
+}
+
+.socials a i,
+.socials a img {
+  transition: all ease 0.3s;
+}
+
+.socials a i:hover,
+.socials a img:hover {
+  transform: scale(1.1);
+  color: #ffffff;
 }
 
 .div-center {
@@ -160,8 +176,12 @@ header {
 
 /* spinning logos */
 @keyframes spinning {
-  from { transform: rotate(0deg) }
-  to { transform: rotate(360deg) }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {
@@ -223,6 +243,25 @@ footer a {
   color: white;
 }
 
+.luther {
+  margin: 0;
+  color: #ffffff;
+}
+
+/* .luther:hover {
+  box-shadow: 0 0px 10px 1px #ffffff;
+} */
+
+.fab {
+  font-size: 28pt;
+  vertical-align: middle;
+}
+
+footer a:hover,
+.socials a:hover {
+  text-decoration: none;
+}
+
 /* filtered post's div / index & query pages */
 .a-location {
   padding: 10px 0px;
@@ -239,6 +278,8 @@ footer a {
   border-radius: 10px;
   opacity: 35%;
   transition: 0.2s;
+  height: 220px;
+  object-fit: cover;
 }
 
 /* link for the post */
@@ -393,6 +434,25 @@ footer a {
   background-color: #0061a3;
 }
 
+.short-list {
+  padding-inline-start: 0;
+  margin-bottom: 0;
+}
+
+.short-list li {
+  list-style: none;
+  display: inline;
+}
+
+.short-list li:after {
+  content: " \2022  ";
+  padding: 0 8px;
+}
+
+.short-list li:last-child:after {
+  content: none;
+}
+
 /*tablet 768px*/
 @media screen and (min-width: 425px) {
   .tablet-content {
@@ -421,6 +481,16 @@ footer a {
 @media screen and (min-width: 576px) {
   .a-location {
     padding: 10px;
+  }
+
+  .a-location > img {
+    height: 250px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .a-location > img {
+    height: 140px;
   }
 
   .a-location > span {

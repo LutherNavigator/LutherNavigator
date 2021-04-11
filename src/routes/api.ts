@@ -4,7 +4,7 @@
  */
 
 import { Router } from "express";
-import { adminAuth, getDBM, getHostname } from "./util";
+import { auth, adminAuth, getDBM, getHostname, getUserID } from "./util";
 import { getTime } from "../services/util";
 import wrapRoute from "../asyncCatch";
 import { metaConfig } from "../config";
@@ -117,6 +117,26 @@ apiRouter.get(
     );
 
     res.end();
+  })
+);
+
+// Toggle a post as an admin favorite
+apiRouter.get(
+  "/toggleAdminFavorite",
+  adminAuth,
+  wrapRoute(async (req, res) => {
+    const dbm = getDBM(req);
+
+    const postID = req.query.postID as string;
+
+    const favorited = await dbm.adminFavoritesService.isFavorite(postID);
+    if (favorited) {
+      await dbm.adminFavoritesService.unfavorite(postID);
+    } else {
+      await dbm.adminFavoritesService.favorite(postID);
+    }
+
+    res.end((!favorited).toString());
   })
 );
 
@@ -488,5 +508,26 @@ apiRouter.get(
     await dbm.suspendedService.deleteSuspension(suspensionID);
 
     res.end();
+  })
+);
+
+// Toggle a user's upvote on a post
+apiRouter.get(
+  "/toggleUpvotePost",
+  auth,
+  wrapRoute(async (req, res) => {
+    const dbm = getDBM(req);
+
+    const userID = await getUserID(req);
+    const postID = req.query.postID as string;
+
+    const voted = await dbm.postVoteService.voted(userID, postID);
+    if (voted) {
+      await dbm.postVoteService.unvote(userID, postID);
+    } else {
+      await dbm.postVoteService.vote(userID, postID, "Upvote");
+    }
+
+    res.end((!voted).toString());
   })
 );

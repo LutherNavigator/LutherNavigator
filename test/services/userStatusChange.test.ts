@@ -43,7 +43,7 @@ test("UserStatusChange", async () => {
   expect(request.id).toBe(requestID);
   expect(request.userID).toBe(userID);
   expect(request.newStatusID).toBe(newStatusID);
-  expect(request.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - request.createTime).toBeLessThanOrEqual(3);
 
   // Change status change request
   let requestID2 = await dbm.userStatusChangeService.createStatusChangeRequest(
@@ -77,23 +77,25 @@ test("UserStatusChange", async () => {
   expect(request.id).toBe(requestID);
   expect(request.userID).toBe(userID);
   expect(request.newStatusID).toBe(newStatusID);
-  expect(request.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - request.createTime).toBeLessThanOrEqual(3);
 
   // Get user requests
   const userRequests = await dbm.userStatusChangeService.getUserRequests();
   expect(userRequests.length).toBeGreaterThanOrEqual(1);
   const userRequest = getByProp(userRequests, "requestID", requestID);
-  expect(userRequest["userID"]).toBe(userID);
+  expect(userRequest.userID).toBe(userID);
   expect(userRequest.firstname).toBe(firstname);
   expect(userRequest.lastname).toBe(lastname);
   expect(userRequest.email).toBe(email);
-  expect(userRequest["status"]).toBe("Student");
-  expect(userRequest["newStatus"]).toBe("Alum");
-  expect(userRequest["requestID"]).toBe(requestID);
+  expect(userRequest.status).toBe("Student");
+  expect(userRequest.newStatus).toBe("Alum");
+  expect(userRequest.requestID).toBe(requestID);
 
   // Create new post
-  const content = "QUERY POST CONTENT";
-  const location = "QUERY POST LOCATION";
+  const content = "Post content";
+  const location = "Post location";
+  const city = "Decorah, IA";
+  const country = "USA";
   const locationTypeID = 6; // Restaurant
   const programID = 1;
   const threeWords = "Three word description";
@@ -106,6 +108,8 @@ test("UserStatusChange", async () => {
     content,
     [],
     location,
+    city,
+    country,
     locationTypeID,
     programID,
     rating,
@@ -118,6 +122,15 @@ test("UserStatusChange", async () => {
   // Approve request
   let user = await dbm.userService.getUser(userID);
   expect(user.statusID).toBe(statusID);
+  await dbm.userStatusChangeService.approveStatusChangeRequest(requestID);
+  exists = await dbm.userStatusChangeService.statusChangeRequestExists(
+    requestID
+  );
+  expect(exists).toBe(false);
+  user = await dbm.userService.getUser(userID);
+  expect(user.statusID).toBe(newStatusID);
+
+  // Try to approve the request again
   await dbm.userStatusChangeService.approveStatusChangeRequest(requestID);
   exists = await dbm.userStatusChangeService.statusChangeRequestExists(
     requestID

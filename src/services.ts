@@ -6,12 +6,14 @@
 import { DB } from "./db";
 
 import { AdminService } from "./services/admin";
+import { AdminFavoritesService } from "./services/adminFavorites";
 import { ImageService } from "./services/image";
 import { LocationTypeService } from "./services/locationType";
 import { MetaService } from "./services/meta";
 import { PasswordResetService } from "./services/passwordReset";
 import { PostService } from "./services/post";
 import { PostImageService } from "./services/postImage";
+import { PostVoteService } from "./services/postVote";
 import { ProgramService } from "./services/program";
 import { QueryService } from "./services/query";
 import { RatingService } from "./services/rating";
@@ -25,12 +27,14 @@ import { VerifyService } from "./services/verify";
 export default class DatabaseManager {
   readonly db: DB;
   readonly adminService: AdminService;
+  readonly adminFavoritesService: AdminFavoritesService;
   readonly imageService: ImageService;
   readonly locationTypeService: LocationTypeService;
   readonly metaService: MetaService;
   readonly passwordResetService: PasswordResetService;
   readonly postService: PostService;
   readonly postImageService: PostImageService;
+  readonly postVoteService: PostVoteService;
   readonly programService: ProgramService;
   readonly queryService: QueryService;
   readonly ratingService: RatingService;
@@ -44,12 +48,14 @@ export default class DatabaseManager {
   constructor(dbURL: string) {
     this.db = new DB(dbURL);
     this.adminService = new AdminService(this);
+    this.adminFavoritesService = new AdminFavoritesService(this);
     this.imageService = new ImageService(this);
     this.locationTypeService = new LocationTypeService(this);
     this.metaService = new MetaService(this);
     this.passwordResetService = new PasswordResetService(this);
     this.postService = new PostService(this);
     this.postImageService = new PostImageService(this);
+    this.postVoteService = new PostVoteService(this);
     this.programService = new ProgramService(this);
     this.queryService = new QueryService(this);
     this.ratingService = new RatingService(this);

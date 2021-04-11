@@ -180,6 +180,8 @@ export default async function initDB(
       userID              CHAR(4)      NOT NULL,
       content             VARCHAR(750) NOT NULL,
       location            VARCHAR(255) NOT NULL,
+      city                VARCHAR(255) NOT NULL,
+      country             VARCHAR(255) NOT NULL,
       locationTypeID      INT          NOT NULL,
       programID           INT UNSIGNED NOT NULL,
       ratingID            CHAR(4)      NOT NULL,
@@ -293,6 +295,35 @@ export default async function initDB(
       PRIMARY KEY (name)
     );
   `; // MySQL fails to parse 'key' as a column name, so we use 'name' instead
+  const adminFavoritesTable = `
+    CREATE TABLE IF NOT EXISTS AdminFavorites (
+      id         CHAR(4)      NOT NULL,
+      postID     CHAR(4)      NOT NULL,
+      createTime INT UNSIGNED NOT NULL,
+
+      PRIMARY KEY (id),
+
+      FOREIGN KEY (postID)
+        REFERENCES Post (id)
+    );
+  `;
+  const postVoteTable = `
+    CREATE TABLE IF NOT EXISTS PostVote (
+      id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+      userID     CHAR(4)      NOT NULL,
+      postID     CHAR(4)      NOT NULL,
+      voteType   VARCHAR(64)  NOT NULL,
+      createTime INT UNSIGNED NOT NULL,
+
+      PRIMARY KEY (id),
+
+      FOREIGN KEY (userID)
+        REFERENCES User (id),
+
+      FOREIGN KEY (postID)
+        REFERENCES Post (id)
+    );
+  `;
   await dbm.db.executeMany([
     imageTable,
     userStatusTable,
@@ -308,6 +339,8 @@ export default async function initDB(
     userStatusChangeTable,
     suspendedTable,
     metaTable,
+    adminFavoritesTable,
+    postVoteTable,
   ]);
 
   // Create triggers

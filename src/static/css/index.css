@@ -13,7 +13,8 @@
 }
 
 .adv-search,
-.intro-text {
+.intro-text,
+.zoom a i {
   color: #ffffff;
 }
 
@@ -21,13 +22,13 @@
   text-align: left;
 }
 
-.intro-text i {
-  font-size: 48pt;
+.zoom a i {
+  font-size: 40pt;
+  transition: all ease 500ms;
 }
 
-.zoom i:hover{
+.zoom a i:hover{
   transform: scale(1.1);
-  transition: all ease 500ms;
 }
 
 .home-card {
@@ -49,11 +50,11 @@
     padding: 20px;
   }
 
-  .intro-text i {
-    font-size: 36pt;
+  .zoom a i {
+    font-size: 32pt;
   }
 
-  .zoom i:hover{
+  .zoom a i:hover{
     transform: scale(1.25);
   }
 }

@@ -90,6 +90,8 @@ postRouter.post(
     const content: string = req.body.postContent;
     const files = req.files as Express.Multer.File[];
     const location: string = req.body.location;
+    const city: string = req.body.city;
+    const country: string = req.body.country;
     const locationTypeID: number = parseInt(req.body.locationType) || 0;
     const programID: number = parseInt(req.body.program);
     const threeWords = [
@@ -185,6 +187,8 @@ postRouter.post(
         content,
         imageData,
         location,
+        city,
+        country,
         locationTypeID,
         programID,
         rating,
@@ -271,11 +275,19 @@ postRouter.get(
         : "http://" + post.website
       : null;
 
+    const upvoted = await dbm.postVoteService.voted(userID, postID);
+    const numUpvotes = await dbm.postVoteService.getNumPostVotes(
+      postID,
+      "Upvote"
+    );
+
     await renderPage(req, res, "post", {
       title: post.location,
       error,
       postID,
       location: post.location,
+      city: post.city,
+      country: post.country,
       firstname: postUser.firstname,
       lastname: postUser.lastname,
       status: postUserStatusName,
@@ -292,6 +304,8 @@ postRouter.get(
       images,
       ratings,
       userPost: postUser.id === userID,
+      upvoted,
+      numUpvotes,
     });
   })
 );

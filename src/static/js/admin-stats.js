@@ -58,6 +58,36 @@ function deleteCurrentPost() {
   deletePost(currentPostID, reason);
 }
 
+// Toggle favoriting/unfavoriting a post
+function toggleFavoritePost(postID) {
+  $.ajax({
+    url: "/api/toggleAdminFavorite",
+    data: {
+      postID,
+    },
+    success: () => {
+      hideError();
+      updateNotifications();
+      populateStats();
+      populateUsers();
+      populatePosts();
+    },
+    error: () => {
+      showError("Failed to favorite post");
+    },
+  });
+}
+
+// Toggle favorite heart icon
+function toggleFavoriteHeart(postID) {
+  const favorited = $(`#favorite-${postID}.fas`).length === 0;
+  if (favorited) {
+    $(`#favorite-${postID}`).removeClass("far").addClass("fas");
+  } else {
+    $(`#favorite-${postID}`).removeClass("fas").addClass("far");
+  }
+}
+
 // Create a row in the users table
 function createUserRow(user) {
   const userID = newElement("td").text(user.userID);
@@ -124,6 +154,17 @@ function createPostRow(post) {
   const createTime = newElement("td").text(
     new Date(parseInt(post.createTime) * 1000).toLocaleString()
   );
+  const favoriteHeart = newElement("span")
+    .html(
+      `<i id="favorite-${post.postID}" class="${
+        post.adminFavorite ? "fas" : "far"
+      } fa-heart"></i>`
+    )
+    .click(() => {
+      toggleFavoritePost(post.postID);
+      toggleFavoriteHeart(post.postID);
+    });
+  const favoriteButton = newElement("td").append(favoriteHeart);
   const deletePostButton = newElement("button")
     .addClass("btn btn-danger")
     .attr({
@@ -143,6 +184,7 @@ function createPostRow(post) {
     rating,
     approved,
     createTime,
+    favoriteButton,
     deletePost
   );
   return row;

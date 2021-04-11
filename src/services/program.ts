@@ -14,6 +14,34 @@ export interface Program {
 }
 
 /**
+ * Program with only ID architecture.
+ */
+interface ProgramID {
+  id: number;
+}
+
+/**
+ * Program with only name architecture.
+ */
+interface ProgramName {
+  name: string;
+}
+
+/**
+ * Program count architecture.
+ */
+interface ProgramCount {
+  count: number;
+}
+
+/**
+ * Program with last insert ID architecture.
+ */
+interface ProgramInsertID {
+  id: number;
+}
+
+/**
  * Program services.
  */
 export class ProgramService extends BaseService {
@@ -33,9 +61,12 @@ export class ProgramService extends BaseService {
     `;
     const sql2 = `SELECT LAST_INSERT_ID() AS id;`;
     const params1 = [name];
-    const rows = await this.dbm.db.executeMany([sql1, sql2], [params1, []]);
+    const rows: ProgramInsertID[][] = await this.dbm.db.executeMany(
+      [sql1, sql2],
+      [params1, []]
+    );
 
-    return rows[1][0]?.id;
+    return rows[1][0].id;
   }
 
   /**
@@ -47,7 +78,7 @@ export class ProgramService extends BaseService {
   public async programExists(programID: number): Promise<boolean> {
     const sql = `SELECT id FROM Program WHERE id = ?;`;
     const params = [programID];
-    const rows: Program[] = await this.dbm.execute(sql, params);
+    const rows: ProgramID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
@@ -85,7 +116,7 @@ export class ProgramService extends BaseService {
   public async getProgramName(programID: number): Promise<string> {
     const sql = `SELECT name FROM Program WHERE id = ?;`;
     const params = [programID];
-    const rows: Program[] = await this.dbm.execute(sql, params);
+    const rows: ProgramName[] = await this.dbm.execute(sql, params);
 
     return rows[0].name;
   }
@@ -125,10 +156,10 @@ export class ProgramService extends BaseService {
    * @returns The number of linked posts.
    */
   public async numLinkedPosts(programID: number): Promise<number> {
-    const sql = `SELECT COUNT(*) AS posts FROM Post WHERE programID = ?;`;
+    const sql = `SELECT COUNT(*) AS count FROM Post WHERE programID = ?;`;
     const params = [programID];
-    const rows = await this.dbm.execute(sql, params);
+    const rows: ProgramCount[] = await this.dbm.execute(sql, params);
 
-    return rows[0].posts;
+    return rows[0].count;
   }
 }

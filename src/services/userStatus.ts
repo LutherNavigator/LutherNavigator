@@ -14,6 +14,20 @@ export interface UserStatus {
 }
 
 /**
+ * User status with only ID architecture.
+ */
+interface UserStatusID {
+  id: number;
+}
+
+/**
+ * User status with only name architecture.
+ */
+interface UserStatusName {
+  name: string;
+}
+
+/**
  * User status services.
  */
 export class UserStatusService extends BaseService {
@@ -23,7 +37,7 @@ export class UserStatusService extends BaseService {
    * @returns A list of all user statuses.
    */
   public async getStatuses(): Promise<UserStatus[]> {
-    const sql = `SELECT id, name FROM UserStatus ORDER BY id;`;
+    const sql = `SELECT * FROM UserStatus ORDER BY id;`;
     const rows: UserStatus[] = await this.dbm.execute(sql);
 
     return rows;
@@ -38,7 +52,7 @@ export class UserStatusService extends BaseService {
   public async getStatusName(statusID: number): Promise<string> {
     const sql = `SELECT name FROM UserStatus WHERE id = ?;`;
     const params = [statusID];
-    const rows: UserStatus[] = await this.dbm.execute(sql, params);
+    const rows: UserStatusName[] = await this.dbm.execute(sql, params);
 
     return rows[0]?.name;
   }
@@ -52,7 +66,7 @@ export class UserStatusService extends BaseService {
   public async validStatus(statusID: number): Promise<boolean> {
     const sql = `SELECT id FROM UserStatus WHERE id = ?;`;
     const params = [statusID];
-    const rows: UserStatus[] = await this.dbm.execute(sql, params);
+    const rows: UserStatusID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }

@@ -70,6 +70,7 @@ app.use(express.static("static"));
 app.use("/", routes.indexRouter);
 app.use("/admin", routes.adminRouter);
 app.use("/api", routes.apiRouter);
+app.use("/cgl-favorites", routes.cglFavoritesRouter);
 app.use("/image", routes.imageRouter);
 app.use("/login", routes.loginRouter);
 app.use("/logout", routes.logoutRouter);

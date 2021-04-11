@@ -42,18 +42,24 @@ h4 {
   color: #e88900;
 }
 
-.fa-thumbs-up, .fa-thumbs-down {
-  color: #0064a1;
+.fa-thumbs-up {
+  color: #0069ab;
   font-size: 20px;
+  transition: 0.2s;
 }
 
-a:hover, i:hover {
-  text-decoration: none;
-  color: #000000;
+.fa-thumbs-up:hover {
+  color: #0083d5;
+  transform: scale(1.2);
+}
+
+.static-upvote .fa-thumbs-up:hover {
+  color: #0069ab;
+  transform: none;
 }
 
 .location-info a {
-  color:#ffffff;
+  color: #ffffff;
   font-size: 11pt;
 }
 
@@ -69,4 +75,12 @@ a:hover, i:hover {
   width: 25px;
   height: 25px;
   transform: rotate(90deg);
+}
+
+#post-details {
+  color: #808080;
+}
+
+#post-details li:after {
+  color: black;
 }

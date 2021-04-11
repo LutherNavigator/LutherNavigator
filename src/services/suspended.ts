@@ -17,6 +17,22 @@ export interface Suspended {
 }
 
 /**
+ * Suspended with only ID architecture.
+ */
+interface SuspendedID {
+  id: string;
+}
+
+/**
+ * Suspended user architecture.
+ */
+export interface SuspendedUser extends User {
+  status: string;
+  suspensionID: string;
+  suspendedUntil: number;
+}
+
+/**
  * Suspended services.
  */
 export class SuspendedService extends BaseService {
@@ -37,7 +53,7 @@ export class SuspendedService extends BaseService {
 
     let sql = `SELECT id FROM Suspended WHERE userID = ?;`;
     let params: any[] = [userID];
-    const rows: Suspended[] = await this.dbm.execute(sql, params);
+    const rows: SuspendedID[] = await this.dbm.execute(sql, params);
 
     if (rows.length === 0) {
       sql = `
@@ -57,6 +73,8 @@ export class SuspendedService extends BaseService {
       }
 
       return suspensionID;
+    } else {
+      return null;
     }
   }
 
@@ -69,7 +87,7 @@ export class SuspendedService extends BaseService {
   public async suspensionExists(suspensionID: string): Promise<boolean> {
     const sql = `SELECT id FROM Suspended WHERE id = ?;`;
     const params = [suspensionID];
-    const rows: Suspended[] = await this.dbm.execute(sql, params);
+    const rows: SuspendedID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
@@ -108,7 +126,7 @@ export class SuspendedService extends BaseService {
   public async userIsSuspended(userID: string): Promise<boolean> {
     const sql = `SELECT id FROM Suspended WHERE userID = ?;`;
     const params = [userID];
-    const rows: Suspended[] = await this.dbm.execute(sql, params);
+    const rows: SuspendedID[] = await this.dbm.execute(sql, params);
 
     return rows.length > 0;
   }
@@ -118,7 +136,7 @@ export class SuspendedService extends BaseService {
    *
    * @returns All suspended users
    */
-  public async suspendedUsers(): Promise<User[]> {
+  public async suspendedUsers(): Promise<SuspendedUser[]> {
     const sql = `
       SELECT
           User.*, UserStatus.name AS status, Suspended.id AS suspensionID,
@@ -128,7 +146,7 @@ export class SuspendedService extends BaseService {
         JOIN UserStatus ON User.statusID = UserStatus.id
       ORDER BY Suspended.suspendedUntil;
     `;
-    const rows: User[] = await this.dbm.execute(sql);
+    const rows: SuspendedUser[] = await this.dbm.execute(sql);
 
     return rows;
   }

@@ -46,7 +46,7 @@ test("User", async () => {
   expect(user.approved).toBeFalsy();
   expect(user.admin).toBeFalsy();
   expect(user.imageID).toBeNull();
-  expect(user.joinTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - user.joinTime).toBeLessThanOrEqual(3);
   expect(user.lastLoginTime).toBeNull();
   expect(user.lastPostTime).toBeNull();
 
@@ -61,7 +61,7 @@ test("User", async () => {
   expect(user.approved).toBeFalsy();
   expect(user.admin).toBeFalsy();
   expect(user.imageID).toBeNull();
-  expect(user.joinTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - user.joinTime).toBeLessThanOrEqual(3);
   expect(user.lastLoginTime).toBeNull();
   expect(user.lastPostTime).toBeNull();
 
@@ -74,12 +74,12 @@ test("User", async () => {
   let unapproved = await dbm.userService.getUnapproved();
   expect(unapproved.length).toBeGreaterThanOrEqual(1);
   const unapprovedUser = getByProp(unapproved, "userID", userID);
-  expect(unapprovedUser["userID"]).toBe(userID);
+  expect(unapprovedUser.userID).toBe(userID);
   expect(unapprovedUser.firstname).toBe(firstname);
   expect(unapprovedUser.lastname).toBe(lastname);
   expect(unapprovedUser.email).toBe(email);
-  expect(unapprovedUser["status"]).toBe("Student");
-  expect(unapprovedUser.joinTime - getTime()).toBeLessThanOrEqual(3);
+  expect(unapprovedUser.status).toBe("Student");
+  expect(getTime() - unapprovedUser.joinTime).toBeLessThanOrEqual(3);
 
   // Log user in
   await dbm.userService.setVerified(userID);
@@ -89,7 +89,7 @@ test("User", async () => {
 
   // Check last login timestamp has changed
   user = await dbm.userService.getUser(userID);
-  expect(user.lastLoginTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - user.lastLoginTime).toBeLessThanOrEqual(3);
 
   // Attempt login with invalid email
   success = await dbm.userService.login(email + "a", password);
@@ -104,30 +104,48 @@ test("User", async () => {
   const statusName = await dbm.userStatusService.getStatusName(statusID);
   expect(userStatusName).toBe(statusName);
 
+  // Get user status name for invalid user
+  const userStatusName2 = await dbm.userService.getUserStatusName("!!!!");
+  expect(userStatusName2).toBeUndefined();
+
   // Get null user image
   let userImage = await dbm.userService.getUserImage(userID);
   expect(userImage).toBe(undefined);
+
+  // Get user image for invalid user
+  userImage = await dbm.userService.getUserImage("!!!!");
+  expect(userImage).toBeUndefined();
 
   // Set user image
   const len = Math.floor(Math.random() * 63) + 1;
   const buf = crypto.randomBytes(len);
   await dbm.userService.setUserImage(userID, buf);
 
+  // Set user image for invalid user
+  await dbm.userService.setUserImage("!!!!", buf);
+
   // Get new user image
   userImage = await dbm.userService.getUserImage(userID);
   user = await dbm.userService.getUser(userID);
   expect(userImage.id).toBe(user.imageID);
   expect(userImage.data.toString()).toBe(buf.toString());
-  expect(userImage.registerTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - userImage.registerTime).toBeLessThanOrEqual(3);
 
   // Delete user image
   await dbm.userService.deleteUserImage(userID);
   userImage = await dbm.userService.getUserImage(userID);
   expect(userImage).toBe(undefined);
 
+  // Delete user image for invalid user
+  await dbm.userService.deleteUserImage("!!!!");
+
   // Check if user is verified
   await dbm.userService.setVerified(userID, false);
   let verified = await dbm.userService.isVerified(userID);
+  expect(verified).toBe(false);
+
+  // Check if user is verified for invalid user
+  verified = await dbm.userService.isVerified("!!!!");
   expect(verified).toBe(false);
 
   // Set user to verified
@@ -140,6 +158,10 @@ test("User", async () => {
   let approved = await dbm.userService.isApproved(userID);
   expect(approved).toBe(false);
 
+  // Check is user has been approved for invalid user
+  approved = await dbm.userService.isApproved("!!!!");
+  expect(approved).toBe(false);
+
   // Set user to approved
   await dbm.userService.setApproved(userID);
   approved = await dbm.userService.isApproved(userID);
@@ -149,8 +171,18 @@ test("User", async () => {
   let admin = await dbm.userService.isAdmin(userID);
   expect(admin).toBe(false);
 
+  // Check if user is an admin for invalid user
+  admin = await dbm.userService.isAdmin("!!!!");
+  expect(admin).toBe(false);
+
   // Make user an admin
   await dbm.userService.setAdmin(userID);
+  admin = await dbm.userService.isAdmin(userID);
+  expect(admin).toBe(true);
+  await dbm.userService.setAdmin(userID, false);
+  admin = await dbm.userService.isAdmin(userID);
+  expect(admin).toBe(false);
+  await dbm.userService.setAdmin(userID, true);
   admin = await dbm.userService.isAdmin(userID);
   expect(admin).toBe(true);
 
@@ -180,7 +212,7 @@ test("User", async () => {
   expect(lastPostTime).toBeNull();
   await dbm.userService.updateLastPostTime(userID);
   lastPostTime = (await dbm.userService.getUser(userID)).lastPostTime;
-  expect(lastPostTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - lastPostTime).toBeLessThanOrEqual(3);
 
   // Delete user
   await dbm.userService.deleteUser(userID);

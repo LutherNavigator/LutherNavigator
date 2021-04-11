@@ -49,7 +49,7 @@ test("Verify", async () => {
   const verifyRecord = await dbm.verifyService.getVerifyRecord(verifyID);
   expect(verifyRecord.id).toBe(verifyID);
   expect(verifyRecord.email).toBe(email);
-  expect(verifyRecord.createTime - getTime()).toBeLessThanOrEqual(3);
+  expect(getTime() - verifyRecord.createTime).toBeLessThanOrEqual(3);
 
   // Delete verification record
   await dbm.verifyService.deleteVerifyRecord(verifyID);
@@ -93,7 +93,7 @@ test("Verify", async () => {
   );
   let userExists = await dbm.userService.userExists(userID4);
   expect(userExists).toBe(true);
-  const userVerified = await dbm.userService.isVerified(userID4);
+  let userVerified = await dbm.userService.isVerified(userID4);
   expect(userVerified).toBe(false);
   await dbm.verifyService.deleteUnverifiedUser(verifyID5);
   userExists = await dbm.userService.userExists(userID4);
@@ -101,15 +101,52 @@ test("Verify", async () => {
   recordExists = await dbm.verifyService.verifyRecordExists(verifyID5);
   expect(recordExists).toBe(false);
 
-  // Attempt to verify a user that does not exist
+  // Attempt to delete verified user
   const verifyID6 = await dbm.verifyService.createVerifyRecord(email, false);
-  success = await dbm.verifyService.verifyUser(verifyID6);
+  const userID5 = await dbm.userService.createUser(
+    firstname,
+    lastname,
+    email,
+    password,
+    statusID
+  );
+  userExists = await dbm.userService.userExists(userID5);
+  expect(userExists).toBe(true);
+  await dbm.userService.setVerified(userID5);
+  userVerified = await dbm.userService.isVerified(userID5);
+  expect(userVerified).toBe(true);
+  await dbm.verifyService.deleteUnverifiedUser(verifyID6);
+  userExists = await dbm.userService.userExists(userID5);
+  expect(userExists).toBe(true);
+  recordExists = await dbm.verifyService.verifyRecordExists(verifyID6);
+  expect(recordExists).toBe(false);
+  await dbm.userService.deleteUser(userID5);
+
+  // Attempt to verify a user that does not exist
+  const verifyID7 = await dbm.verifyService.createVerifyRecord(email, false);
+  success = await dbm.verifyService.verifyUser(verifyID7);
   expect(success).toBe(false);
 
   // Attempt to create a record with the same email
-  const verifyID7 = await dbm.verifyService.createVerifyRecord(email, false);
-  expect(verifyID7).toBeNull();
-  await dbm.verifyService.deleteVerifyRecord(verifyID6);
+  const verifyID8 = await dbm.verifyService.createVerifyRecord(email, false);
+  expect(verifyID8).toBeNull();
+  await dbm.verifyService.deleteVerifyRecord(verifyID8);
+
+  // Attempt to verify a user with an email that does not exist
+  const verifyID9 = await dbm.verifyService.createVerifyRecord(
+    "fake_email",
+    false
+  );
+  success = await dbm.verifyService.verifyUser(verifyID9);
+  expect(success).toBe(false);
+
+  // Attempt to create multiple verification records for one user
+  const email2 = "email2";
+  const verifyID10 = await dbm.verifyService.createVerifyRecord(email2, false);
+  expect(verifyID10).not.toBeNull();
+  const verifyID11 = await dbm.verifyService.createVerifyRecord(email2, false);
+  expect(verifyID11).toBeNull();
+  await dbm.verifyService.deleteVerifyRecord(verifyID10);
 
   await closeDBM(dbm);
 });

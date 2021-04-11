@@ -7,7 +7,7 @@ test("Rating", async () => {
   const rating = {
     general: 1,
     cost: 3,
-    safety: 7,
+    safety: 5,
   };
 
   // Create rating
@@ -20,7 +20,15 @@ test("Rating", async () => {
 
   // Get rating
   let rating2 = await dbm.ratingService.getRating(ratingID);
-  expect(rating2).toMatchObject(rating);
+  expect(rating2).toEqual({
+    id: ratingID,
+    general: rating.general,
+    cost: rating.cost,
+    quality: null,
+    safety: rating.safety,
+    cleanliness: null,
+    guestServices: null,
+  });
 
   // Get missing rating
   rating2 = await dbm.ratingService.getRating("!!!!");
