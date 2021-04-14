@@ -156,6 +156,10 @@ postRouter.post(
       );
     } else if (location.length <= 0 || location.length > 255) {
       setErrorMessage(res, "Location name must be less than 256 characters");
+    } else if (city.length <= 0 || city.length > 255) {
+      setErrorMessage(res, "City name must be less than 256 characters");
+    } else if (country.length <= 0 || country.length > 255) {
+      setErrorMessage(res, "Country name must be less than 256 characters");
     } else if (!validLocationTypeID) {
       setErrorMessage(res, "Invalid location type");
     } else if (threeWords.length < 0 || threeWords.length > 63) {
