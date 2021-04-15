@@ -28,4 +28,6 @@ function showElement(elementID) {
 // When page loads
 window.addEventListener("load", () => {
   improveTimestamps();
+
+  $('[data-toggle="popover"]').popover();
 });

@@ -147,6 +147,15 @@ header {
   background-color: #0061a3;
 }
 
+.navbar #nav-logo {
+  cursor: pointer;
+}
+
+.navbar #nav-logo:hover {
+  -webkit-filter: invert(1);
+  filter: invert(1);
+}
+
 /* NAVBAR is header*/
 .navbar-light .navbar-brand {
   color: white;
