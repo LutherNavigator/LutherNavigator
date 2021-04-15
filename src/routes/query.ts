@@ -66,7 +66,9 @@ queryRouter.get(
         sortBy !== "locationType" &&
         sortBy !== "userStatus" &&
         sortBy !== "rating" &&
-        sortBy !== "timestamp"
+        sortBy !== "timestamp" &&
+        sortBy !== "city" &&
+        sortBy !== "country"
       ) {
         sortBy = "timestamp";
         sortOrder = false;
