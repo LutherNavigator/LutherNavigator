@@ -3,6 +3,7 @@
  * @packageDocumentation
  */
 
+export * from "./routes/about";
 export * from "./routes/admin";
 export * from "./routes/api";
 export * from "./routes/cglFavorites";

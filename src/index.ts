@@ -68,6 +68,7 @@ app.use(express.static("static"));
 
 // Use routes
 app.use("/", routes.indexRouter);
+app.use("/about", routes.aboutRouter);
 app.use("/admin", routes.adminRouter);
 app.use("/api", routes.apiRouter);
 app.use("/cgl-favorites", routes.cglFavoritesRouter);
