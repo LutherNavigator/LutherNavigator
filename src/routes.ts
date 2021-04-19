@@ -16,3 +16,4 @@ export * from "./routes/post";
 export * from "./routes/profile";
 export * from "./routes/query";
 export * from "./routes/register";
+export * from "./routes/terms";
