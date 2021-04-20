@@ -68,6 +68,7 @@ app.use(express.static("static"));
 
 // Use routes
 app.use("/", routes.indexRouter);
+app.use("/about", routes.aboutRouter);
 app.use("/admin", routes.adminRouter);
 app.use("/api", routes.apiRouter);
 app.use("/cgl-favorites", routes.cglFavoritesRouter);
@@ -79,6 +80,7 @@ app.use("/post", routes.postRouter);
 app.use("/profile", routes.profileRouter);
 app.use("/query", routes.queryRouter);
 app.use("/register", routes.registerRouter);
+app.use("/terms", routes.termsRouter);
 
 // Error 404 (not found)
 app.use((req, res) => {
