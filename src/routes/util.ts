@@ -141,8 +141,8 @@ export async function renderPage(
     options.after = req.query.after;
   }
 
-  const version = await dbm.metaService.get("Version");
-  options.version = version;
+  options.version = await dbm.metaService.get("Version");
+  options.navMessage = await dbm.metaService.get("Nav message");
 
   const sessionID = getSessionID(req);
 

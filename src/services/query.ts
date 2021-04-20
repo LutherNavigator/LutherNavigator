@@ -24,7 +24,9 @@ export type QuerySortOptions =
   | "locationType"
   | "userStatus"
   | "rating"
-  | "timestamp";
+  | "timestamp"
+  | "city"
+  | "country";
 
 /**
  * Query post architecture.
@@ -99,6 +101,8 @@ export class QueryService extends BaseService {
       userStatus: "UserStatus.name",
       rating: "Rating.general",
       timestamp: "Post.createTime",
+      city: "Post.city",
+      country: "Post.country",
     };
 
     const sortOrder = sortAscending ? "ASC" : "DESC";

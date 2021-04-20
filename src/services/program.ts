@@ -142,7 +142,7 @@ export class ProgramService extends BaseService {
    * @returns All programs.
    */
   public async getPrograms(): Promise<Program[]> {
-    const sql = `SELECT * FROM Program;`;
+    const sql = `SELECT * FROM Program ORDER BY id;`;
     const params = [];
     const rows: Program[] = await this.dbm.execute(sql, params);
 

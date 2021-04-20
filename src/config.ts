@@ -6,4 +6,6 @@ export const metaConfig = {
   "Verify age": 60 * 60,
   "Password reset age": 60 * 60,
   "Google Analytics ID": "G-Q31B8E494D",
+  "Nav message":
+    "The LutherNavigator project seeks to provide students a way to share their experiences abroad",
 };

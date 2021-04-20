@@ -61,7 +61,7 @@ def main() -> None:
         "--out",
         type=str,
         default="",
-        help="output filaname/path",
+        help="output filename/path",
     )
 
     # Specify table name
