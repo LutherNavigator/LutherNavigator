@@ -1,0 +1,48 @@
+.subhead {
+  font-size: 10pt;
+}
+
+/* three images */
+.connections {
+  padding: 10px 5px;
+}
+
+.connections > img {
+  width: inherit;
+  border-radius: 10px;
+  opacity: 35%;
+  transition: 0.2s;
+  height: 150px;
+  object-fit: cover;
+}
+
+/* link for the post */
+.connections > span {
+  float: left;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #212529;
+  text-align: center;
+  font-size: 12px;
+}
+
+.connections-alt {
+  color: #6c757d;
+  font-size: 10pt;
+}
+
+@media screen and (min-width: 576px) {
+  .connections {
+    padding: 10px 10px;
+  }
+
+  .connections > span {
+    font-size: 16pt;
+  }
+
+  .connections > img {
+    height: 220px;
+  }
+}
