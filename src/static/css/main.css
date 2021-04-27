@@ -35,6 +35,10 @@ a:hover {
   text-align: center;
 }
 
+.align-cente {
+  align-items: center;
+}
+
 .socials {
   display: inline-block;
 }
