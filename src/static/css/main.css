@@ -35,6 +35,10 @@ a:hover {
   text-align: center;
 }
 
+.align-center {
+  align-items: center;
+}
+
 .socials {
   display: inline-block;
 }
@@ -257,10 +261,6 @@ footer a {
   color: #ffffff;
 }
 
-/* .luther:hover {
-  box-shadow: 0 0px 10px 1px #ffffff;
-} */
-
 .fab {
   font-size: 28pt;
   vertical-align: middle;
@@ -294,6 +294,8 @@ footer a:hover,
 /* link for the post */
 .a-location > span {
   float: left;
+  width: inherit;
+  height: inherit;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -301,6 +303,7 @@ footer a:hover,
   color: #212529;
   text-align: center;
   font-size: 32px;
+  padding: 0px 13px;
 }
 
 /* Search Bar / index & query pages */
@@ -325,7 +328,6 @@ footer a:hover,
   margin: 0 auto;
   background-color: #d8e5ff;
   border-radius: 999px;
-  /* box-shadow: 0 8px 15px 0 #8a8a8b, 0 0 0 0px #ffffff; , off-center, blur edges, radius */
   transform: scale(0.6);
 }
 
