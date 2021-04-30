@@ -18,6 +18,7 @@ test("LocationType", async () => {
     { id: 9, name: "Sports venue" },
     { id: 10, name: "Cultural attraction" },
     { id: 11, name: "Historical attraction" },
+    { id: 12, name: "Outdoor attraction" },
     { id: 1000, name: "Other" },
   ]);
 
