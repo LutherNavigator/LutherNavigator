@@ -144,10 +144,12 @@ function createPostRow(post) {
   const location = newElement("td").text(post.location);
   const postUser = newElement("td").text(`${post.postUser}`);
   const program = newElement("td").text(post.program);
-  const rating = newElement("td").html(
-    '<i class="fa fa-star checked"></i>'.repeat(post.rating) +
-      '<i class="fa fa-star"></i>'.repeat(5 - post.rating)
-  );
+  const rating = newElement("td")
+    .addClass("nowrap")
+    .html(
+      '<i class="fa fa-star checked"></i>'.repeat(post.rating) +
+        '<i class="fa fa-star"></i>'.repeat(5 - post.rating)
+    );
   const approved = newElement("td").html(
     post.approved ? '<i class="fas fa-check"></i>' : ""
   );
