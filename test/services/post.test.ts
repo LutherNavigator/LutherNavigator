@@ -70,7 +70,7 @@ test("Post", async () => {
   expect(postExists).toBe(true);
 
   // Get post
-  const post = await dbm.postService.getPost(postID);
+  let post = await dbm.postService.getPost(postID);
   expect(post.id).toBe(postID);
   expect(post.userID).toBe(userID);
   expect(post.content).toBe(content);
@@ -206,7 +206,7 @@ test("Post", async () => {
   postExists = await dbm.postService.postExists(postID2);
   expect(postExists).toBe(false);
 
-  // Delete post
+  // Edit post
   await wait(1000);
   const postID3 = await dbm.postService.createPost(
     userID,
@@ -220,6 +220,31 @@ test("Post", async () => {
     rating,
     threeWords
   );
+  const newCity = "Minneapolis, MN";
+  await dbm.postService.editPost(postID3, {
+    content: newContent,
+    city: newCity,
+  });
+  post = await dbm.postService.getPost(postID3);
+  expect(post.id).toBe(postID3);
+  expect(post.userID).toBe(userID);
+  expect(post.content).toBe(newContent);
+  expect(post.location).toBe(location);
+  expect(post.city).toBe(newCity);
+  expect(post.country).toBe(country);
+  expect(post.locationTypeID).toBe(locationTypeID);
+  expect(post.programID).toBe(programID);
+  expect(post.threeWords).toBe(threeWords);
+  expect(post.currentUserStatusID).toBe(statusID);
+  expect(post.address).toBeNull();
+  expect(post.phone).toBeNull();
+  expect(post.website).toBeNull();
+  expect(post.approved).toBeFalsy();
+  expect(getTime() - post.createTime).toBeLessThanOrEqual(5);
+  expect(post.editTime).not.toBeNull();
+  expect(getTime() - post.editTime).toBeLessThanOrEqual(3);
+
+  // Delete post
   postExists = await dbm.postService.postExists(postID3);
   expect(postExists).toBe(true);
   await dbm.postService.deletePost(postID3);

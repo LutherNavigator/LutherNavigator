@@ -258,8 +258,10 @@ export class PostService extends BaseService {
       .filter((field) => field !== undefined && field !== null)
       .map((field) => postDetails[field]);
 
-    const sql = `UPDATE Post SET ${newFields.join(", ")} WHERE id = ?;`;
-    const params = [...newValues, postID];
+    const sql = `UPDATE Post SET ${newFields.join(
+      ", "
+    )}, editTime = ? WHERE id = ?;`;
+    const params = [...newValues, getTime(), postID];
     await this.dbm.execute(sql, params);
   }
 
