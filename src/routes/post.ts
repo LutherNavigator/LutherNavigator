@@ -111,6 +111,7 @@ postRouter.post(
     const validLocationTypeID = await dbm.locationTypeService.validLocation(
       locationTypeID
     );
+    const validProgramID = await dbm.programService.programExists(programID);
     const imageData = await Promise.all(
       files.map(
         async (file): Promise<Buffer> => {
@@ -162,6 +163,8 @@ postRouter.post(
       setErrorMessage(res, "Country name must be less than 256 characters");
     } else if (!validLocationTypeID) {
       setErrorMessage(res, "Invalid location type");
+    } else if (!validProgramID) {
+      setErrorMessage(res, "Invalid program");
     } else if (threeWords.length < 0 || threeWords.length > 63) {
       setErrorMessage(
         res,
