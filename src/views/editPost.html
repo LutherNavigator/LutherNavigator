@@ -1,0 +1,243 @@
+<link rel="stylesheet" type="text/css" href="/css/editPost.css" />
+
+<div class="div-center tablet-content">
+  <div class="">
+    <form method="POST" enctype="multipart/form-data">
+      <div class="col">
+        <h1 class="center">Edit Post</h1>
+
+        {{#if error}}
+        <div class="alert alert-danger" role="alert">{{error}}</div>
+        {{/if}}
+
+        <p class="text-h3">
+          You may edit the post below. This should be used to fix typos and
+          correct misinformation. Post images can be removed by unchecking the
+          boxes next to each image. Admins can also add new images.
+        </p>
+
+        <small>* = required</small>
+      </div>
+
+      <div class="row align-items-center mt-4">
+        <!-- Location name -->
+        <div class="col-12 col-sm-4 mb-3 form-group">
+          <label for="location">Destination Name *</label>
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="location"
+            name="location"
+            maxlength="255"
+            value="{{location}}"
+            required
+          />
+        </div>
+        <!-- City -->
+        <div class="col-6 col-sm-4 mb-3 form-group">
+          <label for="city">City *</label>
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="city"
+            name="city"
+            maxlength="255"
+            value="{{city}}"
+            required
+          />
+        </div>
+        <!-- Country -->
+        <div class="col-6 col-sm-4 mb-3 form-group">
+          <label for="city">Country *</label>
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="country"
+            name="country"
+            maxlength="255"
+            value="{{country}}"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="row align-items-center">
+        <!-- Location type -->
+        <div class="col-6 mb-3 form-group">
+          <label for="locationType">Type *</label>
+          <select
+            class="form-control clear-select"
+            id="locationType"
+            name="locationType"
+            required
+          >
+            <option value="">Select...</option>
+            {{#each locationTypes}}
+            <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+          <script type="text/javascript">
+            document.getElementById("locationType").value = "{{locationType}}";
+          </script>
+        </div>
+        <!-- Program -->
+        <div class="col-6 mb-3 form-group">
+          <label for="program">Program *</label>
+          <select
+            class="form-control clear-select"
+            id="program"
+            name="program"
+            required
+          >
+            <option value="">Select...</option>
+            {{#each programs}}
+            <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+          <script type="text/javascript">
+            document.getElementById("program").value = "{{program}}";
+          </script>
+        </div>
+      </div>
+
+      <!-- Post content -->
+      <div class="row align-items-center">
+        <div class="col-12 mb-3 form-group">
+          <label for="postContent">Description *</label>
+          <textarea
+            class="form-control clear-input"
+            id="postContent"
+            name="postContent"
+            maxlength="750"
+            rows="4"
+            required
+          >
+{{postContent}}</textarea
+          >
+        </div>
+      </div>
+
+      <!-- Three words -->
+      <div class="col">
+        <label>Three word description</label>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-12 col-sm-4 mb-3 form-group">
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="wordOne"
+            name="wordOne"
+            maxlength="19"
+            value="{{wordOne}}"
+          />
+        </div>
+        <div class="col-12 col-sm-4 mb-3 form-group">
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="wordTwo"
+            name="wordTwo"
+            maxlength="19"
+            value="{{wordTwo}}"
+          />
+        </div>
+        <div class="col-12 col-sm-4 mb-3 form-group">
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="wordThree"
+            name="wordThree"
+            maxlength="19"
+            value="{{wordThree}}"
+          />
+        </div>
+      </div>
+
+      <!-- Address, phone number, website -->
+      <div class="row align-items-center">
+        <div class="col-12 mb-3 form-group">
+          <label for="address">Address</label>
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="address"
+            name="address"
+            maxlength="255"
+            value="{{address}}"
+          />
+        </div>
+        <div class="col-12 col-sm-4 mb-3 form-group">
+          <label for="phone">Phone number</label>
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="phone"
+            name="phone"
+            maxlength="19"
+            value="{{phone}}"
+          />
+        </div>
+        <div class="col-12 col-sm-8 mb-3 form-group">
+          <label for="website">Website</label>
+          <input
+            type="text"
+            class="form-control clear-input"
+            id="website"
+            name="website"
+            maxlength="255"
+            value="{{website}}"
+          />
+        </div>
+      </div>
+
+      <!-- Current images -->
+      <div class="col">
+        <label class="mb-0">Current images</label>
+      </div>
+      <div class="row align-items-center post-img mb-3">
+        {{#each images}}
+        <div class="col-12 col-sm-6 col-md-4 form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="image-{{@index}}"
+            name="image-{{@index}}"
+            checked
+          />
+          <label for="image-{{@index}}">
+            <img
+              src="/image/post/{{../postID}}/{{@index}}"
+              alt="uploaded photo from user"
+            />
+          </label>
+        </div>
+        {{/each}}
+      </div>
+
+      <!-- New images -->
+      <div class="row align-items-center">
+        <div class="col-12 mb-2 form-group">
+          <label for="imageDiv">New images (up to {{maxImages}} total)</label>
+          <div class="custom-file" id="imageDiv">
+            <input
+              type="file"
+              class="custom-file-input clear-input"
+              id="images"
+              name="images"
+              accept=".jpg, .jpeg, .png"
+              multiple
+            />
+            <label class="custom-file-label" for="images">Choose files</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit post button -->
+      <div class="col mt-3">
+        <button type="submit" class="btn clear-button mb-3">Edit post</button>
+      </div>
+    </form>
+  </div>
+</div>

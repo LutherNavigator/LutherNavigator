@@ -72,6 +72,7 @@ app.use("/about", routes.aboutRouter);
 app.use("/admin", routes.adminRouter);
 app.use("/api", routes.apiRouter);
 app.use("/cgl-favorites", routes.cglFavoritesRouter);
+app.use("/edit-post", routes.editPostRouter);
 app.use("/image", routes.imageRouter);
 app.use("/login", routes.loginRouter);
 app.use("/logout", routes.logoutRouter);
