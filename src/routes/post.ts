@@ -253,6 +253,9 @@ postRouter.get(
     const postUserStatusName = await dbm.userStatusService.getStatusName(
       post.currentUserStatusID
     );
+    const locationType = await dbm.locationTypeService.getLocationName(
+      post.locationTypeID
+    );
     const program = await dbm.programService.getProgramName(post.programID);
     const images = await dbm.postService.getPostImages(postID);
     const postRating = await dbm.postService.getPostRating(postID);
@@ -298,7 +301,8 @@ postRouter.get(
       firstname: postUser.firstname,
       lastname: postUser.lastname,
       status: postUserStatusName,
-      program: program,
+      locationType,
+      program,
       createTime: post.createTime,
       threeWords: post.threeWords,
       content: post.content,
