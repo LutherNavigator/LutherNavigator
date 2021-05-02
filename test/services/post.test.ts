@@ -228,8 +228,10 @@ test("Post", async () => {
   post = await dbm.postService.getPost(postID3);
   expect(post.id).toBe(postID3);
   expect(post.userID).toBe(userID);
+  expect(post.content).not.toBe(content);
   expect(post.content).toBe(newContent);
   expect(post.location).toBe(location);
+  expect(post.city).not.toBe(city);
   expect(post.city).toBe(newCity);
   expect(post.country).toBe(country);
   expect(post.locationTypeID).toBe(locationTypeID);
