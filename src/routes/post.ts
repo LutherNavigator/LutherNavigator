@@ -111,6 +111,7 @@ postRouter.post(
     const validLocationTypeID = await dbm.locationTypeService.validLocation(
       locationTypeID
     );
+    const validProgramID = await dbm.programService.programExists(programID);
     const imageData = await Promise.all(
       files.map(
         async (file): Promise<Buffer> => {
@@ -162,6 +163,8 @@ postRouter.post(
       setErrorMessage(res, "Country name must be less than 256 characters");
     } else if (!validLocationTypeID) {
       setErrorMessage(res, "Invalid location type");
+    } else if (!validProgramID) {
+      setErrorMessage(res, "Invalid program");
     } else if (threeWords.length < 0 || threeWords.length > 63) {
       setErrorMessage(
         res,
@@ -250,6 +253,9 @@ postRouter.get(
     const postUserStatusName = await dbm.userStatusService.getStatusName(
       post.currentUserStatusID
     );
+    const locationType = await dbm.locationTypeService.getLocationName(
+      post.locationTypeID
+    );
     const program = await dbm.programService.getProgramName(post.programID);
     const images = await dbm.postService.getPostImages(postID);
     const postRating = await dbm.postService.getPostRating(postID);
@@ -295,7 +301,8 @@ postRouter.get(
       firstname: postUser.firstname,
       lastname: postUser.lastname,
       status: postUserStatusName,
-      program: program,
+      locationType,
+      program,
       createTime: post.createTime,
       threeWords: post.threeWords,
       content: post.content,

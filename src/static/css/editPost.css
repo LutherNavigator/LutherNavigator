@@ -1,0 +1,17 @@
+.post-img {
+  text-align: center;
+  padding: 0px 10px;
+}
+
+.post-img div,
+.post-img div label {
+  height: 25vh;
+  padding: 5px;
+}
+
+.post-img div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
