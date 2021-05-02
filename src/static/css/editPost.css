@@ -14,15 +14,18 @@
   height: 100%;
   object-fit: cover;
   border-radius: 10px;
+  border-top-left-radius: 2px;
 }
 
 .form-check-input {
-  margin-top: .3rem;
-  margin-left: .3rem;
+  margin-top: 0.3rem;
+  margin-left: 0.3rem;
   opacity: 0%;
   position: absolute;
   height: 50px;
   width: 50px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .form-check-input:checked {
