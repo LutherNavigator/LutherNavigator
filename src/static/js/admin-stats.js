@@ -167,6 +167,13 @@ function createPostRow(post) {
       toggleFavoriteHeart(post.postID);
     });
   const favoriteButton = newElement("td").append(favoriteHeart);
+  const editLink = newElement("a")
+    .addClass("btn btn-primary")
+    .attr({
+      href: `/edit-post/${post.postID}`,
+    })
+    .html('<i class="fas fa-edit"></i>');
+  const editPost = newElement("td").append(editLink);
   const deletePostButton = newElement("button")
     .addClass("btn btn-danger")
     .attr({
@@ -187,6 +194,7 @@ function createPostRow(post) {
     approved,
     createTime,
     favoriteButton,
+    editPost,
     deletePost
   );
   return row;
