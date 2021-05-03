@@ -78,6 +78,7 @@ app.use("/login", routes.loginRouter);
 app.use("/logout", routes.logoutRouter);
 app.use("/password-reset", routes.passwordResetRouter);
 app.use("/post", routes.postRouter);
+app.use("/privacy", routes.privacyRouter);
 app.use("/profile", routes.profileRouter);
 app.use("/query", routes.queryRouter);
 app.use("/register", routes.registerRouter);

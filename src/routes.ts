@@ -14,6 +14,7 @@ export * from "./routes/login";
 export * from "./routes/logout";
 export * from "./routes/passwordReset";
 export * from "./routes/post";
+export * from "./routes/privacy";
 export * from "./routes/profile";
 export * from "./routes/query";
 export * from "./routes/register";
