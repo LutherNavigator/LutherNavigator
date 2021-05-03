@@ -145,4 +145,30 @@ export class PostImageService extends BaseService {
       await this.dbm.execute(sql, params);
     }
   }
+
+  /**
+   * Delete a specific image from a post.
+   *
+   * @param postID A post's ID.
+   * @param index The index of the post's image.
+   * @returns Whether or not the deletion succeeded.
+   */
+  public async deletePostImage(
+    postID: string,
+    index: number
+  ): Promise<boolean> {
+    const images = await this.getPostImages(postID);
+
+    if (index >= 0 && index < images.length) {
+      const sql = `DELETE FROM PostImage WHERE imageID = ?;`;
+      const params = [images[index].id];
+      await this.dbm.execute(sql, params);
+
+      await this.dbm.imageService.deleteImage(images[index].id);
+
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

@@ -93,6 +93,22 @@ test("PostImage", async () => {
   numImages = await dbm.postImageService.numImages(postID);
   expect(numImages).toBe(4);
 
+  // Delete single post image
+  let deleteSuccess = await dbm.postImageService.deletePostImage(postID, 1);
+  expect(deleteSuccess).toBeTruthy();
+  postImages = await dbm.postImageService.getPostImages(postID);
+  expect(postImages.length).toBe(3);
+  expect(postImages[0].id).toBe(imageID);
+  expect(postImages[0].data.toString()).toBe(buf.toString());
+  expect(postImages[1].id).toBe(imageID3);
+  expect(postImages[1].data.toString()).toBe(buf3.toString());
+  expect(postImages[2].id).toBe(imageID4);
+  expect(postImages[2].data.toString()).toBe(buf4.toString());
+
+  // Delete single nonexistant post image
+  deleteSuccess = await dbm.postImageService.deletePostImage(postID, 3);
+  expect(deleteSuccess).toBeFalsy();
+
   // Delete all post images
   await dbm.postImageService.deletePostImages(postID);
   postImages = await dbm.postImageService.getPostImages(postID);
