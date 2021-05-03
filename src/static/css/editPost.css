@@ -1,0 +1,32 @@
+.post-img {
+  text-align: center;
+  padding: 0px 10px;
+}
+
+.post-img div,
+.post-img div label {
+  height: 25vh;
+  padding: 5px;
+}
+
+.post-img div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+.form-check-input {
+  margin-top: 0.3rem;
+  margin-left: 0.3rem;
+  opacity: 0%;
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.form-check-input:checked {
+  opacity: 50%;
+}

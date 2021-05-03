@@ -99,6 +99,22 @@ export interface UserPost extends Post {
 }
 
 /**
+ * Post details architecture.
+ */
+interface PostDetails {
+  content?: string;
+  location?: string;
+  city?: string;
+  country?: string;
+  locationTypeID?: number;
+  programID?: number;
+  threeWords?: string;
+  address?: string;
+  phone?: string;
+  website?: string;
+}
+
+/**
  * Post services.
  */
 export class PostService extends BaseService {
@@ -223,6 +239,30 @@ export class PostService extends BaseService {
 
     const ratingID = rows[0]?.ratingID;
     await this.dbm.ratingService.deleteRating(ratingID);
+  }
+
+  /**
+   * Edit a post, given the parts of the post that have been edited.
+   *
+   * @param postID A post's ID.
+   * @param postDetails The post details.
+   */
+  public async editPost(
+    postID: string,
+    postDetails: PostDetails
+  ): Promise<void> {
+    const newFields = Object.keys(postDetails)
+      .filter((field) => field !== undefined && field !== null)
+      .map((field) => `${field} = ?`);
+    const newValues = Object.keys(postDetails)
+      .filter((field) => field !== undefined && field !== null)
+      .map((field) => postDetails[field]);
+
+    const sql = `UPDATE Post SET ${newFields.join(
+      ", "
+    )}, editTime = ? WHERE id = ?;`;
+    const params = [...newValues, getTime(), postID];
+    await this.dbm.execute(sql, params);
   }
 
   /**

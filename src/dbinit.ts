@@ -388,6 +388,7 @@ export default async function initDB(
       "Sports venue",
       "Cultural attraction",
       "Historical attraction",
+      "Outdoor attraction",
     ],
     true
   );
