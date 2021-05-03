@@ -136,11 +136,16 @@ editPostRouter.post(
     const imageSizesGood = imageData.map(
       (image) => image.length < maxImageSize
     );
+    const numImages = await dbm.postImageService.numImages(postID);
+    const removeImages = Array.from(Array(numImages).keys()).filter(
+      (num) => req.body[`image-${num}`] === undefined
+    );
+    const totalImages = numImages - removeImages.length + imageData.length;
 
     // Validation
     if (content.length <= 0 || content.length > 750) {
       setErrorMessage(res, "Post content must be no more than 750 characters");
-    } else if (imageData.length < 0 || imageData.length > maxImages) {
+    } else if (totalImages < 0 || totalImages > maxImages) {
       setErrorMessage(res, `Please upload no more than ${maxImages} images`);
     } else if (imageTypesGood.includes(false)) {
       setErrorMessage(res, "All images must be in PNG, JPG, or JPEG format");
@@ -185,6 +190,14 @@ editPostRouter.post(
         phone,
         website,
       });
+
+      await Promise.all(
+        removeImages.map(
+          async (index) =>
+            await dbm.postImageService.deletePostImage(postID, index)
+        )
+      );
+      await dbm.postImageService.createPostImages(postID, imageData);
 
       res.redirect(`/post/${postID}`);
       return;
