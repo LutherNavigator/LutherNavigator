@@ -76,7 +76,7 @@ export async function shrinkImage(
  */
 export async function shrinkImageAuto(
   buffer: Buffer,
-  factor: number = 0.7071,
+  factor: number = 0.5,
   quality: number = 20
 ): Promise<Buffer> {
   if (buffer.length < maxImageSize) {
