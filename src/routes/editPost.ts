@@ -15,7 +15,7 @@ import {
 } from "./util";
 import wrapRoute from "../asyncCatch";
 import { metaConfig } from "../config";
-import * as jimp from "jimp";
+import { shrinkImageAuto } from "./post";
 
 /**
  * The edit post router.
@@ -108,27 +108,7 @@ editPostRouter.post(
     );
     const validProgramID = await dbm.programService.programExists(programID);
     const imageData = await Promise.all(
-      files.map(
-        async (file): Promise<Buffer> => {
-          return new Promise((resolve) => {
-            if (file.size < maxImageSize) {
-              resolve(file.buffer);
-            } else {
-              jimp.read(file.buffer).then((img) => {
-                const shrinkFactor = (file.size / maxImageSize) ** 0.3 / 0.8;
-                const width = img.bitmap.width;
-                img
-                  .resize(Math.floor(width / shrinkFactor), jimp.AUTO)
-                  .quality(60)
-                  .getBufferAsync(jimp.MIME_JPEG)
-                  .then((buffer) => {
-                    resolve(buffer);
-                  });
-              });
-            }
-          });
-        }
-      )
+      files.map(async (file) => await shrinkImageAuto(file.buffer))
     );
     const imageTypesGood = files.map((file) =>
       mimetypes.includes(file.mimetype)

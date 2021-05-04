@@ -39,6 +39,59 @@ const ratingTypes = [
   "guestServices",
 ];
 
+/**
+ * Shrink an image.
+ *
+ * @param buffer The image buffer.
+ * @param factor The scale factor.
+ * @param quality The JPEG quality.
+ * @returns The resulting image buffer.
+ */
+export async function shrinkImage(
+  buffer: Buffer,
+  factor: number,
+  quality: number = 100
+): Promise<Buffer> {
+  return new Promise((resolve) => {
+    jimp.read(buffer).then((img) => {
+      const width = img.bitmap.width;
+      img
+        .resize(Math.floor(width * factor), jimp.AUTO)
+        .quality(quality)
+        .getBufferAsync(jimp.MIME_JPEG)
+        .then((buffer) => {
+          resolve(buffer);
+        });
+    });
+  });
+}
+
+/**
+ * Shrink an image automatically.
+ *
+ * @param buffer The image buffer.
+ * @param factor The scale factor.
+ * @param quality The JPEG quality.
+ * @returns The resulting image buffer.
+ */
+export async function shrinkImageAuto(
+  buffer: Buffer,
+  factor: number = 0.7071,
+  quality: number = 20
+): Promise<Buffer> {
+  if (buffer.length < maxImageSize) {
+    return buffer;
+  } else {
+    let newBuffer = await shrinkImage(buffer, factor, quality);
+
+    while (newBuffer.length >= maxImageSize) {
+      newBuffer = await shrinkImage(newBuffer, factor, quality);
+    }
+
+    return newBuffer;
+  }
+}
+
 // Create post page
 postRouter.get(
   "/",
@@ -113,27 +166,7 @@ postRouter.post(
     );
     const validProgramID = await dbm.programService.programExists(programID);
     const imageData = await Promise.all(
-      files.map(
-        async (file): Promise<Buffer> => {
-          return new Promise((resolve) => {
-            if (file.size < maxImageSize) {
-              resolve(file.buffer);
-            } else {
-              jimp.read(file.buffer).then((img) => {
-                const shrinkFactor = (file.size / maxImageSize) ** 0.3 / 0.8;
-                const width = img.bitmap.width;
-                img
-                  .resize(Math.floor(width / shrinkFactor), jimp.AUTO)
-                  .quality(60)
-                  .getBufferAsync(jimp.MIME_JPEG)
-                  .then((buffer) => {
-                    resolve(buffer);
-                  });
-              });
-            }
-          });
-        }
-      )
+      files.map(async (file) => await shrinkImageAuto(file.buffer))
     );
     const imageTypesGood = files.map((file) =>
       mimetypes.includes(file.mimetype)
