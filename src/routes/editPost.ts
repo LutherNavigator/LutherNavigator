@@ -108,7 +108,7 @@ editPostRouter.post(
     );
     const validProgramID = await dbm.programService.programExists(programID);
     const imageData = await Promise.all(
-      files.map(async (file) => await shrinkImageAuto(file.buffer))
+      files.map(async (file) => await shrinkImageAuto(file))
     );
     const imageTypesGood = files.map((file) =>
       mimetypes.includes(file.mimetype)
