@@ -67,6 +67,42 @@ export async function shrinkImage(
 }
 
 /**
+ * Shrink an image to a maximum size.
+ *
+ * @param file The image file.
+ * @param maxWidth The maximum width of the image.
+ * @param maxHeight The maximum height of the image.
+ * @returns The resulting image buffer.
+ */
+export async function shrinkImageToSize(
+  file: Express.Multer.File,
+  maxWidth: number = 1920,
+  maxHeight: number = 1080
+): Promise<Buffer> {
+  return new Promise((resolve) => {
+    jimp.read(file.buffer).then((img) => {
+      const existingRatio = img.bitmap.width / img.bitmap.height;
+      const potentialRatio = maxWidth / maxHeight;
+      if (existingRatio > potentialRatio) {
+        img
+          .resize(maxWidth, jimp.AUTO)
+          .getBufferAsync(jimp.MIME_JPEG)
+          .then((buffer) => {
+            resolve(buffer);
+          });
+      } else {
+        img
+          .resize(jimp.AUTO, maxHeight)
+          .getBufferAsync(jimp.MIME_JPEG)
+          .then((buffer) => {
+            resolve(buffer);
+          });
+      }
+    });
+  });
+}
+
+/**
  * Shrink an image automatically.
  *
  * @param buffer The image buffer.
@@ -75,20 +111,28 @@ export async function shrinkImage(
  * @returns The resulting image buffer.
  */
 export async function shrinkImageAuto(
-  buffer: Buffer,
-  factor: number = 0.5,
-  quality: number = 20
+  file: Express.Multer.File,
+  maxWidth: number = 1600,
+  maxHeight: number = 900,
+  factor: number = 0.7071,
+  quality: number = 40
 ): Promise<Buffer> {
-  if (buffer.length < maxImageSize) {
-    return buffer;
+  if (file.buffer.length < maxImageSize) {
+    return file.buffer;
   } else {
-    let newBuffer = await shrinkImage(buffer, factor, quality);
+    const buffer = await shrinkImageToSize(file, maxWidth, maxHeight);
 
-    while (newBuffer.length >= maxImageSize) {
-      newBuffer = await shrinkImage(newBuffer, factor, quality);
+    if (buffer.length < maxImageSize) {
+      return buffer;
+    } else {
+      let newBuffer = await shrinkImage(buffer, factor, quality);
+
+      while (newBuffer.length >= maxImageSize) {
+        newBuffer = await shrinkImage(newBuffer, factor, quality);
+      }
+
+      return newBuffer;
     }
-
-    return newBuffer;
   }
 }
 
@@ -166,7 +210,7 @@ postRouter.post(
     );
     const validProgramID = await dbm.programService.programExists(programID);
     const imageData = await Promise.all(
-      files.map(async (file) => await shrinkImageAuto(file.buffer))
+      files.map(async (file) => await shrinkImageAuto(file))
     );
     const imageTypesGood = files.map((file) =>
       mimetypes.includes(file.mimetype)
