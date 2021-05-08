@@ -324,6 +324,15 @@ export default async function initDB(
         REFERENCES Post (id)
     );
   `;
+  const emailChangeTable = `
+    CREATE TABLE IF NOT EXISTS EmailChange (
+      id         CHAR(16)     NOT NULL,
+      email      VARCHAR(63)  NOT NULL,
+      createTime INT UNSIGNED NOT NULL,
+
+      PRIMARY KEY (id)
+    );
+  `;
   await dbm.db.executeMany([
     imageTable,
     userStatusTable,
@@ -341,6 +350,7 @@ export default async function initDB(
     metaTable,
     adminFavoritesTable,
     postVoteTable,
+    emailChangeTable,
   ]);
 
   // Create triggers
