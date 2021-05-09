@@ -9,6 +9,7 @@ import {
   auth,
   upload,
   getDBM,
+  getHostname,
   getUserID,
   maxImageSize,
   setErrorMessage,
@@ -16,6 +17,7 @@ import {
   getSessionID,
 } from "./util";
 import wrapRoute from "../asyncCatch";
+import { sendFormattedEmail } from "../emailer";
 import { checkPassword } from "../services/util";
 
 /**
@@ -110,6 +112,35 @@ profileRouter.post(
         await dbm.userService.setUserPassword(user.id, newPassword);
       }
     }
+
+    res.redirect("/profile");
+  })
+);
+
+// Request email change event
+profileRouter.post(
+  "/changeEmail",
+  auth,
+  wrapRoute(async (req, res) => {
+    const dbm = getDBM(req);
+
+    const userID = await getUserID(req);
+    const newEmail = req.body.newEmail;
+
+    const emailChangeID = await dbm.emailChangeService.createEmailChangeRecord(
+      userID,
+      newEmail
+    );
+
+    await sendFormattedEmail(
+      newEmail,
+      "Luther Navigator - Email Change Request",
+      "emailChange",
+      {
+        host: getHostname(req),
+        emailChangeID,
+      }
+    );
 
     res.redirect("/profile");
   })
