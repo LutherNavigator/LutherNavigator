@@ -45,14 +45,14 @@ export class EmailChangeService extends BaseService {
     newEmail: string,
     prune: boolean = true
   ): Promise<string> {
-    // Confirm that the email address does not exist
-    const emailUnused = await this.dbm.userService.uniqueEmail(newEmail);
+    // Confirm that the user exists
+    const userExists = await this.dbm.userService.userExists(userID);
 
-    if (!emailUnused) {
+    if (!userExists) {
       return null;
     }
 
-    // Check that no email change record has already been created
+    // Check if an email change record has already been created by the user
     const recordExists = await this.emailChangeRecordExistsByUserID(userID);
 
     if (recordExists) {
@@ -162,11 +162,15 @@ export class EmailChangeService extends BaseService {
   ): Promise<string> {
     const emailChangeRecord = await this.getEmailChangeRecordByUserID(userID);
 
-    const sql = `UPDATE EmailChange SET newEmail = ? WHERE id = ?;`;
-    const params = [newEmail, emailChangeRecord.id];
-    await this.dbm.execute(sql, params);
+    if (emailChangeRecord) {
+      const sql = `UPDATE EmailChange SET newEmail = ? WHERE id = ?;`;
+      const params = [newEmail, emailChangeRecord.id];
+      await this.dbm.execute(sql, params);
 
-    return emailChangeRecord.id;
+      return emailChangeRecord.id;
+    } else {
+      return null;
+    }
   }
 
   /**
@@ -201,12 +205,6 @@ export class EmailChangeService extends BaseService {
     const emailChangeRecord = await this.getEmailChangeRecord(emailChangeID);
 
     if (!emailChangeRecord) {
-      return false;
-    }
-
-    const user = await this.dbm.userService.getUser(emailChangeRecord.userID);
-
-    if (!user) {
       return false;
     }
 
