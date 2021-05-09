@@ -9,6 +9,7 @@ import {
   auth,
   upload,
   getDBM,
+  getHostname,
   getUserID,
   maxImageSize,
   setErrorMessage,
@@ -125,6 +126,21 @@ profileRouter.post(
 
     const userID = await getUserID(req);
     const newEmail = req.body.newEmail;
+
+    const emailChangeID = await dbm.emailChangeService.createEmailChangeRecord(
+      userID,
+      newEmail
+    );
+
+    await sendFormattedEmail(
+      newEmail,
+      "Luther Navigator - Email Change Request",
+      "emailChange",
+      {
+        host: getHostname(req),
+        emailChangeID,
+      }
+    );
 
     res.redirect("/profile");
   })
