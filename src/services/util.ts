@@ -34,6 +34,11 @@ export const verifyIDLength = 16;
 export const passwordResetIDLength = 16;
 
 /**
+ * Length of an email change ID.
+ */
+export const emailChangeIDLength = 16;
+
+/**
  * Table with a string ID field.
  */
 interface TableStringID {
@@ -76,6 +81,14 @@ interface PasswordResetIDCreateTime {
  */
 interface SuspendedID {
   id: string;
+}
+
+/**
+ * Email change with only ID and create time architecture.
+ */
+interface EmailChangeIDCreateTime {
+  id: string;
+  createTime: number;
 }
 
 /**
@@ -415,5 +428,51 @@ export async function pruneSuspensions(dbm: DatabaseManager): Promise<void> {
 
   rows.forEach((row) => {
     pruneSession(dbm, row.id);
+  });
+}
+
+/**
+ * Delete an email change record when the time comes.
+ *
+ * @param dbm The database manager.
+ * @param emailChangeID An email change ID.
+ * @param timeRemaining The amount of time to wait before removing the record.
+ */
+export async function pruneEmailChangeRecord(
+  dbm: DatabaseManager,
+  emailChangeID: string,
+  timeRemaining: number = null
+): Promise<void> {
+  const emailChangeAge =
+    (parseInt(await dbm.metaService.get("Email change age")) ||
+      metaConfig["Email change age"]) * 1000;
+  if (timeRemaining === null) {
+    timeRemaining = emailChangeAge;
+  }
+
+  setTimeout(async () => {
+    await dbm.emailChangeService.deleteEmailChangeRecord(emailChangeID);
+  }, timeRemaining);
+}
+
+/**
+ * Delete all active email change records when the time comes.
+ *
+ * @param dbm The database manager.
+ */
+export async function pruneEmailChangeRecords(
+  dbm: DatabaseManager
+): Promise<void> {
+  const sql = `SELECT id, createTime FROM EmailChange;`;
+  const params = [];
+  const rows: EmailChangeIDCreateTime[] = await dbm.execute(sql, params);
+
+  const emailChangeAge =
+    (parseInt(await dbm.metaService.get("Email change age")) ||
+      metaConfig["Email change age"]) * 1000;
+
+  rows.forEach((row) => {
+    const timeRemaining = row.createTime + emailChangeAge / 1000 - getTime();
+    pruneEmailChangeRecord(dbm, row.id, timeRemaining * 1000);
   });
 }

@@ -7,6 +7,7 @@ import { DB } from "./db";
 
 import { AdminService } from "./services/admin";
 import { AdminFavoritesService } from "./services/adminFavorites";
+import { EmailChangeService } from "./services/emailChange";
 import { ImageService } from "./services/image";
 import { LocationTypeService } from "./services/locationType";
 import { MetaService } from "./services/meta";
@@ -28,6 +29,7 @@ export default class DatabaseManager {
   readonly db: DB;
   readonly adminService: AdminService;
   readonly adminFavoritesService: AdminFavoritesService;
+  readonly emailChangeService: EmailChangeService;
   readonly imageService: ImageService;
   readonly locationTypeService: LocationTypeService;
   readonly metaService: MetaService;
@@ -49,6 +51,7 @@ export default class DatabaseManager {
     this.db = new DB(dbURL);
     this.adminService = new AdminService(this);
     this.adminFavoritesService = new AdminFavoritesService(this);
+    this.emailChangeService = new EmailChangeService(this);
     this.imageService = new ImageService(this);
     this.locationTypeService = new LocationTypeService(this);
     this.metaService = new MetaService(this);
