@@ -9,6 +9,7 @@ import {
   pruneVerifyRecords,
   prunePasswordResetRecords,
   pruneSuspensions,
+  pruneEmailChangeRecords,
 } from "./services/util";
 import { metaConfig } from "./config";
 
@@ -324,6 +325,19 @@ export default async function initDB(
         REFERENCES Post (id)
     );
   `;
+  const emailChangeTable = `
+    CREATE TABLE IF NOT EXISTS EmailChange (
+      id         CHAR(16)     NOT NULL,
+      userID     CHAR(4)      NOT NULL,
+      newEmail   VARCHAR(63)  NOT NULL,
+      createTime INT UNSIGNED NOT NULL,
+
+      PRIMARY KEY (id),
+
+      FOREIGN KEY (userID)
+        REFERENCES User (id)
+    );
+  `;
   await dbm.db.executeMany([
     imageTable,
     userStatusTable,
@@ -341,6 +355,7 @@ export default async function initDB(
     metaTable,
     adminFavoritesTable,
     postVoteTable,
+    emailChangeTable,
   ]);
 
   // Create triggers
@@ -402,5 +417,6 @@ export default async function initDB(
     await pruneVerifyRecords(dbm);
     await prunePasswordResetRecords(dbm);
     await pruneSuspensions(dbm);
+    await pruneEmailChangeRecords(dbm);
   }
 }

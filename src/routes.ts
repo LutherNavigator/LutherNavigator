@@ -8,6 +8,7 @@ export * from "./routes/admin";
 export * from "./routes/api";
 export * from "./routes/cglFavorites";
 export * from "./routes/editPost";
+export * from "./routes/emailChange";
 export * from "./routes/image";
 export * from "./routes/index";
 export * from "./routes/login";
