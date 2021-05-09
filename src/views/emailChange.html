@@ -1,0 +1,19 @@
+<div class="sm-width div-center mt-3">
+  <div class="col">
+    <h1 class="center">New Email Verification</h1>
+  </div>
+  <div class="col">
+    {{#if valid}}
+    <p>
+      Success! Your new email address has been verified! From now on, you can
+      log in using your new email.
+    </p>
+    {{else}}
+    <p>
+      Invalid email change code. This is likely because the link expired. Please
+      try again via <a href="/profile">your profile</a>, bearing in mind you
+      have little time before the link in the email expires.
+    </p>
+    {{/if}}
+  </div>
+</div>
