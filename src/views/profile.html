@@ -22,6 +22,7 @@
     <div class="alert alert-danger" role="alert">{{ error }}</div>
     {{/if}}
 
+    <!-- View posts -->
     <div id="your-posts" class="mb-5">
       <div class="col mt-2 mb-2">
         <h4 class="posts">Your posts</h4>
@@ -56,6 +57,7 @@
       </div>
     </div>
 
+    <!-- Change profile image -->
     <div class="mb-5">
       <form method="POST" enctype="multipart/form-data">
         <div class="col mt-1">
@@ -89,6 +91,7 @@
       </form>
     </div>
 
+    <!-- Change password -->
     <div class="mb-5">
       <form method="POST">
         <div class="col mt-1">
@@ -141,12 +144,52 @@
       </form>
     </div>
 
+    <!-- Change email -->
+    <div class="mb-5">
+      <form method="POST">
+        <div class="col mt-1">
+          <h4>Change email</h4>
+        </div>
+        <div class="col mb-2">
+          Your current email address is: <b><i>{{ email }}</i></b
+          >. You can change it below. After changing it, you will need to verify
+          your new email address. We will send an email to the new address.
+          Simply click on the link in the email, and you will have successfully
+          changed your email address. Keep in mind the link will expire after a
+          short period of time.
+        </div>
+        <div class="row">
+          <div class="form-group col-12">
+            <label for="newEmail">New email</label>
+            <input
+              type="email"
+              class="form-control clear-input"
+              id="newEmail"
+              name="newEmail"
+              maxlength="63"
+              required
+            />
+          </div>
+        </div>
+        <div class="col">
+          <button
+            type="submit"
+            class="btn clear-button mb-2"
+            formaction="/profile/changeEmail"
+          >
+            Change email
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Change user status -->
     <div class="mb-5">
       <form method="POST">
         <div class="col mt-1">
           <h3>Change status</h3>
         </div>
-        <div class="col">
+        <div class="col mb-2">
           Your current status is: <b><i>{{ userStatus }}</i></b
           >. You can request to change your status below.
         </div>
